@@ -14,9 +14,25 @@ app.use(sessionMiddleware);
 app.use(express.json());
 
 app.get('/api/health-check', (req, res, next) => {
-  db.query(`select 'successfully connected' as "message"`)
+  db.query('select \'successfully connected\' as "message"')
     .then(result => res.json(result.rows[0]))
     .catch(err => next(err));
+});
+
+app.get('/api/hangouts', (req, res, next) => {
+  const allHangouts = 'select * from "hangouts"';
+  db.query(allHangouts)
+    .then(response => {
+      const hangoutsResponse = response.rows[0];
+      if (!hangoutsResponse) {
+        next(new ClientError(`No hangouts found.${req.method} ${req.originalUrl}`, 404));
+      } else {
+        res.json(hangoutsResponse);
+      }
+    })
+    .catch(err => {
+      next(err);
+    });
 });
 
 app.use('/api', (req, res, next) => {
