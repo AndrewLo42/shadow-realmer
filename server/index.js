@@ -23,7 +23,7 @@ app.get('/api/hangouts', (req, res, next) => {
   const allHangouts = 'select * from "hangouts"';
   db.query(allHangouts)
     .then(response => {
-      const hangoutsResponse = response.rows[0];
+      const hangoutsResponse = response.rows;
       if (!hangoutsResponse) {
         next(new ClientError(`No hangouts found.${req.method} ${req.originalUrl}`, 404));
       } else {
