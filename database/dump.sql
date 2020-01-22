@@ -321,6 +321,8 @@ COPY public.events ("eventId", "eventName", "storeId", "startTime", description,
 --
 
 COPY public.game ("gameId", "gameName") FROM stdin;
+1	Magic The Gathering
+2	Yu-Gi-Oh
 \.
 
 
@@ -337,6 +339,10 @@ COPY public."hangoutAttendees" ("hangoutId", "userId") FROM stdin;
 --
 
 COPY public.hangouts ("hangoutId", "hangoutName", "hostId", "startTime", description, "gameFormat", "gameId") FROM stdin;
+1	Shadow Realm DUEL 	2	2020-01-30 03:00:00	Fight me. Contact me at 949-420-6969'	Yu-Gi-Oh	2
+2	Magic and Chill	1	2020-01-29 04:20:00	We play some Magic, then we chill. Haha, jk... unless? Hit me up though. 618-897-5672	Pioneer	1
+3	Hardcore Modern practice	2	2020-02-15 01:30:00	I really want to practice my deck. This is some real hardcore practice, so no funny business. I want to WIN the next major. I am really good at this game, so casuals BEWARE. But all are welcome! Let me know if you can play... 949-420-6969	Modern	1
+4	Yugimans	3	2020-02-11 06:30:00	Let us play some Yu-Gi-OH	Yu-Gi-Oh	2
 \.
 
 
@@ -367,7 +373,7 @@ SELECT pg_catalog.setval('public."events_eventId_seq"', 1, false);
 -- Name: game_gameId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."game_gameId_seq"', 1, false);
+SELECT pg_catalog.setval('public."game_gameId_seq"', 2, true);
 
 
 --
