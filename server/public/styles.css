@@ -305,6 +305,7 @@ input:checked + .slider:before {
 }
 
 .title {
+  text-align: center;
   font-size: 2.5rem;
 }
 
@@ -355,13 +356,10 @@ input:checked + .slider:before {
 }
 
 .event-details,
-.store-details {
+.store-details,
+.create-page {
   margin-top: 10px;
   text-align: center;
-}
-
-.title {
-  font-size: 2.5rem;
 }
 
 .event-small-text {
@@ -389,4 +387,55 @@ input:checked + .slider:before {
 .store-phone,
 .store-website {
   margin: 5px;
+}
+
+.input {
+  border: none;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 2rem;
+  margin: 15px 0;
+}
+
+.long-input {
+  background-color: #2b2b2b;
+  width: 100%;
+} 
+
+.short-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.short-input {
+  background-color: #2b2b2b;
+  width: 48%;
+}
+
+textarea {
+  height: 40vh;
+}
+
+.confirm {
+  height: 6vh;
+  background-color: rgb(105, 153, 255);
+}
+
+.cancel {
+  height: 6vh;
+  background-color: rgb(255, 85, 85);
+}
+
+.dummy-google-map-image {
+  background-image: url("../../server/public/images/dummy_google_map_image.png");
+  width: 100vw;
+  height: 100vh;
+}
+
+.store-details-map {
+  background-image: url("../../server/public/images/dummy_google_map_image.png");
+  height: 30vh;
+  width: 100%;
+  background-position: center;
+  background-size: cover;
 }

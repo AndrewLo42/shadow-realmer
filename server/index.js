@@ -35,6 +35,41 @@ app.get('/api/hangouts', (req, res, next) => {
     });
 });
 
+app.get('/api/hangouts/:hangoutId', (req, res, next) => {
+  const parse = parseInt(req.params.hangoutId);
+  const hangoutDetails = `select * from "hangouts"
+                            where "hangoutId" = $1`;
+  const values = [parse];
+  if (
+    isNaN(req.params.hangoutId) || parse < 0
+  ) {
+    next(
+      new ClientError(
+        `The requested hangoutID was not a number ${req.method} ${req.originalUrl}`,
+        400
+      )
+    );
+  } else {
+    db.query(hangoutDetails, values)
+      .then(response => {
+        const detailsResponse = response.rows;
+        if (!detailsResponse) {
+          next(
+            new ClientError(
+                `No hangouts found.${req.method} ${req.originalUrl}`,
+                404
+            )
+          );
+        } else {
+          res.json(detailsResponse);
+        }
+      })
+      .catch(err => {
+        next(err);
+      });
+  }
+});
+
 app.post('/api/hangouts', (req, res, next) => {
   if (!req.body.hangoutName || !req.body.startTime || !req.body.description || !req.body.gameFormat || !req.body.gameId) {
     return next(new ClientError('Missing parameters to create Hangout!!'), 400);
