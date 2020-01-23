@@ -439,3 +439,32 @@ textarea {
   background-position: center;
   background-size: cover;
 }
+
+.homepage-header {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-content: center;
+}
+
+.homepage-icon {
+  margin: auto;
+}
+
+.shadowrealmer {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+}
+
+.homepage-title {
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.homepage-event {
+  height: 35vh;
+  width: 100%;
+  background-color: #2b2b2b;
+  margin: 10px 0;
+  box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.5);
+}
