@@ -20,75 +20,111 @@ app.get('/api/health-check', (req, res, next) => {
 });
 
 app.get('/api/hangouts', (req, res, next) => {
-  const allHangouts = 'select * from "hangouts"';
-  db.query(allHangouts)
-    .then(response => {
-      const hangoutsResponse = response.rows;
-      if (!hangoutsResponse) {
-        next(new ClientError(`No hangouts found.${req.method} ${req.originalUrl}`, 404));
-      } else {
-        res.json(hangoutsResponse);
-      }
-    })
-    .catch(err => {
-      next(err);
-    });
-});
-
-app.get('/api/hangouts/:hangoutId', (req, res, next) => {
-  const parsedHangoutId = parseInt(req.params.hangoutId);
-  const hangoutDetails = `select * from "hangouts"
-                            where "hangoutId" = $1`;
-  const values = [parsedHangoutId];
-  if (
-    isNaN(req.params.hangoutId) || parsedHangoutId < 0
-  ) {
-    next(
-      new ClientError(
-        `The requested hangoutID was not a number ${req.method} ${req.originalUrl}`,
-        400
-      )
-    );
-  } else {
+  if (Object.keys(req.query).length === 0) {
+    const allHangouts = 'select * from "hangouts"';
+    db.query(allHangouts)
+      .then(response => {
+        const hangoutsResponse = response.rows;
+        if (!hangoutsResponse) {
+          next(new ClientError(`No hangouts found.${req.method} ${req.originalUrl}`, 404));
+        } else {
+          res.json(hangoutsResponse);
+        }
+      })
+      .catch(err => { next(err); });
+  } else if (req.query.id) {
+    const parsedHangoutId = parseInt(req.query.id);
+    const hangoutDetails = `
+      select * from "hangouts"
+      where "hangoutId" = $1
+    `;
+    const values = [parsedHangoutId];
+    if (isNaN(req.query.id) || parsedHangoutId < 0) {
+      return next(new ClientError(`The requested hangoutID was not a number ${req.method} ${req.originalUrl}`, 400));
+    }
     db.query(hangoutDetails, values)
       .then(response => {
-        const detailsResponse = response.rows;
+        const detailsResponse = response.rows[0];
         if (!detailsResponse) {
-          next(
-            new ClientError(
-                `No hangouts found.${req.method} ${req.originalUrl}`,
-                404
-            )
-          );
+          return next(new ClientError(`No hangouts found at id ${parsedHangoutId}. ${req.method} ${req.originalUrl}`, 404));
         } else {
           res.json(detailsResponse);
         }
       })
-      .catch(err => {
-        next(err);
-      });
+      .catch(err => next(err));
+  } else if (req.query.amount) {
+    const requestedHangouts = `
+      select * from "hangouts"
+      limit $1
+    `;
+    const params = [parseInt(req.query.amount)];
+    db.query(requestedHangouts, params)
+      .then(response => {
+        const hangoutsResponse = response.rows;
+        if (!hangoutsResponse) {
+          next(new ClientError(`No hangouts found.${req.method} ${req.originalUrl}`, 404));
+        } else {
+          res.json(hangoutsResponse);
+        }
+      })
+      .catch(err => next(err));
+  } else {
+    next(new ClientError('Invalid query.', 404));
   }
 });
 
 app.get('/api/events', (req, res, next) => {
-  const allEvents = 'select * from "events"';
-  db.query(allEvents)
-    .then(response => {
-      const eventsResponse = response.rows;
-      if (!eventsResponse) {
-        next(
-          new ClientError(
-            `No hangouts found.${req.method} ${req.originalUrl}`,
-            404
-          )
-        );
-      } else {
-        res.json(eventsResponse);
-      }
-    })
-    .catch(err => {
-      next(err);
-    });
+  if (Object.keys(req.query).length === 0) {
+    const allEvents = 'select * from "events"';
+    db.query(allEvents)
+      .then(response => {
+        const eventsResponse = response.rows;
+        if (!eventsResponse) {
+          next(new ClientError(`No Events found. ${req.method} ${req.originalUrl}`, 404));
+        } else {
+          res.json(eventsResponse);
+        }
+      })
+      .catch(err => { next(err); });
+  } else if (req.query.id) {
+    const parsedEventId = parseInt(req.query.id);
+    const eventDetails = `
+      select * from "events"
+      where "eventId" = $1
+    `;
+    const values = [parsedEventId];
+    if (isNaN(req.query.id) || parsedEventId < 0) {
+      return next(new ClientError(`The requested eventID was not a number. ${req.method} ${req.originalUrl}`, 400));
+    }
+    db.query(eventDetails, values)
+      .then(response => {
+        const detailsResponse = response.rows[0];
+        if (!detailsResponse) {
+          return next(new ClientError(`No event found at id ${parsedEventId}. ${req.method} ${req.originalUrl}`, 404));
+        } else {
+          res.json(detailsResponse);
+        }
+      })
+      .catch(err => next(err));
+  } else if (req.query.amount) {
+    const requestedEvents = `
+      select * from "events"
+      limit $1
+    `;
+    const params = [parseInt(req.query.amount)];
+    db.query(requestedEvents, params)
+      .then(response => {
+        const eventsResponse = response.rows;
+        if (!eventsResponse) {
+          next(new ClientError(`No events found.${req.method} ${req.originalUrl}`, 404));
+        } else {
+          res.json(eventsResponse);
+        }
+      })
+      .catch(err => next(err));
+  } else {
+    next(new ClientError('Invalid query.', 404));
+  }
 });
 
 app.post('/api/events', (req, res, next) => {
@@ -124,7 +160,6 @@ app.post('/api/events', (req, res, next) => {
       res.status(201).json(result.rows[0]);
     })
     .catch(err => next(err));
-
 });
 
 app.post('/api/hangouts', (req, res, next) => {
