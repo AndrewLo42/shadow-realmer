@@ -70,6 +70,27 @@ app.get('/api/hangouts/:hangoutId', (req, res, next) => {
   }
 });
 
+app.get('/api/events', (req, res, next) => {
+  const allEvents = 'select * from "events"';
+  db.query(allEvents)
+    .then(response => {
+      const eventsResponse = response.rows;
+      if (!eventsResponse) {
+        next(
+          new ClientError(
+            `No hangouts found.${req.method} ${req.originalUrl}`,
+            404
+          )
+        );
+      } else {
+        res.json(eventsResponse);
+      }
+    })
+    .catch(err => {
+      next(err);
+    });
+});
+
 app.post('/api/hangouts', (req, res, next) => {
   if (!req.body.hangoutName || !req.body.startTime || !req.body.description || !req.body.gameFormat || !req.body.gameId) {
     return next(new ClientError('Missing parameters to create Hangout!!'), 400);
