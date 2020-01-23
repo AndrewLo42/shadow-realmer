@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/62f4ec6c59.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="../../server/public/styles.css">
+  <title>Create Hangout HTML</title>
+</head>
+<body>
+  <div class="create-page">
+    <header class="title">Create Hangout</header>
+      <input type="text" class="long-input input" placeholder="Hangout Title">
+      <input type="text" class="long-input input" placeholder="Location">
+      <div class="short-container">
+        <input class="short-input input" placeholder="Day"></input>
+        <input class="short-input input" placeholder="Time"></input>
+      </div>
+      <textarea name="description" cols="30" rows="10" placeholder="Description" class="input long-input"></textarea>
+      <div class="short-container">
+        <select name="game" class="input short-input">
+          <option value="Null">Game</option>
+          <option value="Magic">Magic the Gathering</option>
+          <option value="YuGiOh">Yu-Gi-Oh</option>
+        </select>
+        <select name="format" class="input short-input">
+          <option value="Null">Format</option>
+          <option value="Modern">Modern</option>
+          <option value="Standard">Standard</option>
+          <option value="Pioneer">Pioneer</option>
+          <option value="Commander">Commander</option>
+          <option value="Legacy">Legacy</option>
+        </select>
+      </div>
+      <div class="short-container">
+        <button class="short-input input cancel">Cancel</button>
+        <button class="short-input input confirm">Confirm</button>
+      </div>
+  </div>
+</body>
+</html>
