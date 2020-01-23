@@ -91,6 +91,42 @@ app.get('/api/events', (req, res, next) => {
     });
 });
 
+app.post('/api/events', (req, res, next) => {
+  if (
+    !req.body.eventName ||
+    !req.body.startTime ||
+    !req.body.description ||
+    !req.body.gameFormat ||
+    !req.body.gameId
+  ) {
+    return next(new ClientError('Missing parameters to create event!!'), 400);
+  }
+  const createEvent = `
+      insert into events ("eventName", "storeId", "startTime", "description", "gameFormat", "gameId", "entranceFee")
+      values($1, $2, $3, $4, $5, $6, $7)
+      returning *
+    `;
+  let storeId = req.body.storeId;
+  if (!req.body.storeId) {
+    storeId = 0;
+  }
+  const params = [
+    req.body.eventName,
+    storeId,
+    req.body.startTime,
+    req.body.description,
+    req.body.gameFormat,
+    req.body.gameId,
+    req.body.entranceFee
+  ];
+  db.query(createEvent, params)
+    .then(result => {
+      res.status(201).json(result.rows[0]);
+    })
+    .catch(err => next(err));
+
+});
+
 app.post('/api/hangouts', (req, res, next) => {
   if (!req.body.hangoutName || !req.body.startTime || !req.body.description || !req.body.gameFormat || !req.body.gameId) {
     return next(new ClientError('Missing parameters to create Hangout!!'), 400);
