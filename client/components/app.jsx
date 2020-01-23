@@ -10,7 +10,7 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <SearchBar />
+      <SearchBar placeholder={'Enter a ZIP code'} />
     );
   }
 }
