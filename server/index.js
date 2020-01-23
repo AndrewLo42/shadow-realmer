@@ -91,6 +91,25 @@ app.post('/api/hangouts', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.post('/api/hangoutAttendees', (req, res, next) => {
+  if (!req.body.hangoutId) {
+    return next(new ClientError('Missing parameters to create Hangout!!'), 400);
+  }
+  let userId = req.body.userId;
+  if (!userId) {
+    userId = 1;
+  }
+  const RSVPHangout = `
+    insert into "hangoutAttendees" ("userId", "hangoutId")
+    values ($1, $2)
+    returning *
+  `;
+  const params = [userId, req.body.hangoutId];
+  db.query(RSVPHangout, params)
+    .then(result => { res.status(201).json(result.rows[0]); })
+    .catch(err => next(err));
+});
+
 app.use('/api', (req, res, next) => {
   next(new ClientError(`cannot ${req.method} ${req.originalUrl}`, 404));
 });
