@@ -1,4 +1,5 @@
 import React from 'react';
+import ShadowRealmerIcon from './shadow-realmer-icon';
 
 export default class SearchBar extends React.Component {
   constructor(props) {
@@ -7,6 +8,7 @@ export default class SearchBar extends React.Component {
       inputText: ''
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleEnterKeyUp = this.handleEnterKeyUp.bind(this);
   }
 
   handleChange(event) {
@@ -15,9 +17,21 @@ export default class SearchBar extends React.Component {
     });
   }
 
+  handleEnterKeyUp(event) {
+    const isEnterKeyPress = event.keyCode === 13;
+    if (isEnterKeyPress) {
+      // TODO: Add call of callback from props
+    }
+  }
+
   render() {
     return (
-      <input placeholder="Enter Stuff" onChange={this.handleChange} />
+      <div className="search-bar-container">
+        <div className="search-bar">
+          <ShadowRealmerIcon />
+          <input className="search-bar-input" placeholder="Enter Stuff" onChange={this.handleChange} onKeyUp={this.handleEnterKeyUp} />
+        </div>
+      </div>
     );
   }
 }
