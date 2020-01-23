@@ -2,15 +2,7 @@
 body {
   color: white;
   background-color: #232423;
-  /* height: 812px;
-  width: 375px; */
   margin: 0;
-  /* padding: 30px; */
-}
-
-* {
-  box-sizing: border-box;
-  font-family: 'Roboto', sans-serif;
 }
 
 .top-header {
@@ -36,9 +28,9 @@ body {
   font-size: 1.5rem;
 }
 
-.search {
+/* .search {
   font-size: 1.5rem;
-}
+} */
 
 .icon {
   height: 60px;
