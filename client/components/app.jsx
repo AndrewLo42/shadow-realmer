@@ -1,5 +1,5 @@
 import React from 'react';
-import ShadowRealmerIcon from './shadow-realmer-icon';
+import HangoutsList from './hangouts-list';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -9,6 +9,6 @@ export default class App extends React.Component {
   }
 
   render() {
-    return <ShadowRealmerIcon />;
+    return <HangoutsList />;
   }
 }

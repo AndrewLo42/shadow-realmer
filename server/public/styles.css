@@ -9,3 +9,73 @@ body {
   margin: 0;
   padding: 0;
 }
+
+.event-container {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-flow: wrap;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.event {
+  position: relative;
+  height: 10vh;
+  width: 80%;
+  background-color: #2b2b2b;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 8px;
+  margin: 8px 0;
+  box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.5);
+}
+
+.event-left {
+  width: 33%;
+}
+
+.event-day-of-week,
+.event-time,
+.event-store-name {
+  font-size: 1rem;
+  color: rgb(128, 128, 128);
+}
+
+.event-right {
+  width: 66%;
+
+}
+
+.event-name {
+  font-size: 1.2rem;
+  height: 75%;
+  position: absolute;
+  display: flex;
+  align-items: center;
+}
+
+.event-icon-container {
+  display: flex;
+  align-content: center;
+}
+
+.event-icon {
+  height: 7vh;
+  width: 7vh;
+  margin-left: 10px;
+}
+
+.small-text {
+  font-size: 0.75rem;
+  color: rgb(128, 128, 128);
+}
+
+.hangout-spec {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-flow: column;
+  align-items: flex-end;
+  justify-content: space-between;
+}
