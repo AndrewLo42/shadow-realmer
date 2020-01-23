@@ -1,0 +1,60 @@
+* {
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  color: white;
+  background-color: #232423;
+  height: 812px;
+  width: 375px;
+  margin: 0;
+  padding: 30px;
+}
+
+.header-icons {
+  display: flex;
+  justify-content: space-between;
+  font-size: 3rem;
+}
+
+.interested-button {
+  color: #6E00FB;
+}
+
+.event-details,
+.store-details {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.title {
+  font-size: 2.5rem;
+}
+
+.event-small-text {
+  margin: 10px;
+  font-size: 0.75rem;
+  color: rgb(128, 128, 128);
+  display: flex;
+  justify-content: space-between;
+}
+
+.event-paragraph {
+  text-align: center;
+}
+
+.store-info {
+  margin-top: 10px;
+}
+
+.store-name {
+  color: rgb(128, 128, 128);
+  font-size: 2rem;
+  margin-bottom: 5px;
+}
+
+.store-phone,
+.store-website {
+  margin: 5px;
+}
