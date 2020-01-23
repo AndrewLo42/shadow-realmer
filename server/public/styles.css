@@ -430,3 +430,39 @@ textarea {
   width: 100vw;
   height: 100vh;
 }
+
+/* Sidebar classes */
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 250px;
+  margin-bottom: 25px;
+}
+.sidebar-user-icon {
+  font-size: 50px;
+}
+.sidebar-user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.sidebar-user-info > * {
+  margin: 0;
+}
+.sidebar-app-sections {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 500px;
+}
+.sidebar-app-sections {
+  margin: 10px 0;
+}
+.sidebar-app-sections > * {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-size: 30px;
+  margin: 10px;
+}
