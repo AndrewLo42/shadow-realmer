@@ -380,7 +380,7 @@ SELECT pg_catalog.setval('public."game_gameId_seq"', 2, true);
 -- Name: hangouts_hangoutId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."hangouts_hangoutId_seq"', 1, false);
+SELECT pg_catalog.setval('public."hangouts_hangoutId_seq"', 4, true);
 
 
 --

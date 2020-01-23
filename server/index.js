@@ -35,6 +35,28 @@ app.get('/api/hangouts', (req, res, next) => {
     });
 });
 
+app.post('/api/hangouts', (req, res, next) => {
+  if (!req.body.hangoutName || !req.body.startTime || !req.body.description || !req.body.gameFormat || !req.body.gameId) {
+    return next(new ClientError('Missing parameters to create Hangout!!'), 400);
+  } else {
+    const createHangout = `
+      insert into hangouts ("hangoutName", "hostId", "startTime", "description", "gameFormat", "gameId")
+      values($1, $2, $3, $4, $5, $6)
+      returning *
+    `;
+    let hostId = req.body.hostId;
+    if (!req.body.hostId) {
+      hostId = 0;
+    }
+    const params = [req.body.hangoutName, hostId, req.body.startTime, req.body.description, req.body.gameFormat, req.body.gameId];
+    db.query(createHangout, params)
+      .then(result => {
+        res.status(201).json(result.rows[0]);
+      })
+      .catch(err => next(err));
+  }
+});
+
 app.use('/api', (req, res, next) => {
   next(new ClientError(`cannot ${req.method} ${req.originalUrl}`, 404));
 });
