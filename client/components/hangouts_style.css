@@ -1,15 +1,16 @@
-* {
-  box-sizing: border-box;
-  font-family: 'Roboto', sans-serif;
-}
 
 body {
   color: white;
   background-color: #232423;
-  height: 812px;
-  width: 375px;
+  /* height: 812px;
+  width: 375px; */
   margin: 0;
-  padding: 30px;
+  /* padding: 30px; */
+}
+
+* {
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
 }
 
 .top-header {
@@ -28,10 +29,14 @@ body {
   background-color: rgba(0, 0, 0, 0.4);
   padding-right: 10px;
   margin: auto 0;
-  box-shadow: 1px 1px 5px rgba(0,0,0,.5);
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, .5);
 }
 
 .add {
+  font-size: 1.5rem;
+}
+
+.search {
   font-size: 1.5rem;
 }
 
