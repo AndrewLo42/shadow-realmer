@@ -390,3 +390,9 @@ input:checked + .slider:before {
 .store-website {
   margin: 5px;
 }
+
+.dummy-google-map-image {
+  background-image: url("../../server/public/images/dummy_google_map_image.png");
+  width: 100vw;
+  height: 100vh;
+}
