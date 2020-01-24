@@ -68,6 +68,22 @@ app.get('/api/hangouts', (req, res, next) => {
         }
       })
       .catch(err => next(err));
+  } else if (req.query.zipcode) {
+    const hangoutZipCodes = `
+      select * from "hangouts"
+      where "zipcode" = $1
+    `;
+    const params = [parseInt(req.query.zipcode)];
+    db.query(hangoutZipCodes, params)
+      .then(response => {
+        const hangoutsResponse = response.rows;
+        if (!hangoutsResponse) {
+          next(new ClientError(`No hangouts found. ${req.method} ${req.originalUrl}`, 404));
+        } else {
+          res.json(hangoutsResponse);
+        }
+      })
+      .catch(err => next(err));
   } else {
     next(new ClientError('Invalid query.', 404));
   }
