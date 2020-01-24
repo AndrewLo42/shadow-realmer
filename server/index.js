@@ -179,19 +179,19 @@ app.post('/api/events', (req, res, next) => {
 });
 
 app.post('/api/hangouts', (req, res, next) => {
-  if (!req.body.hangoutName || !req.body.startTime || !req.body.description || !req.body.gameFormat || !req.body.gameId) {
+  if (!req.body.hangoutName || !req.body.startTime || !req.body.description || !req.body.gameFormat || !req.body.gameId || !req.body.zipcode || !req.body.contactInfo) {
     return next(new ClientError('Missing parameters to create Hangout!!'), 400);
   }
   const createHangout = `
-      insert into hangouts ("hangoutName", "hostId", "startTime", "description", "gameFormat", "gameId")
-      values($1, $2, $3, $4, $5, $6)
+      insert into hangouts ("hangoutName", "hostId", "startTime", "description", "gameFormat", "gameId", "zipcode", "contactInfo")
+      values($1, $2, $3, $4, $5, $6, $7, $8)
       returning *
     `;
   let hostId = req.body.hostId;
   if (!req.body.hostId) {
     hostId = 0;
   }
-  const params = [req.body.hangoutName, hostId, req.body.startTime, req.body.description, req.body.gameFormat, req.body.gameId];
+  const params = [req.body.hangoutName, hostId, req.body.startTime, req.body.description, req.body.gameFormat, req.body.gameId, req.body.zipcode, req.body.contactInfo];
   db.query(createHangout, params)
     .then(result => {
       res.status(201).json(result.rows[0]);
