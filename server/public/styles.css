@@ -103,6 +103,7 @@ body {
   height: 60px;
   width: 60px;
   border-radius: 50%;
+  cursor: pointer;
 }
 .search-bar-input {
   height: 80%;
@@ -152,4 +153,58 @@ body {
 .hangout-details-title,
 .hangout-details-contact-info-title {
   text-align: center;
+}
+
+/* Sidebar classes */
+.sidebar-container {
+  width: 300px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  transition: left 0.5s ease-in-out;
+  background-color: chartreuse;
+}
+.off-screen-left {
+  left: -300px;
+}
+.sidebar-exit-button {
+  position: absolute;
+  right: 0;
+  padding: 10px 10px 0 0;
+  font-size: 2rem;
+  cursor: pointer;
+}
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding: 30px;
+}
+.sidebar-user-icon {
+  font-size: 50px;
+}
+.sidebar-user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.sidebar-user-info > * {
+  margin: 0;
+}
+.sidebar-page-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 500px;
+}
+.sidebar-page-list-item {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-size: 30px;
+  margin: 10px 0;
+  padding: 0 10px;
 }
