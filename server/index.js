@@ -167,6 +167,60 @@ app.post('/api/hangoutAttendees', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/api/stores', (req, res, next) => {
+  const allStores = 'select * from "stores"';
+  db.query(allStores)
+    .then(response => {
+      const storesResponse = response.rows;
+      if (!storesResponse) {
+        next(
+          new ClientError(
+            `No stores found.${req.method} ${req.originalUrl}`,
+            404
+          )
+        );
+      } else {
+        res.json(storesResponse);
+      }
+    })
+    .catch(err => {
+      next(err);
+    });
+});
+
+app.get('/api/stores/:storeId', (req, res, next) => {
+  const parsedStoreId = parseInt(req.params.storeId);
+  const storeDetails = `select * from "stores"
+                            where "storeId" = $1`;
+  const values = [parsedStoreId];
+  if (isNaN(req.params.storeId) || parsedStoreId < 0) {
+    next(
+      new ClientError(
+        `The requested hangoutID was not a number ${req.method} ${req.originalUrl}`,
+        400
+      )
+    );
+  } else {
+    db.query(storeDetails, values)
+      .then(response => {
+        const detailsResponse = response.rows;
+        if (!detailsResponse) {
+          next(
+            new ClientError(
+              `No hangouts found.${req.method} ${req.originalUrl}`,
+              404
+            )
+          );
+        } else {
+          res.json(detailsResponse);
+        }
+      })
+      .catch(err => {
+        next(err);
+      });
+  }
+});
+
 app.use('/api', (req, res, next) => {
   next(new ClientError(`cannot ${req.method} ${req.originalUrl}`, 404));
 });
