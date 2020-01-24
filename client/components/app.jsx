@@ -1,5 +1,5 @@
 import React from 'react';
-import SearchBar from './search-bar';
+import HangoutDetails from './hangout-details';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -10,7 +10,7 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <SearchBar placeholder={'Enter a ZIP code'} />
+      <HangoutDetails />
     );
   }
 }
