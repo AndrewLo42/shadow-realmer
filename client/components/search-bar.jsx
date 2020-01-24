@@ -20,7 +20,8 @@ export default class SearchBar extends React.Component {
   handleEnterKeyUp(event) {
     const isEnterKeyPress = event.keyCode === 13;
     if (isEnterKeyPress) {
-      this.props.runSearch(this.state.textInput);
+      this.props.runSearch(this.state.inputText);
+      this.setState({ inputText: '' });
     }
   }
 
@@ -29,7 +30,7 @@ export default class SearchBar extends React.Component {
       <div className="search-bar-container">
         <div className="search-bar">
           <ShadowRealmerIcon />
-          <input className="search-bar-input" placeholder={this.props.placeholder} onChange={this.handleChange} onKeyUp={this.handleEnterKeyUp} />
+          <input className="search-bar-input" placeholder={this.props.placeholder} onChange={this.handleChange} onKeyUp={this.handleEnterKeyUp} value={this.state.inputText} />
         </div>
       </div>
     );
