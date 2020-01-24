@@ -1,4 +1,5 @@
 import React from 'react';
+import SearchBar from './search-bar';
 import HangoutItem from './hangout-item';
 
 class HangoutsList extends React.Component {
@@ -24,9 +25,12 @@ class HangoutsList extends React.Component {
   render() {
     const hangoutTest = this.state.hangouts.length > 0 ? this.state.hangouts.map(hangout => <HangoutItem hangout={hangout} key={hangout.hangoutId} />) : null;
     return (
-      <div className="event-container">
-        {hangoutTest}
-      </div>
+      <>
+        <SearchBar placeholder="Enter Zipcode"/>
+        <div className="event-container">
+          {hangoutTest}
+        </div>
+      </>
     );
   }
 }
