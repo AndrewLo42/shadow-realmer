@@ -29,7 +29,7 @@ export default class SearchBar extends React.Component {
     return (
       <div className="search-bar-container">
         <div className="search-bar">
-          <ShadowRealmerIcon />
+          <ShadowRealmerIcon toggleSidebar={this.props.toggleSidebar} />
           <input className="search-bar-input" placeholder={this.props.placeholder} onChange={this.handleChange} onKeyUp={this.handleEnterKeyUp} value={this.state.inputText} />
         </div>
       </div>
