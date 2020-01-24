@@ -1,6 +1,5 @@
 import React from 'react';
 import HangoutsList from './hangouts-list';
-import SearchBar from './search-bar';
 import Sidebar from './sidebar';
 import {
   BrowserRouter as Router,
@@ -27,11 +26,10 @@ export default class App extends React.Component {
   render() {
     return (
       <Router>
-        <SearchBar toggleSidebar={this.toggleSidebar} />
         <Sidebar toggleSidebar={this.toggleSidebar} isSidebarHidden={this.state.isSidebarHidden} />
         <Switch>
-          <Route exact path="/hangouts" component={HangoutsList} />
-          <Route path="/hangouts/:id" component={HangoutDetails} />
+          <Route exact path="/hangouts" render={props => <HangoutsList {...props} toggleSidebar={this.toggleSidebar} />} />
+          <Route path="/hangouts/:id  " component={HangoutDetails} />
         </Switch>
       </Router>
     );
