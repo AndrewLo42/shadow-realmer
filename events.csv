@@ -1,0 +1,6 @@
+eventId,eventName,storeId,startTime,description,gameFormat,gameId,entranceFee
+1,"""Friday Night Magic""",1,2020-02-15 1:30:00,"""Come play Magic this friday at Chad's Cards Shop""","""Vintage""",1,5
+2,"""Saturday Night Yu Gi Oh""",2,2020-02-16 1:30:00,"""Come play Yu Gi Oh at Pinks Cards Saturday Night""","""Tournament""",2,10
+3,"""Sunday Morning Magic""",3,2020-02-17 1:30:00,"""Come play Magic this sunday morning at Kuz Cards""","""Standard""",1,3
+4,"""Monday Night Yu Gi Oh""",4,2020-02-18 1:30:00,"""Come play Yu Gi Oh after work Monday Night at Caruso Cards""","""Standard""",2,7
+5,"""Tuesday Night Magic""",5,2020-02-19 1:30:00,"""Come play Magic sunday night at Lebrons Cards""","""Booster Draft""",1,10

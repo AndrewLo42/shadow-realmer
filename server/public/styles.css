@@ -79,3 +79,36 @@ body {
   align-items: flex-end;
   justify-content: space-between;
 }
+
+.search-bar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+}
+.search-bar {
+  z-index: 1;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  height: 60px;
+  width: 90%;
+  border-radius: 50px 10px 10px 50px;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding-right: 10px;
+  margin: auto 0;
+  box-shadow: 1px 1px 5px rgba(0,0,0,.5);
+}
+.icon-image {
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+}
+.search-bar-input {
+  height: 80%;
+  width: 80%;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  font-size: 1.5rem;
+  border: 0;
+}
