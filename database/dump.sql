@@ -335,6 +335,7 @@ COPY public.game ("gameId", "gameName") FROM stdin;
 COPY public."hangoutAttendees" ("hangoutId", "userId") FROM stdin;
 2	1
 2	3
+5	3
 \.
 
 
@@ -357,6 +358,7 @@ COPY public.hangouts ("hangoutId", "hangoutName", "hostId", "startTime", descrip
 12	Commander Circle	5	2020-02-17 12:00:00	Casual Commander! Please no cEDH decks... text me at 714-231-6434	Commander	1	10280	\N
 13	Yugimans	3	2020-02-18 06:30:00	Let us play some Yu-Gi-OH	Yu-Gi-Oh	2	94105	shadowki#2134
 14	Hardcore Modern practice	2	2020-02-19 11:30:00	I really want to practice my deck. This is some real hardcore practice, so no funny business. I want to WIN the next major. I am really good at this game, so casuals BEWARE. But all are welcome! Let me know if you can play... 949-420-6969	Modern	1	94105	shadowki#2134
+15	Super Magic Party	5	2020-02-11 06:30:00	We should all play some Magic!	Casual	1	94105	toaster#1451
 \.
 
 
@@ -396,7 +398,7 @@ SELECT pg_catalog.setval('public."game_gameId_seq"', 2, true);
 -- Name: hangouts_hangoutId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."hangouts_hangoutId_seq"', 14, true);
+SELECT pg_catalog.setval('public."hangouts_hangoutId_seq"', 15, true);
 
 
 --

@@ -235,7 +235,6 @@ app.post('/api/hangouts', (req, res, next) => {
 });
 
 app.post('/api/hangoutAttendees', (req, res, next) => {
-
   if (!req.body.hangoutId) {
     return next(new ClientError('Missing parameters to create Hangout!!'), 400);
   }
@@ -330,21 +329,25 @@ app.get('/api/stores/:storeId', (req, res, next) => {
 });
 
 app.get('/api/hangoutAttendees/:userId', (req, res, next) => {
-  const pastEvents = `
-    select "hangouts".*
-    from "hangouts"
-    left join "hangoutAttendees" on "hangoutAttendees"."hangoutId" = "hangouts"."hangoutId"
-    left join "users" on "users"."userId" = "hangoutAtendees"."userId"
-    where "hangoutAttendees"."userId" = $1
+  if (!req.params.userId) {
+    return next(new ClientError('No userId provided...'), 400);
+  }
+  const attendedHangouts = `
+    select "h".*
+    from "hangouts" as "h"
+    join "hangoutAttendees" as "a" on "a"."hangoutId" = "h"."hangoutId"
+    join "users" as "u" on "u"."userId" = "a"."userId"
+    where "a"."userId" = $1
+    order by "h"."startTime" desc
   `;
   const params = [parseInt(req.params.userId)];
-  db.query(pastEvents, params)
+  db.query(attendedHangouts, params)
     .then(response => {
       const pastHangouts = response.rows;
       if (!pastHangouts) {
-        return next(new ClientError(`No Hangouts for user with id ${req.query.userId}`), 400);
+        return next(new ClientError(`No Hangouts for user with id ${req.query.userId}`), 204);
       }
-      res.status(201).json(pastHangouts);
+      res.status(200).json(pastHangouts);
     })
     .catch(err => next(err));
 });
