@@ -117,3 +117,31 @@ body {
 .search-bar-input:focus {
   outline: none;
 }
+
+.hangout-details-container {
+  padding: 30px;
+  height: 100vh;
+  width: 100vw;
+}
+.hangout-details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 10%;
+  width: 100%;
+}
+.hangout-details-header > * {
+  font-size: 3rem;
+}
+.hangout-details-main {
+  display: flex;
+  justify-content: center;
+  height: 60%;
+  width: 100%;
+  background-color: hotpink;
+}
+.hangout-details-footer {
+  height: 30%;
+  width: 100%;
+  background-color: chartreuse;
+}

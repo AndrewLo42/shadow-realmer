@@ -20,7 +20,7 @@ export default class SearchBar extends React.Component {
   handleEnterKeyUp(event) {
     const isEnterKeyPress = event.keyCode === 13;
     if (isEnterKeyPress) {
-      // TODO: Add call of callback from props
+      this.props.runSearch(this.state.textInput);
     }
   }
 
