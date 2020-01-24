@@ -171,7 +171,8 @@ CREATE TABLE public.hangouts (
     "startTime" timestamp without time zone NOT NULL,
     description text NOT NULL,
     "gameFormat" text NOT NULL,
-    "gameId" integer NOT NULL
+    "gameId" integer NOT NULL,
+    zipcode integer
 );
 
 
@@ -340,12 +341,21 @@ COPY public."hangoutAttendees" ("hangoutId", "userId") FROM stdin;
 -- Data for Name: hangouts; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.hangouts ("hangoutId", "hangoutName", "hostId", "startTime", description, "gameFormat", "gameId") FROM stdin;
-1	Shadow Realm DUEL 	2	2020-01-30 03:00:00	Fight me. Contact me at 949-420-6969'	Yu-Gi-Oh	2
-2	Magic and Chill	1	2020-01-29 04:20:00	We play some Magic, then we chill. Haha, jk... unless? Hit me up though. 618-897-5672	Pioneer	1
-3	Hardcore Modern practice	2	2020-02-15 01:30:00	I really want to practice my deck. This is some real hardcore practice, so no funny business. I want to WIN the next major. I am really good at this game, so casuals BEWARE. But all are welcome! Let me know if you can play... 949-420-6969	Modern	1
-4	Yugimans	3	2020-02-11 06:30:00	Let us play some Yu-Gi-OH	Yu-Gi-Oh	2
-5	Magic Party	3	2020-02-05 12:00:00	Pizza, beer, Magic the Gathering. All here, baybee. Let me know if you wanna come at coolkid69@gmail.com	All	1
+COPY public.hangouts ("hangoutId", "hangoutName", "hostId", "startTime", description, "gameFormat", "gameId", zipcode) FROM stdin;
+1	Shadow Realm DUEL 	2	2020-01-30 03:00:00	Fight me. Contact me at 949-420-6969	Yu-Gi-Oh	2	10280
+2	Magic and Chill	1	2020-01-29 04:20:00	We play some Magic, then we chill. Haha, jk... unless? Hit me up though. 618-897-5672	Pioneer	1	92618
+3	Hardcore Modern practice	2	2020-02-15 14:30:00	I really want to practice my deck. This is some real hardcore practice, so no funny business. I want to WIN the next major. I am really good at this game, so casuals BEWARE. But all are welcome! Let me know if you can play... 949-420-6969	Modern	1	94105
+4	Yugimans	3	2020-02-11 06:30:00	Let us play some Yu-Gi-OH	Yu-Gi-Oh	2	92618
+5	Magic and Chill	1	2020-02-16 18:40:00	We play some Magic, then we chill. Haha, jk... unless? Hit me up though. 618-897-5672	Pioneer	1	92618
+6	Magic and Chill	1	2020-02-23 16:20:00	We play some Magic, then we chill. Haha, jk... unless? Hit me up though. 618-897-5672	Pioneer	1	92618
+7	Shadow Realm DUEL 	2	2020-02-17 13:00:00	Fight me. Contact me at 949-420-6969	Yu-Gi-Oh	2	10280
+8	Casual Magic	4	2020-02-18 16:00:00	I just want to play some casual Magic. Anyone is welcome! Let me know at (312)-785-9934 	Casual	1	94105
+9	Commander Circle	5	2020-02-17 12:00:00	Casual Commander! Please no cEDH decks... text me at 714-231-6434	Commander	1	10280
+10	Casual Magic	4	2020-02-18 16:00:00	I just want to play some casual Magic. Anyone is welcome! Let me know at (312)-785-9934 	Casual	1	92618
+11	Casual Magic	4	2020-02-25 16:00:00	I just want to play some casual Magic. Anyone is welcome! Let me know at (312)-785-9934 	Casual	1	94105
+12	Commander Circle	5	2020-02-17 12:00:00	Casual Commander! Please no cEDH decks... text me at 714-231-6434	Commander	1	10280
+13	Yugimans	3	2020-02-18 06:30:00	Let us play some Yu-Gi-OH	Yu-Gi-Oh	2	94105
+14	Hardcore Modern practice	2	2020-02-19 11:30:00	I really want to practice my deck. This is some real hardcore practice, so no funny business. I want to WIN the next major. I am really good at this game, so casuals BEWARE. But all are welcome! Let me know if you can play... 949-420-6969	Modern	1	94105
 \.
 
 
@@ -385,7 +395,7 @@ SELECT pg_catalog.setval('public."game_gameId_seq"', 2, true);
 -- Name: hangouts_hangoutId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."hangouts_hangoutId_seq"', 5, true);
+SELECT pg_catalog.setval('public."hangouts_hangoutId_seq"', 14, true);
 
 
 --
