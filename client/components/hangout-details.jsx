@@ -9,6 +9,7 @@ export default class HangoutDetails extends React.Component {
   }
 
   componentDidMount() {
+    // console.log('Hangout ID:', this.props.match.params.id);
     // Note: Receiving id from parent (could be <App> or <HangoutsList>)
     // TODO: Make fetch request that sends GET request with id as part of the req.body grabs data
     this.setState({
@@ -26,24 +27,26 @@ export default class HangoutDetails extends React.Component {
   render() {
     return this.state.details
       ? (
-        <div className="hangout-details-container">
-          <div className="hangout-details-header">
-            {/* <i className="fas fa-angle-double-left"></i> */}
-            {/* <i className="fas fa-poo-storm"></i> */}
-          </div>
-          <div className="hangout-details-main">
-            <h1 className="hangout-details-title">{this.state.details.title}</h1>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <h3>{this.state.details.dayOfWeek + ' ' + this.state.details.time}</h3>
-              <h3>{this.state.details.format}</h3>
+        <>
+          <div className="hangout-details-container">
+            <div className="hangout-details-header">
+              {/* <i className="fas fa-angle-double-left"></i> */}
+              {/* <i className="fas fa-poo-storm"></i> */}
             </div>
-            <p>{this.state.details.description}</p>
+            <div className="hangout-details-main">
+              <h1 className="hangout-details-title">{this.state.details.title}</h1>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <h3>{this.state.details.dayOfWeek + ' ' + this.state.details.time}</h3>
+                <h3>{this.state.details.format}</h3>
+              </div>
+              <p>{this.state.details.description}</p>
+            </div>
+            <div className="hangout-details-footer">
+              <h2 className="hangout-details-contact-info-title">Contact Info</h2>
+              <h4>{this.state.details.contactInfo}</h4>
+            </div>
           </div>
-          <div className="hangout-details-footer">
-            <h2 className="hangout-details-contact-info-title">Contact Info</h2>
-            <h4>{this.state.details.contactInfo}</h4>
-          </div>
-        </div>
+        </>
       )
       : null;
   }

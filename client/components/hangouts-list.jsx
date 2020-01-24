@@ -31,7 +31,7 @@ class HangoutsList extends React.Component {
   }
 
   render() {
-    const hangoutTest = this.state.hangouts.length > 0 ? this.state.hangouts.map(hangout => <HangoutItem hangout={hangout} key={hangout.hangoutId} />) : null;
+    const hangoutTest = this.state.hangouts.length > 0 ? this.state.hangouts.map(hangout => <HangoutItem hangout={hangout} key={hangout.hangoutId} history={this.props.history} />) : null;
     return (
       <>
         <SearchBar runSearch={this.searchByZip} placeholder="Enter Zipcode"/>
