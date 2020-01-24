@@ -2,6 +2,11 @@ import React from 'react';
 
 const Sidebar = props => {
 
+  const handlePageListItemClick = () => {
+    props.toggleSidebar();
+    // TODO: add routing
+  };
+
   return (
     <>
       <div className={`sidebar-container ${props.isSidebarHidden ? 'off-screen-left' : null}`}>
@@ -14,13 +19,13 @@ const Sidebar = props => {
           </div>
         </div>
         <div className="sidebar-page-list">
-          <div className="sidebar-page-list-item">
+          <div className="sidebar-page-list-item" onClick={handlePageListItemClick}>
             <i className="fas fa-bullhorn" />
             Hangouts
           </div>
-          <div className="sidebar-page-list-item">
+          <div className="sidebar-page-list-item" onClick={handlePageListItemClick}>
             <i className="fas fa-home" />
-            Home
+              Home
           </div>
         </div>
       </div>
