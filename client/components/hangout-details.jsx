@@ -28,8 +28,8 @@ export default class HangoutDetails extends React.Component {
       ? (
         <div className="hangout-details-container">
           <div className="hangout-details-header">
-            <i className="fas fa-angle-double-left"></i>
-            <i className="fas fa-poo-storm"></i>
+            {/* <i className="fas fa-angle-double-left"></i> */}
+            {/* <i className="fas fa-poo-storm"></i> */}
           </div>
           <div className="hangout-details-main">
             <h1 className="hangout-details-title">{this.state.details.title}</h1>
