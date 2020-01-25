@@ -83,7 +83,7 @@ class CreateHangout extends React.Component {
       },
       body: JSON.stringify(this.state)
     })
-      .then(this.props.history.push('/hangouts'))
+      .then(() => this.props.history.push('/hangouts'))
       .catch(err => console.error(err));
   }
 
@@ -185,6 +185,7 @@ class CreateHangout extends React.Component {
             <option value="Pioneer">Pioneer</option>
             <option value="Commander">Commander</option>
             <option value="Legacy">Legacy</option>
+            <option value="Yu-Gi-Oh">Yu-Gi-Oh</option>
           </select>
         </div>
         <div className="short-container">
