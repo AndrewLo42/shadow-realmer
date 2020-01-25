@@ -380,6 +380,11 @@ COPY public.hangouts ("hangoutId", "hangoutName", "hostId", "startTime", descrip
 --
 
 COPY public.stores ("storeId", "storeName", long, lat, "openingTime", "closingTime", website, "phoneNumber") FROM stdin;
+1	"Yeezy Cards"	-116.515961	33.776993	10	8	"www.yeezycards.ye"	"(808) - 350 - 7500"
+2	"Down B Cards"	-118.546265	34.390118	12	10	"www.downbcards.com"	"(420) - 234 - 1221"
+3	"Pink Gang Cards"	-118.328384	34.098011	11	11	"www.pinkgangcards.io"	"(770) - 520 - 9669"
+4	"Poop Storm Cards"	-118.236214	34.103405	11	7	"www.poopstormcards.art"	"(699) - 420 - 6996"
+5	"Fieri Cards"	-118.287399	34.090885	9	12	"www.fiericards.guy"	"(345) - 431 - 9786"
 \.
 
 
