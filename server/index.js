@@ -248,7 +248,7 @@ app.get('/api/events', (req, res, next) => {
 
 app.post('/api/events', (req, res, next) => {
   if (
-    !req.body.eventName ||
+    !req.body.name ||
     !req.body.startTime ||
     !req.body.description ||
     !req.body.gameFormat ||
@@ -266,7 +266,7 @@ app.post('/api/events', (req, res, next) => {
     storeId = 0;
   }
   const params = [
-    req.body.eventName,
+    req.body.name,
     storeId,
     req.body.startTime,
     req.body.description,
@@ -293,7 +293,7 @@ function parseTime(month, day, hour, minute, ampm) {
 }
 
 app.post('/api/hangouts', (req, res, next) => {
-  if (!req.body.hangoutName || !req.body.description || !req.body.gameFormat || !req.body.gameId || !req.body.zipCode || !req.body.contactInfo) {
+  if (!req.body.name || !req.body.description || !req.body.gameFormat || !req.body.gameId || !req.body.zipCode || !req.body.contactInfo) {
     return next(new ClientError('Missing parameters to create Hangout!!', 400));
   }
   const startTime = parseTime(req.body.month, req.body.day, req.body.hour, req.body.minute, req.body.ampm);
@@ -306,7 +306,7 @@ app.post('/api/hangouts', (req, res, next) => {
   if (!req.body.hostId) {
     hostId = 0;
   }
-  const params = [req.body.hangoutName, hostId, startTime, req.body.description, req.body.gameFormat, req.body.gameId, req.body.zipCode, req.body.contactInfo];
+  const params = [req.body.name, hostId, startTime, req.body.description, req.body.gameFormat, req.body.gameId, req.body.zipCode, req.body.contactInfo];
   db.query(createHangout, params)
     .then(result => {
       res.status(201).json(result.rows[0]);
