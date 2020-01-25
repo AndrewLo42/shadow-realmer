@@ -307,6 +307,7 @@ body {
   z-index: 1000;
   transition: left 0.5s ease-in-out;
   background-color: #333;
+  border-right: 2px solid #9984F1;
 }
 .sidebar-exit-button {
   position: absolute;
@@ -357,6 +358,10 @@ body {
   width: 100%;
   cursor: pointer;
   z-index: 999;
+}
+
+.shadow-hidden {
+  display: none;
 }
 
 .off-screen-left {

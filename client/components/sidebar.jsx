@@ -20,18 +20,17 @@ const Sidebar = props => {
         </div>
         <div className="sidebar-page-list">
           <div className="sidebar-page-list-item" onClick={handlePageListItemClick}>
-            <i className="fas fa-bullhorn" />
-            Hangouts
-          </div>
-          <div className="sidebar-page-list-item" onClick={handlePageListItemClick}>
             <i className="fas fa-home" />
               Home
+          </div>
+          <div className="sidebar-page-list-item" onClick={handlePageListItemClick}>
+            <i className="fas fa-bullhorn" />
+            Hangouts
           </div>
         </div>
       </div>
       <div
-        className="sidebar-shadow"
-        style={{ display: props.isSidebarHidden ? 'none' : null }}
+        className={`sidebar-shadow ${props.isSidebarHidden ? 'shadow-hidden' : null}`}
         onClick={props.toggleSidebar}>
       </div>
     </>
