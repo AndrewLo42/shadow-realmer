@@ -16,10 +16,11 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+ALTER TABLE ONLY public."hangoutAttendees" DROP CONSTRAINT "hangoutAttendees_userId_fkey";
+ALTER TABLE ONLY public."hangoutAttendees" DROP CONSTRAINT "hangoutAttendees_hangoutId_fkey";
 ALTER TABLE ONLY public.users DROP CONSTRAINT users_pkey;
 ALTER TABLE ONLY public.stores DROP CONSTRAINT stores_pkey;
 ALTER TABLE ONLY public.hangouts DROP CONSTRAINT hangouts_pkey;
-ALTER TABLE ONLY public."hangoutAttendees" DROP CONSTRAINT "hangoutAttendees_pkey";
 ALTER TABLE ONLY public.game DROP CONSTRAINT game_pkey;
 ALTER TABLE ONLY public.events DROP CONSTRAINT events_pkey;
 ALTER TABLE ONLY public."eventAttendees" DROP CONSTRAINT "eventAttendees_pkey";
@@ -155,8 +156,8 @@ ALTER SEQUENCE public."game_gameId_seq" OWNED BY public.game."gameId";
 --
 
 CREATE TABLE public."hangoutAttendees" (
-    "hangoutId" integer NOT NULL,
-    "userId" integer NOT NULL
+    "userId" integer,
+    "hangoutId" integer
 );
 
 
@@ -315,6 +316,11 @@ COPY public."eventAttendees" ("eventId", "userId") FROM stdin;
 --
 
 COPY public.events ("eventId", "eventName", "storeId", "startTime", description, "gameFormat", "gameId", "entranceFee") FROM stdin;
+1	"Friday Night Magic"	1	2020-02-15 01:30:00	"Come play Magic this friday at Chad's Cards Shop"	"Vintage"	1	5
+2	"Saturday Night Yu Gi Oh"	2	2020-02-16 01:30:00	"Come play Yu Gi Oh at Pinks Cards Saturday Night"	"Tournament"	2	10
+3	"Sunday Morning Magic"	3	2020-02-17 01:30:00	"Come play Magic this sunday morning at Kuz Cards"	"Standard"	1	3
+4	"Monday Night Yu Gi Oh"	4	2020-02-18 01:30:00	"Come play Yu Gi Oh after work Monday Night at Caruso Cards"	"Standard"	2	7
+5	"Tuesday Night Magic"	5	2020-02-19 01:30:00	"Come play Magic sunday night at Lebrons Cards"	"Booster Draft"	1	10
 \.
 
 
@@ -332,10 +338,13 @@ COPY public.game ("gameId", "gameName") FROM stdin;
 -- Data for Name: hangoutAttendees; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public."hangoutAttendees" ("hangoutId", "userId") FROM stdin;
-2	1
-2	3
-5	3
+COPY public."hangoutAttendees" ("userId", "hangoutId") FROM stdin;
+2	5
+2	7
+1	7
+1	2
+2	10
+2	10
 \.
 
 
@@ -358,7 +367,11 @@ COPY public.hangouts ("hangoutId", "hangoutName", "hostId", "startTime", descrip
 12	Commander Circle	5	2020-02-17 12:00:00	Casual Commander! Please no cEDH decks... text me at 714-231-6434	Commander	1	10280	\N
 13	Yugimans	3	2020-02-18 06:30:00	Let us play some Yu-Gi-OH	Yu-Gi-Oh	2	94105	shadowki#2134
 14	Hardcore Modern practice	2	2020-02-19 11:30:00	I really want to practice my deck. This is some real hardcore practice, so no funny business. I want to WIN the next major. I am really good at this game, so casuals BEWARE. But all are welcome! Let me know if you can play... 949-420-6969	Modern	1	94105	shadowki#2134
-15	Super Magic Party	5	2020-02-11 06:30:00	We should all play some Magic!	Casual	1	94105	toaster#1451
+18	Super Magic Party	5	2020-02-15 00:30:00	We should all play some Magic!	Casual	1	94105	toaster#1451
+20	Super Magic Party	0	2020-02-15 12:30:00	We should all play some Magic!	Casual	1	94105	toaster#1451
+21	Tim's Magic Fest	0	2020-05-03 00:00:00	SUPER COOL MAGIC TIME LESSGO	Modern	1	92618	shadoki#4135
+22	David's Magic Dungeon	0	2020-02-28 18:00:00	Come to my den for some good magic fun!	Yu-Gi-Oh	2	92677	koreanman#1512
+23	Magic Dunkey	0	2020-02-15 12:30:00	We should all play some Magic!	Casual	1	94105	toaster#1451
 \.
 
 
@@ -367,6 +380,11 @@ COPY public.hangouts ("hangoutId", "hangoutName", "hostId", "startTime", descrip
 --
 
 COPY public.stores ("storeId", "storeName", long, lat, "openingTime", "closingTime", website, "phoneNumber") FROM stdin;
+1	"Yeezy Cards"	-116.515961	33.776993	10	8	"www.yeezycards.ye"	"(808) - 350 - 7500"
+2	"Down B Cards"	-118.546265	34.390118	12	10	"www.downbcards.com"	"(420) - 234 - 1221"
+3	"Pink Gang Cards"	-118.328384	34.098011	11	11	"www.pinkgangcards.io"	"(770) - 520 - 9669"
+4	"Poop Storm Cards"	-118.236214	34.103405	11	7	"www.poopstormcards.art"	"(699) - 420 - 6996"
+5	"Fieri Cards"	-118.287399	34.090885	9	12	"www.fiericards.guy"	"(345) - 431 - 9786"
 \.
 
 
@@ -398,7 +416,7 @@ SELECT pg_catalog.setval('public."game_gameId_seq"', 2, true);
 -- Name: hangouts_hangoutId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."hangouts_hangoutId_seq"', 15, true);
+SELECT pg_catalog.setval('public."hangouts_hangoutId_seq"', 23, true);
 
 
 --
@@ -440,14 +458,6 @@ ALTER TABLE ONLY public.game
 
 
 --
--- Name: hangoutAttendees hangoutAttendees_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public."hangoutAttendees"
-    ADD CONSTRAINT "hangoutAttendees_pkey" PRIMARY KEY ("hangoutId", "userId");
-
-
---
 -- Name: hangouts hangouts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -469,6 +479,22 @@ ALTER TABLE ONLY public.stores
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY ("userId");
+
+
+--
+-- Name: hangoutAttendees hangoutAttendees_hangoutId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public."hangoutAttendees"
+    ADD CONSTRAINT "hangoutAttendees_hangoutId_fkey" FOREIGN KEY ("hangoutId") REFERENCES public.hangouts("hangoutId");
+
+
+--
+-- Name: hangoutAttendees hangoutAttendees_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public."hangoutAttendees"
+    ADD CONSTRAINT "hangoutAttendees_userId_fkey" FOREIGN KEY ("userId") REFERENCES public.users("userId");
 
 
 --
