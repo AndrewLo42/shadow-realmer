@@ -124,6 +124,74 @@ app.get('/api/hangouts/:hangoutId', (req, res, next) => {
   }
 });
 
+app.delete('/api/hangouts/:hangoutId', (req, res, next) => {
+  const parsedHangoutId = parseInt(req.params.hangoutId);
+  const hangoutDelete = `delete from "hangouts"
+                            where "hangoutId" = $1
+                            returning *`;
+  const values = [parsedHangoutId];
+  if (isNaN(req.params.hangoutId) || parsedHangoutId < 0) {
+    next(
+      new ClientError(
+        `The requested hangoutID was not a number ${req.method} ${req.originalUrl}`,
+        400
+      )
+    );
+  } else {
+    db.query(hangoutDelete, values)
+      .then(response => {
+        const deleteResponse = response.rows;
+        if (!deleteResponse) {
+          next(
+            new ClientError(
+              `No hangouts found.${req.method} ${req.originalUrl}`,
+              404
+            )
+          );
+        } else {
+          res.json(deleteResponse);
+        }
+      })
+      .catch(err => {
+        next(err);
+      });
+  }
+});
+
+app.delete('/api/events/:eventId', (req, res, next) => {
+  const parsedEventId = parseInt(req.params.eventId);
+  const eventDelete = `delete from "events"
+                            where "eventId" = $1
+                            returning *`;
+  const values = [parsedEventId];
+  if (isNaN(req.params.eventId) || parsedEventId < 0) {
+    next(
+      new ClientError(
+        `The requested hangoutID was not a number ${req.method} ${req.originalUrl}`,
+        400
+      )
+    );
+  } else {
+    db.query(eventDelete, values)
+      .then(response => {
+        const deleteResponse = response.rows;
+        if (!deleteResponse) {
+          next(
+            new ClientError(
+              `No hangouts found.${req.method} ${req.originalUrl}`,
+              404
+            )
+          );
+        } else {
+          res.json(deleteResponse);
+        }
+      })
+      .catch(err => {
+        next(err);
+      });
+  }
+});
+
 app.get('/api/events', (req, res, next) => {
   if (Object.keys(req.query).length === 0) {
     const allEvents = 'select * from "events"';
