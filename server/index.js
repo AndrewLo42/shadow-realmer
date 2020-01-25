@@ -89,6 +89,41 @@ app.get('/api/hangouts', (req, res, next) => {
   }
 });
 
+app.get('/api/hangouts/:hangoutId', (req, res, next) => {
+  const parsedHangoutId = parseInt(req.params.hangoutId);
+  const hangoutDetails = `select * from "hangouts"
+                            where "hangoutId" = $1`;
+  const values = [parsedHangoutId];
+  if (
+    isNaN(req.params.hangoutId) || parsedHangoutId < 0
+  ) {
+    next(
+      new ClientError(
+        `The requested hangoutID was not a number ${req.method} ${req.originalUrl}`,
+        400
+      )
+    );
+  } else {
+    db.query(hangoutDetails, values)
+      .then(response => {
+        const detailsResponse = response.rows;
+        if (!detailsResponse) {
+          next(
+            new ClientError(
+                `No hangouts found.${req.method} ${req.originalUrl}`,
+                404
+            )
+          );
+        } else {
+          res.json(detailsResponse);
+        }
+      })
+      .catch(err => {
+        next(err);
+      });
+  }
+});
+
 app.get('/api/events', (req, res, next) => {
   if (Object.keys(req.query).length === 0) {
     const allEvents = 'select * from "events"';
@@ -178,20 +213,32 @@ app.post('/api/events', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.post('/api/hangouts', (req, res, next) => {
-  if (!req.body.hangoutName || !req.body.startTime || !req.body.description || !req.body.gameFormat || !req.body.gameId) {
-    return next(new ClientError('Missing parameters to create Hangout!!'), 400);
+function parseTime(month, day, hour, minute, ampm) {
+  if (ampm === 'PM') {
+    if (hour !== '12') {
+      hour = parseInt(hour) + 12;
+    }
+  } else {
+    hour = hour === '12' ? '00' : hour;
   }
+  return `2020-${(month)}-${(day)} ${hour}:${(minute)}:00;`;
+}
+
+app.post('/api/hangouts', (req, res, next) => {
+  if (!req.body.hangoutName || !req.body.description || !req.body.gameFormat || !req.body.gameId || !req.body.zipCode || !req.body.contactInfo) {
+    return next(new ClientError('Missing parameters to create Hangout!!', 400));
+  }
+  const startTime = parseTime(req.body.month, req.body.day, req.body.hour, req.body.minute, req.body.ampm);
   const createHangout = `
-      insert into hangouts ("hangoutName", "hostId", "startTime", "description", "gameFormat", "gameId")
-      values($1, $2, $3, $4, $5, $6)
+      insert into hangouts ("hangoutName", "hostId", "startTime", "description", "gameFormat", "gameId", "zipcode", "contactInfo")
+      values($1, $2, $3, $4, $5, $6, $7, $8)
       returning *
     `;
   let hostId = req.body.hostId;
   if (!req.body.hostId) {
     hostId = 0;
   }
-  const params = [req.body.hangoutName, hostId, req.body.startTime, req.body.description, req.body.gameFormat, req.body.gameId];
+  const params = [req.body.hangoutName, hostId, startTime, req.body.description, req.body.gameFormat, req.body.gameId, req.body.zipCode, req.body.contactInfo];
   db.query(createHangout, params)
     .then(result => {
       res.status(201).json(result.rows[0]);
@@ -201,7 +248,7 @@ app.post('/api/hangouts', (req, res, next) => {
 
 app.post('/api/hangoutAttendees', (req, res, next) => {
   if (!req.body.hangoutId) {
-    return next(new ClientError('Missing parameters to create Hangout!!'), 400);
+    return next(new ClientError('Missing parameters to create Hangout!!', 400));
   }
   let userId = req.body.userId;
   if (!userId) {
@@ -214,6 +261,27 @@ app.post('/api/hangoutAttendees', (req, res, next) => {
   `;
   const params = [userId, req.body.hangoutId];
   db.query(RSVPHangout, params)
+    .then(result => { res.status(201).json(result.rows[0]); })
+    .catch(err => next(err));
+});
+
+app.post('/api/eventAttendees', (req, res, next) => {
+  const parsedEventAttendees = req.body.eventId;
+  const parsedUserId = req.body.userId;
+  if (!req.body.eventId) {
+    return next(new ClientError('Missing parameters to create Event!!'), 400);
+  }
+  let userId = req.body.userId;
+  if (!userId) {
+    userId = 1;
+  }
+  const RSVPEvent = `
+    insert into "eventAttendees" ("userId", "eventId")
+    values ($1, $2)
+    returning *
+  `;
+  const params = [parsedUserId, parsedEventAttendees];
+  db.query(RSVPEvent, params)
     .then(result => { res.status(201).json(result.rows[0]); })
     .catch(err => next(err));
 });
@@ -270,6 +338,30 @@ app.get('/api/stores/:storeId', (req, res, next) => {
         next(err);
       });
   }
+});
+
+app.get('/api/hangoutAttendees/:userId', (req, res, next) => {
+  if (!req.params.userId) {
+    return next(new ClientError('No userId provided...'), 400);
+  }
+  const attendedHangouts = `
+    select "h".*
+    from "hangouts" as "h"
+    join "hangoutAttendees" as "a" on "a"."hangoutId" = "h"."hangoutId"
+    join "users" as "u" on "u"."userId" = "a"."userId"
+    where "a"."userId" = $1
+    order by "h"."startTime" desc
+  `;
+  const params = [parseInt(req.params.userId)];
+  db.query(attendedHangouts, params)
+    .then(response => {
+      const pastHangouts = response.rows;
+      if (!pastHangouts) {
+        return next(new ClientError(`No Hangouts for user with id ${req.query.userId}`), 204);
+      }
+      res.status(200).json(pastHangouts);
+    })
+    .catch(err => next(err));
 });
 
 app.use('/api', (req, res, next) => {

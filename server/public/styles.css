@@ -124,6 +124,45 @@ body {
   justify-content: space-between;
 }
 
+.search-bar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+}
+.search-bar {
+  z-index: 1;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  height: 60px;
+  width: 90%;
+  border-radius: 50px 10px 10px 50px;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding-right: 10px;
+  margin: auto 0;
+  box-shadow: 1px 1px 5px rgba(0,0,0,.5);
+}
+.icon-image {
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.search-bar-input {
+  height: 80%;
+  width: 80%;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  font-size: 1.5rem;
+  border: none;
+  text-align: center;
+}
+
+.search-bar-input:focus {
+  outline: none;
+}
+
 .hangout-details-container {
   padding: 30px;
   height: 100vh;
@@ -256,4 +295,71 @@ body {
 
 .selector-left {
   border-radius: 10px 0 0 10px;
+}
+
+/* Sidebar styling */
+.off-screen-left {
+  left: -300px;
+}
+
+.sidebar-container {
+  width: 300px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: -300px;
+  z-index: 1000;
+  transition: left 500ms ease-in-out;
+  background-color: #333;
+}
+
+.sidebar-exit-button {
+  position: absolute;
+  right: 0;
+  padding: 10px 10px 0 0;
+  font-size: 2rem;
+  cursor: pointer;
+}
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding: 30px;
+}
+.sidebar-user-icon {
+  font-size: 50px;
+}
+.sidebar-user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.sidebar-user-info > * {
+  margin: 0;
+}
+.sidebar-page-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 500px;
+}
+.sidebar-page-list-item {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-size: 30px;
+  margin: 10px 0;
+  padding: 0 30px;
+  cursor: pointer;
+}
+.sidebar-shadow {
+  background-color: rgba(0,0,0,0.5);
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  cursor: pointer;
+  z-index: 999;
 }

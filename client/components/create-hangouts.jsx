@@ -4,7 +4,7 @@ class CreateHangout extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      eventName: '',
+      hangoutName: '',
       contactInfo: '',
       zipCode: '',
       month: '01',
@@ -31,7 +31,7 @@ class CreateHangout extends React.Component {
   }
 
   handleTitleChange(event) {
-    this.setState({ eventName: event.target.value });
+    this.setState({ hangoutName: event.target.value });
   }
 
   handleContactInfoChange(event) {
@@ -91,7 +91,7 @@ class CreateHangout extends React.Component {
     return (
       <div className="create-page">
         <header className="title">Create Hangout</header>
-        <input type="text" className="long-input input" placeholder="Hangout Title" onChange={this.handleTitleChange} value={this.state.eventName}/>
+        <input type="text" className="long-input input" placeholder="Hangout Title" onChange={this.handleTitleChange} value={this.state.hangoutName}/>
         <input type="text" className="long-input input" placeholder="Contact Info" onChange={this.handleContactInfoChange} value={this.state.contactInfo}/>
         <input type="number" className="long-input input" placeholder="Zip Code" onChange={this.handleZipCodeChange} value={this.state.zipCode}/>
         <div className="short-container">
@@ -175,8 +175,8 @@ class CreateHangout extends React.Component {
         <div className="short-container">
           <select name="game" className="input short-input" onChange={this.handleGameIdChange} value={this.state.gameId}>
             <option value="null">Game</option>
-            <option value="Magic">Magic the Gathering</option>
-            <option value="YuGiOh">Yu-Gi-Oh</option>
+            <option value="1">Magic</option>
+            <option value="2">Yu-Gi-Oh</option>
           </select>
           <select name="format" className="input short-input" onChange={this.handleGameFormatChange} value={this.state.gameFormat}>
             <option value="null">Format</option>
