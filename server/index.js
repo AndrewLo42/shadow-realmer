@@ -286,39 +286,33 @@ app.post('/api/eventAttendees', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.get('/api/eventAttendees/:eventId', (req, res, next) => {
-  const pastAttendanceEvents = `select
-                                "e"."gameId",
-                                "e"."eventName",
-                                "e"."startTime",
-                                "e"."gameFormat",
-                                "e"."eventId"
-                                from"events" as "e"
-                                join "eventAttendees" as "ea" using ("eventId")
-                                where "e"."startTime" < now()
-                                and "ea"."eventId" = $1`;
-  const params = [req.params.userId];
-  db.query(pastAttendanceEvents, params)
+// app.get('/api/eventAttendees/:userId', (req, res, next) => {
+//   const pastAttendanceEvents = `select
+//                                 "e"."gameId",
+//                                 "e"."eventName",
+//                                 "e"."startTime",
+//                                 "e"."gameFormat",
+//                                 "e"."eventId"
+//                                 from"events" as "e"
+//                                 join "eventAttendees" as "ea" using ("eventId")
+//                                 where "e"."startTime" < now()
+//                                 and "ea"."userId" = $1`;
+//   const params = [req.params.userId];
+//   db.query(pastAttendanceEvents, params)
+//     .then(result => { res.status(201).json(result.rows); })
+//     .catch(err => next(err));
+// });
+
+app.get('/api/eventAttendees', (req, res, next) => {
+  const usersRsvpEvents = `select *
+                                from "users"
+                                join "eventAttendees" as "ea" using ("userId")
+                                where "eventId" = 1
+                                and "ea"."userId" = 1`;
+  db.query(usersRsvpEvents)
     .then(result => {
       res.status(201).json(result.rows);
     })
-    .catch(err => next(err));
-});
-
-app.get('/api/eventAttendees/:userId', (req, res, next) => {
-  const pastAttendanceEvents = `select
-                                "e"."gameId",
-                                "e"."eventName",
-                                "e"."startTime",
-                                "e"."gameFormat",
-                                "e"."eventId"
-                                from"events" as "e"
-                                join "eventAttendees" as "ea" using ("eventId")
-                                where "e"."startTime" < now()
-                                and "ea"."userId" = $1`;
-  const params = [req.params.userId];
-  db.query(pastAttendanceEvents, params)
-    .then(result => { res.status(201).json(result.rows); })
     .catch(err => next(err));
 });
 
