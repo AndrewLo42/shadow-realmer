@@ -286,6 +286,24 @@ app.post('/api/eventAttendees', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/api/eventAttendees/:userId', (req, res, next) => {
+  const pastAttendanceEvents = `select
+                                "e"."gameId",
+                                "e"."eventName",
+                                "e"."startTime",
+                                "e"."gameFormat",
+                                "e"."eventId"
+                                from"events" as "e"
+                                join "eventAttendees" as "ea" using ("eventId")
+                                where "e"."startTime" < now()
+                                and "ea"."userId" = $1`;
+  const params = [req.params.userId];
+  // const parsedPastUserId = parseInt(params);
+  db.query(pastAttendanceEvents, params)
+    .then(result => { res.status(201).json(result.rows); })
+    .catch(err => next(err));
+});
+
 app.get('/api/stores', (req, res, next) => {
   const allStores = 'select * from "stores"';
   db.query(allStores)
