@@ -34,7 +34,7 @@ class HangoutsList extends React.Component {
     const hangoutTest = this.state.hangouts.length > 0 ? this.state.hangouts.map(hangout => <HangoutItem hangout={hangout} key={hangout.hangoutId} history={this.props.history} />) : null;
     return (
       <>
-        <SearchBar toggleSidebar={this.props.toggleSidebar} runSearch={this.searchByZip} placeholder="Enter Zipcode"/>
+        <SearchBar toggleSidebar={this.props.toggleSidebar} history={this.props.history} runSearch={this.searchByZip} placeholder="Enter Zipcode"/>
         <div className="event-container">
           {hangoutTest}
         </div>
