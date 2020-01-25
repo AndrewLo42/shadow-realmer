@@ -29,28 +29,22 @@ function HangoutItem(props) {
   }
   const time = `${date.getHours()}:${date.getMinutes()}`;
   return (
-    <>
-      {/* <Link to="/hangouts/1"> */}
-      <div className="event" onClick={() => {
-        props.history.push(`/hangouts/${props.hangout.hangoutId}`);
-      }}>
-        <div className="event-left">
-          <div className="event-icon-container">
-            <img src={icon} alt="game-type" className="event-icon"></img>
-          </div>
-        </div>
-        <div className="event-right">
-          <div className="event-name">
-            <div>{props.hangout.hangoutName}</div>
-          </div>
-          <div className="small-text hangout-spec">
-            <span>{day} {time}</span>
-            <span>{props.hangout.gameFormat}</span>
-          </div>
+    <div className="event" onClick={() => props.history.push(`/hangouts/${props.hangout.hangoutId}`)}>
+      <div className="event-left">
+        <div className="event-icon-container">
+          <img src={icon} alt="game-type" className="event-icon"></img>
         </div>
       </div>
-      {/* </Link> */}
-    </>
+      <div className="event-right">
+        <div className="event-name">
+          <div>{props.hangout.hangoutName}</div>
+        </div>
+        <div className="small-text hangout-spec">
+          <span>{day} {time}</span>
+          <span>{props.hangout.gameFormat}</span>
+        </div>
+      </div>
+    </div>
   );
 }
 

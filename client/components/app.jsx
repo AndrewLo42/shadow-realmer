@@ -1,6 +1,7 @@
 import React from 'react';
 import HangoutsList from './hangouts-list';
 import HangoutDetails from './hangout-details';
+import CreateHangout from './create-hangouts';
 import Sidebar from './sidebar';
 import {
   BrowserRouter as Router,
@@ -30,6 +31,7 @@ export default class App extends React.Component {
         <Switch>
           <Route exact path="/hangouts" render={props => <HangoutsList {...props} toggleSidebar={this.toggleSidebar} />} />
           <Route path="/hangouts/:id" component={HangoutDetails} />
+          <Route path="/create/hangout" component={CreateHangout} />
         </Switch>
       </Router>
     );

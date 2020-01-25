@@ -124,9 +124,81 @@ app.get('/api/hangouts/:hangoutId', (req, res, next) => {
   }
 });
 
+app.delete('/api/hangouts/:hangoutId', (req, res, next) => {
+  const parsedHangoutId = parseInt(req.params.hangoutId);
+  const hangoutDelete = `delete from "hangouts"
+                            where "hangoutId" = $1
+                            returning *`;
+  const values = [parsedHangoutId];
+  if (isNaN(req.params.hangoutId) || parsedHangoutId < 0) {
+    next(
+      new ClientError(
+        `The requested hangoutID was not a number ${req.method} ${req.originalUrl}`,
+        400
+      )
+    );
+  } else {
+    db.query(hangoutDelete, values)
+      .then(response => {
+        const deleteResponse = response.rows;
+        if (!deleteResponse) {
+          next(
+            new ClientError(
+              `No hangouts found.${req.method} ${req.originalUrl}`,
+              404
+            )
+          );
+        } else {
+          res.json(deleteResponse);
+        }
+      })
+      .catch(err => {
+        next(err);
+      });
+  }
+});
+
+app.delete('/api/events/:eventId', (req, res, next) => {
+  const parsedEventId = parseInt(req.params.eventId);
+  const eventDelete = `delete from "events"
+                            where "eventId" = $1
+                            returning *`;
+  const values = [parsedEventId];
+  if (isNaN(req.params.eventId) || parsedEventId < 0) {
+    next(
+      new ClientError(
+        `The requested hangoutID was not a number ${req.method} ${req.originalUrl}`,
+        400
+      )
+    );
+  } else {
+    db.query(eventDelete, values)
+      .then(response => {
+        const deleteResponse = response.rows;
+        if (!deleteResponse) {
+          next(
+            new ClientError(
+              `No hangouts found.${req.method} ${req.originalUrl}`,
+              404
+            )
+          );
+        } else {
+          res.json(deleteResponse);
+        }
+      })
+      .catch(err => {
+        next(err);
+      });
+  }
+});
+
 app.get('/api/events', (req, res, next) => {
   if (Object.keys(req.query).length === 0) {
-    const allEvents = 'select * from "events"';
+    const allEvents = `
+      select "e".*, "s"."storeName"
+      from "events" as "e"
+      join "stores" as "s" on "s"."storeId" = "e"."storeId"
+    `;
     db.query(allEvents)
       .then(response => {
         const eventsResponse = response.rows;
@@ -140,7 +212,9 @@ app.get('/api/events', (req, res, next) => {
   } else if (req.query.id) {
     const parsedEventId = parseInt(req.query.id);
     const eventDetails = `
-      select * from "events"
+      select "e".*, "s"."storeName"
+      from "events" as "e"
+      join "stores" as "s" on "s"."storeId" = "e"."storeId"
       where "eventId" = $1
     `;
     const values = [parsedEventId];
@@ -180,7 +254,7 @@ app.get('/api/events', (req, res, next) => {
 
 app.post('/api/events', (req, res, next) => {
   if (
-    !req.body.eventName ||
+    !req.body.name ||
     !req.body.startTime ||
     !req.body.description ||
     !req.body.gameFormat ||
@@ -198,7 +272,7 @@ app.post('/api/events', (req, res, next) => {
     storeId = 0;
   }
   const params = [
-    req.body.eventName,
+    req.body.name,
     storeId,
     req.body.startTime,
     req.body.description,
@@ -225,8 +299,8 @@ function parseTime(month, day, hour, minute, ampm) {
 }
 
 app.post('/api/hangouts', (req, res, next) => {
-  if (!req.body.hangoutName || !req.body.description || !req.body.gameFormat || !req.body.gameId || !req.body.zipcode || !req.body.contactInfo) {
-    return next(new ClientError('Missing parameters to create Hangout!!'), 400);
+  if (!req.body.name || !req.body.description || !req.body.gameFormat || !req.body.gameId || !req.body.zipCode || !req.body.contactInfo) {
+    return next(new ClientError('Missing parameters to create Hangout!!', 400));
   }
   const startTime = parseTime(req.body.month, req.body.day, req.body.hour, req.body.minute, req.body.ampm);
   const createHangout = `
@@ -238,7 +312,7 @@ app.post('/api/hangouts', (req, res, next) => {
   if (!req.body.hostId) {
     hostId = 0;
   }
-  const params = [req.body.hangoutName, hostId, startTime, req.body.description, req.body.gameFormat, req.body.gameId, req.body.zipcode, req.body.contactInfo];
+  const params = [req.body.name, hostId, startTime, req.body.description, req.body.gameFormat, req.body.gameId, req.body.zipCode, req.body.contactInfo];
   db.query(createHangout, params)
     .then(result => {
       res.status(201).json(result.rows[0]);
@@ -248,7 +322,7 @@ app.post('/api/hangouts', (req, res, next) => {
 
 app.post('/api/hangoutAttendees', (req, res, next) => {
   if (!req.body.hangoutId) {
-    return next(new ClientError('Missing parameters to create Hangout!!'), 400);
+    return next(new ClientError('Missing parameters to create Hangout!!', 400));
   }
   let userId = req.body.userId;
   if (!userId) {
@@ -399,24 +473,36 @@ app.get('/api/stores/:storeId', (req, res, next) => {
   }
 });
 
-app.get('/api/hangoutAttendees/:userId', (req, res, next) => {
-  if (!req.params.userId) {
-    return next(new ClientError('No userId provided...'), 400);
+app.get('/api/hangoutAttendees/', (req, res, next) => {
+  let hangoutResSQL = 'select * from "hangouts"';
+  let params = [];
+  if (req.query.userId) {
+    hangoutResSQL = `
+      select "h".*
+      from "hangouts" as "h"
+      join "hangoutAttendees" as "a" on "a"."hangoutId" = "h"."hangoutId"
+      join "users" as "u" on "u"."userId" = "a"."userId"
+      where "a"."userId" = $1
+      order by "h"."startTime" desc
+    `;
+    params = [parseInt(req.query.userId)];
+  } else if (req.query.hangoutId) {
+    hangoutResSQL = `
+      select "u".*
+      from "users" as "u"
+      join "hangoutAttendees" as "a" on "a"."userId" = "u"."userId"
+      join "hangouts" as "h" on "h"."hangoutId" = "a"."hangoutId"
+      where "h"."hangoutId" = $1;
+    `;
+    params = [parseInt(req.query.hangoutId)];
+  } else {
+    return next(new ClientError('No valid query provided...'), 400);
   }
-  const attendedHangouts = `
-    select "h".*
-    from "hangouts" as "h"
-    join "hangoutAttendees" as "a" on "a"."hangoutId" = "h"."hangoutId"
-    join "users" as "u" on "u"."userId" = "a"."userId"
-    where "a"."userId" = $1
-    order by "h"."startTime" desc
-  `;
-  const params = [parseInt(req.params.userId)];
-  db.query(attendedHangouts, params)
+  db.query(hangoutResSQL, params)
     .then(response => {
       const pastHangouts = response.rows;
       if (!pastHangouts) {
-        return next(new ClientError(`No Hangouts for user with id ${req.query.userId}`), 204);
+        return next(new ClientError(`No information found for ${req.query}`), 204);
       }
       res.status(200).json(pastHangouts);
     })

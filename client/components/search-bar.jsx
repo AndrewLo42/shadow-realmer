@@ -31,6 +31,7 @@ export default class SearchBar extends React.Component {
         <div className="search-bar">
           <ShadowRealmerIcon toggleSidebar={this.props.toggleSidebar} />
           <input className="search-bar-input" placeholder={this.props.placeholder} onChange={this.handleChange} onKeyUp={this.handleEnterKeyUp} value={this.state.inputText} />
+          <span className="add-hangout" onClick={() => this.props.history.push('/create/hangout')}><i className="fa fa-plus"></i></span>
         </div>
       </div>
     );
