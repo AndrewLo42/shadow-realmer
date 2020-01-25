@@ -213,10 +213,22 @@ app.post('/api/events', (req, res, next) => {
     .catch(err => next(err));
 });
 
+function parseTime(month, day, hour, minute, ampm) {
+  if (ampm === 'PM') {
+    if (hour !== '12') {
+      hour = parseInt(hour) + 12;
+    }
+  } else {
+    hour = hour === '12' ? '00' : hour;
+  }
+  return `2020-${(month)}-${(day)} ${hour}:${(minute)}:00;`;
+}
+
 app.post('/api/hangouts', (req, res, next) => {
-  if (!req.body.hangoutName || !req.body.startTime || !req.body.description || !req.body.gameFormat || !req.body.gameId || !req.body.zipcode || !req.body.contactInfo) {
+  if (!req.body.hangoutName || !req.body.description || !req.body.gameFormat || !req.body.gameId || !req.body.zipcode || !req.body.contactInfo) {
     return next(new ClientError('Missing parameters to create Hangout!!'), 400);
   }
+  const startTime = parseTime(req.body.month, req.body.day, req.body.hour, req.body.minute, req.body.ampm);
   const createHangout = `
       insert into hangouts ("hangoutName", "hostId", "startTime", "description", "gameFormat", "gameId", "zipcode", "contactInfo")
       values($1, $2, $3, $4, $5, $6, $7, $8)
@@ -226,7 +238,7 @@ app.post('/api/hangouts', (req, res, next) => {
   if (!req.body.hostId) {
     hostId = 0;
   }
-  const params = [req.body.hangoutName, hostId, req.body.startTime, req.body.description, req.body.gameFormat, req.body.gameId, req.body.zipcode, req.body.contactInfo];
+  const params = [req.body.hangoutName, hostId, startTime, req.body.description, req.body.gameFormat, req.body.gameId, req.body.zipcode, req.body.contactInfo];
   db.query(createHangout, params)
     .then(result => {
       res.status(201).json(result.rows[0]);
