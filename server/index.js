@@ -280,7 +280,8 @@ app.get('/api/eventAttendees/:userId', (req, res, next) => {
                                 "e"."gameId",
                                 "e"."eventName",
                                 "e"."startTime",
-                                "e"."gameFormat"
+                                "e"."gameFormat",
+                                "e"."eventId"
                                 from"events" as "e"
                                 join "eventAttendees" as "ea" using ("eventId")
                                 where "e"."startTime" < now()
