@@ -360,64 +360,61 @@ app.post('/api/eventAttendees', (req, res, next) => {
     .catch(err => next(err));
 });
 
-// app.get('/api/eventAttendees/:userId', (req, res, next) => {
-//   const pastAttendanceEvents = `select
-//                                 "e"."gameId",
-//                                 "e"."eventName",
-//                                 "e"."startTime",
-//                                 "e"."gameFormat",
-//                                 "e"."eventId"
-//                                 from"events" as "e"
-//                                 join "eventAttendees" as "ea" using ("eventId")
-//                                 where "e"."startTime" < now()
-//                                 and "ea"."userId" = $1`;
-//   const params = [req.params.userId];
-//   db.query(pastAttendanceEvents, params)
-//     .then(result => { res.status(201).json(result.rows); })
-//     .catch(err => next(err));
-// });
-
-app.get('/api/eventAttendees', (req, res, next) => {
-  const usersRsvpEvents = `select *
-                                from "users"
-                                join "eventAttendees" as "ea" using ("userId")
-                                where "eventId" = 1
-                                and "ea"."userId" = 1`;
-  db.query(usersRsvpEvents)
-    .then(result => {
-      res.status(201).json(result.rows);
-    })
+app.get('/api/eventAttendees/:userId', (req, res, next) => {
+  const pastAttendanceEvents = `select
+                                "e"."gameId",
+                                "e"."eventName",
+                                "e"."startTime",
+                                "e"."gameFormat",
+                                "e"."eventId"
+                                from"events" as "e"
+                                join "eventAttendees" as "ea" using ("eventId")
+                                where "e"."startTime" < now()
+                                and "ea"."userId" = $1`;
+  const params = [req.params.userId];
+  db.query(pastAttendanceEvents, params)
+    .then(result => { res.status(201).json(result.rows); })
     .catch(err => next(err));
 });
 
-// app.get('/api/users/:userId', (req, res, next) => {
-//   const eventRsvps = `select
-//                                 "e"."gameId",
-//                                 "e"."eventName",
-//                                 "e"."startTime",
-//                                 "e"."gameFormat",
-//                                 "e"."eventId"
-//                                 from "events" as "e"
-//                                 join "eventAttendees" as "ea" using ("userId")
-//                                 where "e"."startTime" < now()
-//                                 and "ea"."userId" = $1`;
-//   const hangoutRsvps = `select
-//                                 "h"."gameId",
-//                                 "h"."hangoutName",
-//                                 "h"."startTime",
-//                                 "h"."gameFormat",
-//                                 "h"."hangoutId"
-//                                 from "hangouts" as "h"
-//                                 join "hangoutAttendees" as "ha" using ("userId)
-//                                 where "h"."startTime" < now()
-//                                 and "ha"."userId" = $1`;
-//   const params = [req.params.userId];
-//   db.query(eventRsvps, hangoutRsvps, params)
-//     .then(result => {
-//       res.status(201).json(result.rows);
-//     })
-//     .catch(err => next(err));
-// });
+app.get('/api/eventAttendees/', (req, res, next) => {
+  let eventResSQL = 'select * from "events"';
+  let params = [];
+  if (req.query.userId) {
+    eventResSQL = `
+      select "e".*
+      from "events" as "e"
+      join "eventAttendees" as "a" on "a"."eventId" = "e"."eventId"
+      join "users" as "u" on "u"."userId" = "a"."userId"
+      where "a"."userId" = $1
+      order by "e"."startTime" desc
+    `;
+    params = [parseInt(req.query.userId)];
+  } else if (req.query.eventId) {
+    eventResSQL = `
+      select "u".*
+      from "users" as "u"
+      join "eventAttendees" as "a" on "a"."userId" = "u"."userId"
+      join "events" as "e" on "e"."eventId" = "a"."eventId"
+      where "e"."eventId" = $1;
+    `;
+    params = [parseInt(req.query.eventId)];
+  } else {
+    return next(new ClientError('No valid query provided...'), 400);
+  }
+  db.query(eventResSQL, params)
+    .then(response => {
+      const pastEvents = response.rows;
+      if (!pastEvents) {
+        return next(
+          new ClientError(`No information found for ${req.query}`),
+          204
+        );
+      }
+      res.status(200).json(pastEvents);
+    })
+    .catch(err => next(err));
+});
 
 app.get('/api/stores', (req, res, next) => {
   const allStores = 'select * from "stores"';
