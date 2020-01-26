@@ -1,0 +1,403 @@
+* {
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+  animation: fadein .5s;
+}
+
+body {
+  color: white;
+  background-color: #232423;
+  margin: 0;
+  padding: 0;
+}
+
+/* Search Bar Page */
+.search-bar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+}
+.search-bar {
+  z-index: 1;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  height: 60px;
+  width: 90%;
+  border-radius: 50px 10px 10px 50px;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding-right: 10px;
+  margin: auto 0;
+  box-shadow: 1px 1px 5px rgba(0,0,0,.5);
+}
+
+.icon-image {
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+}
+
+.search-bar-input {
+  height: 80%;
+  width: 80%;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  font-size: 1.5rem;
+  border: none;
+  text-align: center;
+}
+
+.search-bar-input:focus {
+  outline: none;
+}
+
+.add-hangout {
+  font-size: 1.5rem;
+}
+
+/* Event List Page */
+.event-container {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-flow: wrap;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.event {
+  position: relative;
+  height: 10vh;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 8px;
+  border-top: 3px solid #333;
+}
+
+.event-left {
+  width: 33%;
+}
+
+.event-day-of-week,
+.event-time,
+.event-store-name {
+  font-size: 1rem;
+  color: rgb(128, 128, 128);
+}
+
+.event-day {
+  font-size: 1.25rem;
+  color: #9984F1;
+}
+
+.event-right {
+  width: 66%;
+}
+
+.event-name {
+  font-size: 1.2rem;
+  height: 75%;
+  position: absolute;
+  display: flex;
+  align-items: center;
+}
+
+.event-title {
+  height: 70%;
+  font-size: 1.25rem;
+}
+
+.store-name {
+  font-size: 1rem;
+  color: rgb(128, 128, 128);;
+
+}
+
+.event-icon-container {
+  display: flex;
+  align-content: center;
+}
+
+.event-icon {
+  height: 7vh;
+  width: 7vh;
+  margin-left: 10px;
+}
+
+.small-text {
+  font-size: 0.75rem;
+  color: rgb(128, 128, 128);
+}
+
+.hangout-spec {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-flow: column;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.search-bar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+}
+.search-bar {
+  z-index: 1;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  height: 60px;
+  width: 90%;
+  border-radius: 50px 10px 10px 50px;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding-right: 10px;
+  margin: auto 0;
+  box-shadow: 1px 1px 5px rgba(0,0,0,.5);
+}
+.icon-image {
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.search-bar-input {
+  height: 80%;
+  width: 80%;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  font-size: 1.5rem;
+  border: none;
+  text-align: center;
+}
+
+.search-bar-input:focus {
+  outline: none;
+}
+
+.details-container {
+  padding: 30px;
+  height: 100vh;
+  width: 100vw;
+}
+.details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.details-header > * {
+  font-size: 3rem;
+}
+.details-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 50%;
+  width: 100%;
+}
+.details-main * {
+  margin: 5px 0;
+}
+.details-footer {
+  height: 40%;
+  width: 100%;
+}
+.details-footer * {
+  margin: 5px 0;
+}
+.details-title,
+.details-contact-info-title {
+  text-align: center;
+}
+
+/* Create Hangouts Page */
+.create-page {
+  margin: 16px auto;
+  text-align: center;
+  width: 80%;
+}
+
+::placeholder {
+  color: rgb(121, 121, 121);
+}
+
+.title {
+  text-align: center;
+  font-size: 2.5rem;
+}
+
+.input {
+  border: none;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 1.25rem;
+  margin: 15px 0;
+  height: 5vh;
+}
+.input:focus {
+  color: white;
+}
+
+.long-input {
+  background-color: #333;
+  width: 100%;
+}
+
+.short-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.short-input {
+  background-color: #333;
+  width: 47%;
+  -webkit-appearance: none;
+  color: white;
+}
+
+.description {
+  height: 30vh;
+}
+
+.confirm,
+.cancel {
+  height: 8vh;
+  text-align: center;
+  color: white;
+  -webkit-appearance: none;
+}
+
+.confirm {
+  background-color: rgb(105, 153, 255);
+}
+
+.cancel {
+  background-color: rgb(255, 85, 85);
+}
+
+.time-container,
+.date-container {
+  display: flex;
+  align-items: center;
+}
+
+.time-selector,
+.date-selector {
+  height: 100%;
+  font-size: 1.25rem;
+  background-color: #333;
+  border: none;
+  -webkit-appearance: none;
+  color: white;
+}
+
+.time-selector {
+  width: 33%;
+  direction: rtl;
+}
+
+.date-selector {
+  width: 50%;
+}
+
+.selector-right {
+  border-radius: 0 10px 10px 0;
+}
+
+.selector-left {
+  border-radius: 10px 0 0 10px;
+}
+
+/* Sidebar styling */
+.sidebar-container {
+  width: 300px;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  transition: left 0.5s ease-in-out;
+  background-color: #333;
+  border-right: 2px solid #9984F1;
+}
+.sidebar-exit-button {
+  position: absolute;
+  right: 0;
+  padding: 10px 10px 0 0;
+  font-size: 2rem;
+  cursor: pointer;
+}
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding: 30px;
+}
+.sidebar-user-icon {
+  font-size: 50px;
+}
+.sidebar-user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.sidebar-user-info > * {
+  margin: 0;
+}
+.sidebar-page-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 500px;
+}
+.sidebar-page-list-item {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-size: 30px;
+  margin: 10px 0;
+  padding: 0 30px;
+  cursor: pointer;
+}
+.sidebar-shadow {
+  background-color: rgba(0,0,0,0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+  z-index: 999;
+}
+
+.shadow-hidden {
+  display: none;
+}
+
+.off-screen-left {
+  left: -300px;
+}
+
+ul {
+  list-style-type: none;
+}
+li a {
+  color: white;
+  text-decoration: none;
+}
+
+li a :visited {
+  text-decoration: none;
+}
+
+
+@keyframes fadein {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}

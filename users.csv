@@ -1,0 +1,3 @@
+userId,userName,deckArchetype,mainGameId,email,isStoreEmployee
+1,"""Chad""","""Aggro""",1,"""chad69@gmail.com""",FALSE
+2,"""Brad""","""Control""",1,"""brad420@gmail.com",TRUE
