@@ -13,6 +13,7 @@ export default class ListPage extends React.Component {
   }
 
   getItems(location) {
+
     fetch(`/api${location}/`)
       .then(data => data.json())
       .then(result => this.setState({ events: result }))
@@ -24,6 +25,12 @@ export default class ListPage extends React.Component {
       .then(data => data.json())
       .then(result => this.setState({ events: result }))
       .catch(err => console.error(err));
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.match.path !== this.props.match.path) {
+      this.getItems(this.props.match.path);
+    }
   }
 
   componentDidMount() {
