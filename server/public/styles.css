@@ -1,6 +1,7 @@
 * {
   box-sizing: border-box;
   font-family: 'Roboto', sans-serif;
+  animation: fadein .5s;
 }
 
 body {
@@ -381,4 +382,22 @@ body {
 
 .off-screen-left {
   left: -300px;
+}
+
+ul {
+  list-style-type: none;
+}
+li a {
+  color: white;
+  text-decoration: none;
+}
+
+li a :visited {
+  text-decoration: none;
+}
+
+
+@keyframes fadein {
+  from {opacity: 0;}
+  to {opacity: 1;}
 }

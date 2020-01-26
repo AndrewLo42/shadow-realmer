@@ -1,10 +1,11 @@
 import React from 'react';
+import {
+  NavLink
+} from 'react-router-dom';
 
 const Sidebar = props => {
-
   const handlePageListItemClick = () => {
     props.toggleSidebar();
-    // TODO: add routing
   };
 
   return (
@@ -19,14 +20,23 @@ const Sidebar = props => {
           </div>
         </div>
         <div className="sidebar-page-list">
-          <div className="sidebar-page-list-item" onClick={handlePageListItemClick}>
-            <i className="fas fa-home" />
-              Home
-          </div>
-          <div className="sidebar-page-list-item" onClick={handlePageListItemClick}>
-            <i className="fas fa-bullhorn" />
-            Hangouts
-          </div>
+          <ul onClick={handlePageListItemClick}>
+            <li>
+              <NavLink to={'/'} >
+                <i className="fas fa-home" /> Home
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to={'/hangouts'} >
+                <i className="fas fa-bullhorn"/> Hangouts
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to={'/events'} >
+                <i className="fas fa-calendar-alt"/> Events
+              </NavLink>
+            </li>
+          </ul>
         </div>
       </div>
       <div
