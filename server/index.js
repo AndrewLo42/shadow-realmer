@@ -372,9 +372,47 @@ app.get('/api/eventAttendees/:userId', (req, res, next) => {
                                 where "e"."startTime" < now()
                                 and "ea"."userId" = $1`;
   const params = [req.params.userId];
-  // const parsedPastUserId = parseInt(params);
   db.query(pastAttendanceEvents, params)
     .then(result => { res.status(201).json(result.rows); })
+    .catch(err => next(err));
+});
+
+app.get('/api/eventAttendees/', (req, res, next) => {
+  let eventResSQL = 'select * from "events"';
+  let params = [];
+  if (req.query.userId) {
+    eventResSQL = `
+      select "e".*
+      from "events" as "e"
+      join "eventAttendees" as "a" on "a"."eventId" = "e"."eventId"
+      join "users" as "u" on "u"."userId" = "a"."userId"
+      where "a"."userId" = $1
+      order by "e"."startTime" desc
+    `;
+    params = [parseInt(req.query.userId)];
+  } else if (req.query.eventId) {
+    eventResSQL = `
+      select "u".*
+      from "users" as "u"
+      join "eventAttendees" as "a" on "a"."userId" = "u"."userId"
+      join "events" as "e" on "e"."eventId" = "a"."eventId"
+      where "e"."eventId" = $1;
+    `;
+    params = [parseInt(req.query.eventId)];
+  } else {
+    return next(new ClientError('No valid query provided...'), 400);
+  }
+  db.query(eventResSQL, params)
+    .then(response => {
+      const pastEvents = response.rows;
+      if (!pastEvents) {
+        return next(
+          new ClientError(`No information found for ${req.query}`),
+          204
+        );
+      }
+      res.status(200).json(pastEvents);
+    })
     .catch(err => next(err));
 });
 
