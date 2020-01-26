@@ -20,7 +20,7 @@ export default class SearchBar extends React.Component {
   handleEnterKeyUp(event) {
     const isEnterKeyPress = event.keyCode === 13;
     if (isEnterKeyPress) {
-      this.props.runSearch(this.state.inputText);
+      this.props.runSearch(this.state.inputText, this.props.match.path);
       this.setState({ inputText: '' });
     }
   }
@@ -31,7 +31,7 @@ export default class SearchBar extends React.Component {
         <div className="search-bar">
           <ShadowRealmerIcon toggleSidebar={this.props.toggleSidebar} />
           <input className="search-bar-input" placeholder={this.props.placeholder} onChange={this.handleChange} onKeyUp={this.handleEnterKeyUp} value={this.state.inputText} />
-          <span className="add-hangout" onClick={() => this.props.history.push('/create/hangout')}><i className="fa fa-plus"></i></span>
+          <span className="add-hangout" onClick={() => this.props.history.push(`/create${this.props.match.path}`)}><i className="fa fa-plus"></i></span>
         </div>
       </div>
     );

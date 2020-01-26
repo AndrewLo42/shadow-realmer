@@ -1,13 +1,14 @@
 import React from 'react';
-import HangoutsList from './hangouts-list';
-import HangoutDetails from './hangout-details';
-import CreateHangout from './create-hangouts';
+import ListPage from './list-page';
+import DetailsPage from './details-page';
+import CreatePage from './create-page';
 import Sidebar from './sidebar';
 import {
   BrowserRouter as Router,
   Switch,
   Route
 } from 'react-router-dom';
+import FakeHomePage from './placeholder-homepage';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -29,9 +30,13 @@ export default class App extends React.Component {
       <Router>
         <Sidebar toggleSidebar={this.toggleSidebar} isSidebarHidden={this.state.isSidebarHidden} />
         <Switch>
-          <Route exact path="/hangouts" render={props => <HangoutsList {...props} toggleSidebar={this.toggleSidebar} />} />
-          <Route path="/hangouts/:id" component={HangoutDetails} />
-          <Route path="/create/hangout" component={CreateHangout} />
+          <Route exact path="/" render={props => <FakeHomePage {...props} toggleSidebar={this.toggleSidebar} />} />
+          <Route exact path="/hangouts" render={props => <ListPage {...props} toggleSidebar={this.toggleSidebar} />} />
+          <Route exact path="/events" render={props => <ListPage {...props} toggleSidebar={this.toggleSidebar} />} />
+          <Route path="/hangouts/:id" component={DetailsPage} />
+          <Route path="/events/:id" component={DetailsPage} />
+          <Route path="/create/hangouts" component={CreatePage} />
+          <Route path="/create/events" component={CreatePage} />
         </Switch>
       </Router>
     );
