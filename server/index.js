@@ -506,6 +506,86 @@ app.get('/api/hangoutAttendees/', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.put('/api/events/:eventId', (req, res, next) => {
+  const parse = parseInt(req.params.eventId);
+  const text = `update "events"
+                set "eventName" = $1, "storeId" = $2, "startTime" = $3, "description" = $4, "gameFormat" = $5, "gameId" = $6, "entranceFee" = $7
+                where "eventId" = $8
+                returning *`;
+  const values = [req.body.eventName, req.body.storeId, req.body.startTime, req.body.description, req.body.gameFormat, req.body.gameId, req.body.entranceFee, parse];
+  if (
+    !req.params.eventId ||
+    req.params.eventId === null ||
+    req.params.eventId === 'undefined'
+  ) {
+    res.status(400).json({
+      error: 'Invalid or no input.'
+    });
+  } else {
+    db.query(text, values)
+      .then(response => {
+        const event = response.rows;
+        res.json(event);
+      })
+      .catch(err => {
+        console.error(err);
+        res.status(500).json({
+          error: 'An unexpected error occurred.'
+        });
+      })
+      .catch(err => {
+        console.error(err);
+        res.status(404).json({
+          error: 'An unexpected error occurred.'
+        });
+      });
+  }
+});
+
+app.put('/api/hangouts/:hangoutId', (req, res, next) => {
+  const parse = parseInt(req.params.hangoutId);
+  const text = `update "hangouts"
+                set "hangoutName" = $1, "hostId" = $2, "startTime" = $3, "description" = $4, "gameFormat" = $5, "gameId" = $6
+                where "hangoutId" = $7
+                returning *`;
+  const values = [
+    req.body.hangoutName,
+    req.body.hostId,
+    req.body.startTime,
+    req.body.description,
+    req.body.gameFormat,
+    req.body.gameId,
+    parse
+  ];
+  if (
+    !req.params.hangoutId ||
+    req.params.hangoutId === null ||
+    req.params.hangoutId === 'undefined'
+  ) {
+    res.status(400).json({
+      error: 'Invalid or no input.'
+    });
+  } else {
+    db.query(text, values)
+      .then(response => {
+        const hangout = response.rows;
+        res.json(hangout);
+      })
+      .catch(err => {
+        console.error(err);
+        res.status(500).json({
+          error: 'An unexpected error occurred.'
+        });
+      })
+      .catch(err => {
+        console.error(err);
+        res.status(404).json({
+          error: 'An unexpected error occurred.'
+        });
+      });
+  }
+});
+
 app.use('/api', (req, res, next) => {
   next(new ClientError(`cannot ${req.method} ${req.originalUrl}`, 404));
 });
