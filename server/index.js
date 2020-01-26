@@ -194,7 +194,11 @@ app.delete('/api/events/:eventId', (req, res, next) => {
 
 app.get('/api/events', (req, res, next) => {
   if (Object.keys(req.query).length === 0) {
-    const allEvents = 'select * from "events"';
+    const allEvents = `
+      select "e".*, "s"."storeName"
+      from "events" as "e"
+      join "stores" as "s" on "s"."storeId" = "e"."storeId"
+    `;
     db.query(allEvents)
       .then(response => {
         const eventsResponse = response.rows;
@@ -208,7 +212,9 @@ app.get('/api/events', (req, res, next) => {
   } else if (req.query.id) {
     const parsedEventId = parseInt(req.query.id);
     const eventDetails = `
-      select * from "events"
+      select "e".*, "s"."storeName"
+      from "events" as "e"
+      join "stores" as "s" on "s"."storeId" = "e"."storeId"
       where "eventId" = $1
     `;
     const values = [parsedEventId];
@@ -426,24 +432,36 @@ app.get('/api/stores/:storeId', (req, res, next) => {
   }
 });
 
-app.get('/api/hangoutAttendees/:userId', (req, res, next) => {
-  if (!req.params.userId) {
-    return next(new ClientError('No userId provided...'), 400);
+app.get('/api/hangoutAttendees/', (req, res, next) => {
+  let hangoutResSQL = 'select * from "hangouts"';
+  let params = [];
+  if (req.query.userId) {
+    hangoutResSQL = `
+      select "h".*
+      from "hangouts" as "h"
+      join "hangoutAttendees" as "a" on "a"."hangoutId" = "h"."hangoutId"
+      join "users" as "u" on "u"."userId" = "a"."userId"
+      where "a"."userId" = $1
+      order by "h"."startTime" desc
+    `;
+    params = [parseInt(req.query.userId)];
+  } else if (req.query.hangoutId) {
+    hangoutResSQL = `
+      select "u".*
+      from "users" as "u"
+      join "hangoutAttendees" as "a" on "a"."userId" = "u"."userId"
+      join "hangouts" as "h" on "h"."hangoutId" = "a"."hangoutId"
+      where "h"."hangoutId" = $1;
+    `;
+    params = [parseInt(req.query.hangoutId)];
+  } else {
+    return next(new ClientError('No valid query provided...'), 400);
   }
-  const attendedHangouts = `
-    select "h".*
-    from "hangouts" as "h"
-    join "hangoutAttendees" as "a" on "a"."hangoutId" = "h"."hangoutId"
-    join "users" as "u" on "u"."userId" = "a"."userId"
-    where "a"."userId" = $1
-    order by "h"."startTime" desc
-  `;
-  const params = [parseInt(req.params.userId)];
-  db.query(attendedHangouts, params)
+  db.query(hangoutResSQL, params)
     .then(response => {
       const pastHangouts = response.rows;
       if (!pastHangouts) {
-        return next(new ClientError(`No Hangouts for user with id ${req.query.userId}`), 204);
+        return next(new ClientError(`No information found for ${req.query}`), 204);
       }
       res.status(200).json(pastHangouts);
     })
