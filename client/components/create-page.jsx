@@ -7,7 +7,7 @@ export default class CreatePage extends React.Component {
   }
 
   handleSubmit(info) {
-    const location = this.props.match.path === '/create/hangout' ? '/hangouts' : '/events';
+    const location = this.props.match.path.includes('hangout') ? '/hangouts' : '/events';
     fetch(`/api${location}`, {
       method: 'POST',
       headers: {
@@ -20,7 +20,7 @@ export default class CreatePage extends React.Component {
   }
 
   render() {
-    return this.props.match.path === '/create/hangout' ? <CreateHangout handleSubmit={this.handleSubmit} /> : <CreateEvent handleSubmit={this.handleSubmit} />;
+    return this.props.match.path.includes('hangout') ? <CreateHangout handleSubmit={this.handleSubmit} history={this.props.history} /> : <CreateEvent handleSubmit={this.handleSubmit} history={this.props.history} />;
   }
 }
 
@@ -212,8 +212,7 @@ class CreateEvent extends React.Component {
     super(props);
     this.state = {
       name: '',
-      contactInfo: '',
-      zipCode: '',
+      storeId: '',
       month: '01',
       day: '01',
       hour: '1',
@@ -225,8 +224,7 @@ class CreateEvent extends React.Component {
       entranceFee: ''
     };
     this.handleTitleChange = this.handleTitleChange.bind(this);
-    this.handleContactInfoChange = this.handleContactInfoChange.bind(this);
-    this.handleZipCodeChange = this.handleZipCodeChange.bind(this);
+    this.handleStoreChange = this.handleStoreChange.bind(this);
     this.handleMonthChange = this.handleMonthChange.bind(this);
     this.handleDayChange = this.handleDayChange.bind(this);
     this.handleHourChange = this.handleHourChange.bind(this);
@@ -242,12 +240,8 @@ class CreateEvent extends React.Component {
     this.setState({ name: event.target.value });
   }
 
-  handleContactInfoChange(event) {
-    this.setState({ contactInfo: event.target.value });
-  }
-
-  handleZipCodeChange(event) {
-    this.setState({ zipCode: event.target.value });
+  handleStoreChange(event) {
+    this.setState({ storeId: event.target.value });
   }
 
   handleMonthChange(event) {
@@ -289,10 +283,16 @@ class CreateEvent extends React.Component {
   render() {
     return (
       <div className="create-page">
-        <header className="title">Create Hangout</header>
-        <input type="text" className="long-input input" placeholder="Hangout Title" onChange={this.handleTitleChange} value={this.state.name} />
-        <input type="text" className="long-input input" placeholder="Contact Info" onChange={this.handleContactInfoChange} value={this.state.contactInfo} />
-        <input type="number" className="long-input input" placeholder="Zip Code" onChange={this.handleZipCodeChange} value={this.state.zipCode} />
+        <header className="title">Create Event</header>
+        <input type="text" className="long-input input" placeholder="Event Title" onChange={this.handleTitleChange} value={this.state.name} />
+        <select name="store" className="long-input input" onChange={this.handleStoreChange} value={this.state.storeId}>
+          <option value="">Store Name</option>
+          <option value="1">Yeezy Cards</option>
+          <option value="2">Down B Cards</option>
+          <option value="3">Pink Gang Cards</option>
+          <option value="4">Poop Storm Cards</option>
+          <option value="5">Fieri Cards</option>
+        </select>
         <div className="short-container">
           <div className="date-container short-input input">
             <select name="month" className="date-selector selector-left" onChange={this.handleMonthChange} value={this.state.month}>
@@ -387,8 +387,9 @@ class CreateEvent extends React.Component {
             <option value="Yu-Gi-Oh">Yu-Gi-Oh</option>
           </select>
         </div>
+        <input type="number" className="long-input input" placeholder="Entrance Fee" onChange={this.handleEntranceFeeChange} value={this.state.entranceFee}/>
         <div className="short-container">
-          <button className="short-input input cancel" onClick={() => this.props.history.push('/hangouts')}>Cancel</button>
+          <button className="short-input input cancel" onClick={() => this.props.history.push('/events')}>Cancel</button>
           <button className="short-input input confirm" onClick={() => this.props.handleSubmit(this.state)}>Confirm</button>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import ListPage from './list-page';
-import HangoutDetails from './hangout-details';
+import DetailsPage from './details-page';
 import CreatePage from './create-page';
 import Sidebar from './sidebar';
 import {
@@ -33,9 +33,10 @@ export default class App extends React.Component {
           <Route exact path="/" render={props => <FakeHomePage {...props} toggleSidebar={this.toggleSidebar} />} />
           <Route exact path="/hangouts" render={props => <ListPage {...props} toggleSidebar={this.toggleSidebar} />} />
           <Route exact path="/events" render={props => <ListPage {...props} toggleSidebar={this.toggleSidebar} />} />
-          <Route path="/hangouts/:id" component={HangoutDetails} />
-          <Route path="/create/hangout" component={CreatePage} />
-          <Route path="/create/event" component={CreatePage} />
+          <Route path="/hangouts/:id" component={DetailsPage} />
+          <Route path="/events/:id" component={DetailsPage} />
+          <Route path="/create/hangouts" component={CreatePage} />
+          <Route path="/create/events" component={CreatePage} />
         </Switch>
       </Router>
     );
