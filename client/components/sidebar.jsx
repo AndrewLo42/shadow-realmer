@@ -36,6 +36,11 @@ const Sidebar = props => {
                 <i className="fas fa-calendar-alt"/> Events
               </NavLink>
             </li>
+            <li>
+              <NavLink to={'/stores'} className="sidebar-page-list-item sidebar-store-finder">
+                <i className="fas fa-store-alt" /> Store Finder
+              </NavLink>
+            </li>
           </ul>
         </div>
       </div>
