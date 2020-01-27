@@ -406,6 +406,10 @@ body {
   color: #FCFF54;
 }
 
+.fa-store-alt {
+  color: rgb(255, 88, 88)
+}
+
 
 li a :visited {
   text-decoration: none;
@@ -478,6 +482,19 @@ li a :visited {
 }
 .home-hangouts-list-item:last-child {
   border-bottom: 0;
+}
+
+/* Store Finder Styling */
+.map-container {
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.map-store-info {
+  color: black;
 }
 
 
