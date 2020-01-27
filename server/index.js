@@ -21,7 +21,10 @@ app.get('/api/health-check', (req, res, next) => {
 
 app.get('/api/hangouts', (req, res, next) => {
   if (Object.keys(req.query).length === 0) {
-    const allHangouts = 'select * from "hangouts"';
+    const allHangouts = `
+      select * from "hangouts"
+      order by "startTime" asc
+    `;
     db.query(allHangouts)
       .then(response => {
         const hangoutsResponse = response.rows;
@@ -584,6 +587,21 @@ app.put('/api/hangouts/:hangoutId', (req, res, next) => {
         });
       });
   }
+});
+
+app.post('/api/users', (req, res, next) => {
+  if (!req.body.userName || !req.body.email) {
+    return next(new ClientError('Missing parameters to create Hangout!!', 400));
+  }
+  const userSignUp = `
+    insert into "users" ("userName", "deckArchetype", "mainGameId", "email", "isStoreEmployee")
+    values ($1, $2, $3, $4, $5)
+    returning *
+  `;
+  const params = [req.body.userName, req.body.deckArchetype, req.body.mainGameId, req.body.email, req.body.isStoreEmployee];
+  db.query(userSignUp, params)
+    .then(result => { res.status(201).json(result.rows[0]); })
+    .catch(err => next(err));
 });
 
 app.use('/api', (req, res, next) => {
