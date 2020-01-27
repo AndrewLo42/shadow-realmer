@@ -14,7 +14,7 @@ export default class StoreFinder extends React.Component {
   }
 
   findStores(zipcode) {
-    Geocode.setApiKey('API_KEY');
+    Geocode.setApiKey('AIzaSyAzm3jP30c24nZuF6Ct7PBgCAkxV1lzDuM');
     Geocode.fromAddress(zipcode)
       .then(data => this.setState({ center: data.results[0].geometry.location }));
     fetch(`/api/search/?zipcode=${zipcode}`)
@@ -26,7 +26,7 @@ export default class StoreFinder extends React.Component {
   render() {
     return (
       <>
-        <SearchBar toggleSidebar={this.props.toggleSidebar} history={this.props.history} match={this.props.match} runSearch={this.findStores} placeholder='Enter Zip Code'/>
+        <SearchBar {...this.props} runSearch={this.findStores} placeholder='Enter Zip Code'/>
         <div className="map-container">
           <Map zoom={12} center={this.state.center} stores={this.state.stores} />
         </div>
