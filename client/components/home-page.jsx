@@ -32,39 +32,45 @@ export default class HomePage extends React.Component {
       ? (
         <>
           <SearchBar toggleSidebar={this.props.toggleSidebar} history={this.props.history} placeholder="Yee Dawg" />
-          <div className="title">Events</div>
-          <div className="home-events-carousel-container">
-            <div className="home-events-carousel">
-              {this.state.events.map(event => {
-                const startTime = new Date(event.startTime);
-                // const startTimeMonth = startTime.getMonth() + 1;
-                const dateTimeFormatOptions = {
-                  month: 'short',
-                  day: 'numeric',
-                  hour12: true,
-                  hour: 'numeric',
-                  minute: 'numeric'
-                };
-                const startTimeFormatted = new Intl.DateTimeFormat('en-US', dateTimeFormatOptions).format(startTime);
-                return (
-                  <div className="home-events-carousel-item-container" key={event.eventId}>
-                    <div className="home-events-carousel-item">
-                      <div className="event-placeholder-image" style={{
-                        backgroundColor: 'red',
-                        width: 300,
-                        height: 200
-                      }}></div>
-                      <h2>{event.eventName}</h2>
-                      <h3>{startTimeFormatted}</h3>
+          <div className="home-container">
+            <div className="home-title">Events</div>
+            <div className="home-events-carousel-container">
+              <div className="home-events-carousel">
+                {this.state.events.map(event => {
+                  const startTime = new Date(event.startTime);
+                  // const startTimeMonth = startTime.getMonth() + 1;
+                  const dateTimeFormatOptions = {
+                    month: 'short',
+                    day: 'numeric',
+                    hour12: true,
+                    hour: 'numeric',
+                    minute: 'numeric'
+                  };
+                  const startTimeFormatted = new Intl.DateTimeFormat('en-US', dateTimeFormatOptions).format(startTime);
+                  return (
+                    <div className="home-events-carousel-item-container" key={event.eventId}>
+                      <div className="home-events-carousel-item">
+                        <div className="event-placeholder-image" style={{
+                          backgroundColor: 'red',
+                          width: '100%',
+                          height: 200
+                        }}></div>
+                        <h2>{event.eventName}</h2>
+                        <h3>{startTimeFormatted}</h3>
+                      </div>
                     </div>
-                  </div>
+                  );
+                })}
+              </div>
+            </div>
+            <div className="home-title">Hangouts</div>
+            <div className="home-hangouts-list">
+              {this.state.hangouts.map(hangout => {
+                return (
+                  <div className="home-hangouts-list-item" key={hangout.hangoutId}>{hangout.hangoutName}</div>
                 );
               })}
             </div>
-          </div>
-          <div className="title">Hangouts</div>
-          <div className="home-hangouts-list">
-
           </div>
         </>
       )

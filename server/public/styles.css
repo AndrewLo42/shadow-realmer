@@ -412,11 +412,21 @@ li a :visited {
 }
 
 /* Homepage classes */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.home-title {
+  font-size: 2rem;
+  margin: 10px;
+}
 .home-events-carousel-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 90%;
   height: 400px;
   background-color: coral;
 }
@@ -428,7 +438,7 @@ li a :visited {
 }
 .home-events-carousel-item-container {
   display: inline-block;
-  width: 337.5px;
+  width: 100%;
   height: 350px;
   background-color: lightskyblue;
   margin-right: 30px;
@@ -448,9 +458,26 @@ li a :visited {
 }
 
 .home-hangouts-list {
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 90%;
   height: 200px;
-  background-color: chartreuse;
+  border-radius: 10px;
+  background-color: lightgreen;
+  border: 2px black solid;
+}
+.home-hangouts-list-item {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 2px black solid;
+}
+.home-hangouts-list-item:last-child {
+  border-bottom: 0;
 }
 
 
