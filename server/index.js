@@ -610,6 +610,7 @@ app.put('/api/hangouts/:hangoutId', (req, res, next) => {
       });
   }
 });
+
 app.get('/api/search', (req, res, next) => {
   fetch(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=magic+the+gathering+in+${req.query.zipcode}&radius=50000&key=${process.env.GOOGLE_MAPS_API_KEY}`)
     .then(data => data.json())
