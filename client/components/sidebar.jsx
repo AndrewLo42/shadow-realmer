@@ -20,19 +20,19 @@ const Sidebar = props => {
           </div>
         </div>
         <div className="sidebar-page-list">
-          <ul onClick={handlePageListItemClick}>
-            <li>
-              <NavLink to={'/'} >
+          <ul className="sidebar-list-items" onClick={handlePageListItemClick}>
+            <li >
+              <NavLink to={'/'} className="sidebar-page-list-item sidebar-home" >
                 <i className="fas fa-home" /> Home
               </NavLink>
             </li>
             <li>
-              <NavLink to={'/hangouts'} >
+              <NavLink to={'/hangouts'} className="sidebar-page-list-item sidebar-hangouts">
                 <i className="fas fa-bullhorn"/> Hangouts
               </NavLink>
             </li>
             <li>
-              <NavLink to={'/events'} >
+              <NavLink to={'/events'} className="sidebar-page-list-item sidebar-events">
                 <i className="fas fa-calendar-alt"/> Events
               </NavLink>
             </li>
