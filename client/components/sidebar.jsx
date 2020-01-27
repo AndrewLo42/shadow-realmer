@@ -10,7 +10,7 @@ const Sidebar = props => {
 
   return (
     <>
-      <div className={`sidebar-container ${props.isSidebarHidden ? 'off-screen-left' : null}`}>
+      <div className={`sidebar-container ${props.isSidebarHidden && 'off-screen-left'}`}>
         <i className="sidebar-exit-button fas fa-times" onClick={props.toggleSidebar}></i>
         <div className="sidebar-header">
           <i className="sidebar-user-icon far fa-user-circle"></i>
@@ -40,7 +40,7 @@ const Sidebar = props => {
         </div>
       </div>
       <div
-        className={`sidebar-shadow ${props.isSidebarHidden ? 'shadow-hidden' : null}`}
+        className={`sidebar-shadow ${props.isSidebarHidden && 'shadow-hidden'}`}
         onClick={props.toggleSidebar}>
       </div>
     </>

@@ -453,6 +453,19 @@ li a :visited {
   background-color: chartreuse;
 }
 
+/* Store Finder Styling */
+.map-container {
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.map-store-info {
+  color: black;
+}
+
 
 @keyframes fadein {
   from {opacity: 0;}
