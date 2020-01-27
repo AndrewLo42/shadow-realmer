@@ -196,7 +196,6 @@ app.delete('/api/events/:eventId', (req, res, next) => {
 });
 
 app.get('/api/storeEvents/:', (req, res, next) => {
-
   if (!req.params.storeName) {
     return next(new ClientError('No store name provided.'), 400);
   }

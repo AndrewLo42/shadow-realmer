@@ -1,14 +1,20 @@
 import React from 'react';
 import ShadowRealmerIcon from './shadow-realmer-icon';
 
-export default class SearchBar extends React.Component {
+export default class NavBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      inputText: ''
+      inputText: '',
+      searchBarShowing: false
     };
+    this.toggleSearchBar = this.toggleSearchBar.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleEnterKeyUp = this.handleEnterKeyUp.bind(this);
+  }
+
+  toggleSearchBar() {
+    this.setState({ searchBarShowing: !this.state.searchBarShowing });
   }
 
   handleChange(event) {
@@ -22,16 +28,20 @@ export default class SearchBar extends React.Component {
     if (isEnterKeyPress) {
       this.props.runSearch(this.state.inputText, this.props.match.path);
       this.setState({ inputText: '' });
+      this.toggleSearchBar();
     }
   }
 
   render() {
     return (
-      <div className="search-bar-container">
-        <div className="search-bar">
-          <ShadowRealmerIcon toggleSidebar={this.props.toggleSidebar} />
+      <div className="navbar-container">
+        <div className="navbar">
+          <i className="navbar-sidebar-opener fa fa-bars" onClick={this.props.toggleSidebar} />
+          <ShadowRealmerIcon history={this.props.history} />
+          <i className={`navbar-search fa fa-search ${this.props.match.path === '/' && 'hidden'}`} onClick={this.toggleSearchBar} />
+        </div>
+        <div className={`search-bar-container ${this.state.searchBarShowing && 'show-search-bar'}`}>
           <input className="search-bar-input" placeholder={this.props.placeholder} onChange={this.handleChange} onKeyUp={this.handleEnterKeyUp} value={this.state.inputText} />
-          <span className="add-hangout" onClick={() => this.props.history.push(`/create${this.props.match.path}`)}><i className="fa fa-plus"></i></span>
         </div>
       </div>
     );

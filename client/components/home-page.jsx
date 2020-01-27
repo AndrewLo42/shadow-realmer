@@ -1,5 +1,5 @@
 import React from 'react';
-import SearchBar from './search-bar';
+import NavBar from './search-bar';
 
 export default class HomePage extends React.Component {
   constructor(props) {
@@ -28,10 +28,10 @@ export default class HomePage extends React.Component {
     const haveEventsLoaded = this.state.events.length !== 0;
     const haveHangoutsLoaded = this.state.hangouts !== 0;
 
-    return haveEventsLoaded && haveHangoutsLoaded
-      ? (
+    return haveEventsLoaded && haveHangoutsLoaded &&
+      (
         <>
-          <SearchBar toggleSidebar={this.props.toggleSidebar} history={this.props.history} placeholder="Yee Dawg" />
+          <NavBar {...this.props} placeholder="Yee Dawg" />
           <div className="title">Events</div>
           <div className="home-events-carousel-container">
             <div className="home-events-carousel">
@@ -67,7 +67,6 @@ export default class HomePage extends React.Component {
 
           </div>
         </>
-      )
-      : null;
+      );
   }
 }
