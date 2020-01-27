@@ -361,9 +361,11 @@ body {
   display: flex;
   justify-content: space-between;
   font-size: 30px;
-  margin: 10px 0;
+  margin: 10px 60px 0 0;
   padding: 0 30px;
   cursor: pointer;
+  text-decoration: none;
+  color: white;
 }
 .sidebar-shadow {
   background-color: rgba(0,0,0,0.5);
@@ -384,13 +386,26 @@ body {
   left: -300px;
 }
 
-ul {
+.sidebar-list-items {
   list-style-type: none;
 }
-li a {
-  color: white;
-  text-decoration: none;
+
+.sidebar-user-icon {
+  color: #9984F1;
 }
+
+.fa-home {
+  color: #55FB65;
+}
+
+.fa-bullhorn {
+  color: #57CAFB;
+}
+
+.fa-calendar-alt {
+  color: #FCFF54;
+}
+
 
 li a :visited {
   text-decoration: none;
