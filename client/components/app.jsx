@@ -8,7 +8,7 @@ import {
   Switch,
   Route
 } from 'react-router-dom';
-import FakeHomePage from './placeholder-homepage';
+import HomePage from './home-page';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -30,7 +30,7 @@ export default class App extends React.Component {
       <Router>
         <Sidebar toggleSidebar={this.toggleSidebar} isSidebarHidden={this.state.isSidebarHidden} />
         <Switch>
-          <Route exact path="/" render={props => <FakeHomePage {...props} toggleSidebar={this.toggleSidebar} />} />
+          <Route exact path="/" render={props => <HomePage {...props} toggleSidebar={this.toggleSidebar} />} />
           <Route exact path="/hangouts" render={props => <ListPage {...props} toggleSidebar={this.toggleSidebar} />} />
           <Route exact path="/events" render={props => <ListPage {...props} toggleSidebar={this.toggleSidebar} />} />
           <Route path="/hangouts/:id" component={DetailsPage} />
