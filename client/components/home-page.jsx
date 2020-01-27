@@ -27,18 +27,18 @@ export default class HomePage extends React.Component {
   render() {
     const haveEventsLoaded = this.state.events.length !== 0;
     const haveHangoutsLoaded = this.state.hangouts !== 0;
-
     return haveEventsLoaded && haveHangoutsLoaded &&
       (
         <>
           <SearchBar toggleSidebar={this.props.toggleSidebar} history={this.props.history} placeholder="Yee Dawg" />
           <div className="home-container">
-            <div className="home-title">Events</div>
+            <div className="home-main-title">Welcome to Shadow Realmer</div>
+            <div className="home-main-subtitle">Your one-stop shop for finding trading card meetups.</div>
+            <div className="home-events-title">Events</div>
             <div className="home-events-carousel-container">
               <div className="home-events-carousel">
                 {this.state.events.map(event => {
                   const startTime = new Date(event.startTime);
-                  // const startTimeMonth = startTime.getMonth() + 1;
                   const dateTimeFormatOptions = {
                     month: 'short',
                     day: 'numeric',
@@ -48,26 +48,30 @@ export default class HomePage extends React.Component {
                   };
                   const startTimeFormatted = new Intl.DateTimeFormat('en-US', dateTimeFormatOptions).format(startTime);
                   return (
-                    <div className="home-events-carousel-item-container" key={event.eventId}>
+                    <div
+                      className="home-events-carousel-item-container"
+                      key={event.eventId}
+                      onClick={() => this.props.history.push(`/events/${event.eventId}`)}>
                       <div className="home-events-carousel-item">
-                        <div className="event-placeholder-image" style={{
-                          backgroundColor: 'red',
-                          width: '100%',
-                          height: 200
-                        }}></div>
                         <h2>{event.eventName}</h2>
                         <h3>{startTimeFormatted}</h3>
+                        <p>{event.description}</p>
                       </div>
                     </div>
                   );
                 })}
               </div>
             </div>
-            <div className="home-title">Hangouts</div>
+            <div className="home-hangouts-title">Hangouts</div>
             <div className="home-hangouts-list">
               {this.state.hangouts.map(hangout => {
                 return (
-                  <div className="home-hangouts-list-item" key={hangout.hangoutId}>{hangout.hangoutName}</div>
+                  <div
+                    className="home-hangouts-list-item"
+                    key={hangout.hangoutId}
+                    onClick={() => this.props.history.push(`/hangouts/${hangout.hangoutId}`)}>
+                    {hangout.hangoutName}
+                  </div>
                 );
               })}
             </div>

@@ -422,7 +422,16 @@ li a :visited {
   align-items: center;
   width: 100%;
 }
-.home-title {
+.home-main-title {
+  text-align: center;
+  font-size: 1.5rem;
+}
+.home-main-subtitle {
+  font-size: 0.95rem;
+  text-align: center;
+}
+.home-events-title,
+.home-hangouts-title {
   font-size: 2rem;
   margin: 10px;
 }
@@ -431,7 +440,7 @@ li a :visited {
   justify-content: center;
   align-items: center;
   width: 90%;
-  height: 400px;
+  height: 300px;
   background-color: coral;
 }
 .home-events-carousel {
@@ -443,7 +452,7 @@ li a :visited {
 .home-events-carousel-item-container {
   display: inline-block;
   width: 100%;
-  height: 350px;
+  height: 100%;
   background-color: lightskyblue;
   margin-right: 30px;
 }
@@ -456,9 +465,9 @@ li a :visited {
   align-items: center;
   padding: 10px;
 }
-.home-events-carousel-item > h2,
-.home-events-carousel-item > h3 {
+.home-events-carousel-item > * {
   margin: 15px 0 0;
+  width: 100px;
 }
 
 .home-hangouts-list {
