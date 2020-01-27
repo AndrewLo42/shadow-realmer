@@ -1,3 +1,5 @@
-userId,userName,deckArchetype,mainGameId,email,isStoreEmployee
-1,"""Chad""","""Aggro""",1,"""chad69@gmail.com""",FALSE
-2,"""Brad""","""Control""",1,"""brad420@gmail.com",TRUE
+userId,userName,deckArchetype,mainGameId,email,isStoreEmployee,password,storeName
+1,BrianKibler,Dragons,1,bkibbles@gmail.com,FALSE,dragonsrule,
+2,JimJamFlimFlam,Tron,1,PinkCards@gmail.com,TRUE,nessisgreat,Magic & Monsters
+3,HoogBoog,Sky Strikers,2,bigboihoog@hotmail.com,FALSE,striker,
+4,TheGOAT,Scapegoat Control,2,goatguy@gmail.com,FALSE,goats123,
