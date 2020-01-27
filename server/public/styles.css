@@ -396,8 +396,13 @@ li a :visited {
   padding: 10px;
 }
 .home-events-carousel-item > * {
-  margin: 15px 0 0;
-  width: 100px;
+  margin: 10px 0 0;
+  width: 100%;
+  white-space: normal;
+  text-align: center;
+}
+.home-events-carousel-item > p {
+  font-size: 0.9rem;
 }
 
 .home-hangouts-list {
