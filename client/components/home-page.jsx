@@ -28,8 +28,8 @@ export default class HomePage extends React.Component {
     const haveEventsLoaded = this.state.events.length !== 0;
     const haveHangoutsLoaded = this.state.hangouts !== 0;
 
-    return haveEventsLoaded && haveHangoutsLoaded
-      ? (
+    return haveEventsLoaded && haveHangoutsLoaded &&
+      (
         <>
           <SearchBar toggleSidebar={this.props.toggleSidebar} history={this.props.history} placeholder="Yee Dawg" />
           <div className="title">Events</div>
@@ -67,7 +67,6 @@ export default class HomePage extends React.Component {
 
           </div>
         </>
-      )
-      : null;
+      );
   }
 }

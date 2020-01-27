@@ -13,7 +13,6 @@ export default class ListPage extends React.Component {
   }
 
   getItems(location) {
-
     fetch(`/api${location}/`)
       .then(data => data.json())
       .then(result => this.setState({ events: result }))
@@ -38,8 +37,8 @@ export default class ListPage extends React.Component {
   }
 
   render() {
-    const hangoutList = this.state.events.length > 0 ? this.state.events.map(hangout => <ItemPage hangout={hangout} key={hangout.hangoutId} history={this.props.history} match={this.props.match} />) : null;
-    const eventList = this.state.events.length > 0 ? this.state.events.map(event => <ItemPage event={event} key={event.eventId} history={this.props.history} match={this.props.match} />) : null;
+    const hangoutList = this.state.events.length > 0 && this.state.events.map(hangout => <ItemPage hangout={hangout} key={hangout.hangoutId} history={this.props.history} match={this.props.match} />);
+    const eventList = this.state.events.length > 0 && this.state.events.map(event => <ItemPage event={event} key={event.eventId} history={this.props.history} match={this.props.match} />);
     return (
       <>
         <SearchBar toggleSidebar={this.props.toggleSidebar} history={this.props.history} match={this.props.match} runSearch={this.searchByZip} placeholder="Enter Zip Code"/>
