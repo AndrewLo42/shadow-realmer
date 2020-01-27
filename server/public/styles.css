@@ -396,6 +396,48 @@ li a :visited {
   text-decoration: none;
 }
 
+/* Homepage classes */
+.home-events-carousel-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 400px;
+  background-color: coral;
+}
+.home-events-carousel {
+  width: 90%;
+  height: 90%;
+  overflow: auto;
+  white-space: nowrap;
+}
+.home-events-carousel-item-container {
+  display: inline-block;
+  width: 337.5px;
+  height: 350px;
+  background-color: lightskyblue;
+  margin-right: 30px;
+}
+.home-events-carousel-item-container:last-child {
+  margin-right: 0;
+}
+.home-events-carousel-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+}
+.home-events-carousel-item > h2,
+.home-events-carousel-item > h3 {
+  margin: 15px 0 0;
+}
+
+.home-hangouts-list {
+  width: 100%;
+  height: 200px;
+  background-color: chartreuse;
+}
+
 
 @keyframes fadein {
   from {opacity: 0;}
