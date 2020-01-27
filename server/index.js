@@ -5,6 +5,7 @@ const db = require('./database');
 const ClientError = require('./client-error');
 const staticMiddleware = require('./static-middleware');
 const sessionMiddleware = require('./session-middleware');
+const fetch = require('node-fetch');
 
 const app = express();
 
@@ -195,7 +196,7 @@ app.delete('/api/events/:eventId', (req, res, next) => {
   }
 });
 
-app.get('/api/storeEvents/:', (req, res, next) => {
+app.get('/api/storeEvents/:storeName', (req, res, next) => {
   if (!req.params.storeName) {
     return next(new ClientError('No store name provided.'), 400);
   }
@@ -226,8 +227,8 @@ app.get('/api/events', (req, res, next) => {
     db.query(allEvents)
       .then(response => {
         const eventsResponse = response.rows;
-        if (!eventsResponse) {
-          next(new ClientError(`No Events found. ${req.method} ${req.originalUrl}`, 404));
+        if (eventsResponse.length === 0) {
+          return next(new ClientError(`No Events found. ${req.method} ${req.originalUrl}`, 404));
         } else {
           res.json(eventsResponse);
         }
@@ -272,7 +273,7 @@ app.get('/api/events', (req, res, next) => {
       })
       .catch(err => next(err));
   } else {
-    next(new ClientError('Invalidquery.', 404));
+    next(new ClientError('Invalid query.', 404));
   }
 });
 
@@ -609,22 +610,6 @@ app.put('/api/hangouts/:hangoutId', (req, res, next) => {
       });
   }
 });
-
-app.post('/api/users', (req, res, next) => {
-  if (!req.body.userName || !req.body.email) {
-    return next(new ClientError('Missing parameters to create Hangout!!', 400));
-  }
-  const userSignUp = `
-    insert into "users" ("userName", "deckArchetype", "mainGameId", "email", "isStoreEmployee")
-    values ($1, $2, $3, $4, $5)
-    returning *
-  `;
-  const params = [req.body.userName, req.body.deckArchetype, req.body.mainGameId, req.body.email, req.body.isStoreEmployee];
-  db.query(userSignUp, params)
-    .then(result => { res.status(201).json(result.rows[0]); })
-    .catch(err => next(err));
-});
-
 app.get('/api/search', (req, res, next) => {
   fetch(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=magic+the+gathering+in+${req.query.zipcode}&radius=50000&key=${process.env.GOOGLE_MAPS_API_KEY}`)
     .then(data => data.json())
