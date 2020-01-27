@@ -195,6 +195,28 @@ app.delete('/api/events/:eventId', (req, res, next) => {
   }
 });
 
+app.get('/api/storeEvents/:', (req, res, next) => {
+
+  if (!req.params.storeName) {
+    return next(new ClientError('No store name provided.'), 400);
+  }
+  const storeEvents = `
+    select * from "events"
+    where "storeName" = $1
+    order by "startTime" asc;
+  `;
+  const params = [req.params.storeName];
+  db.query(storeEvents, params)
+    .then(response => {
+      const storeEventsList = response.rows;
+      if (!storeEventsList) {
+        return next(new ClientError('This store has no events'), 404);
+      }
+      res.json(storeEventsList);
+    })
+    .catch(err => next(err));
+});
+
 app.get('/api/events', (req, res, next) => {
   if (Object.keys(req.query).length === 0) {
     const allEvents = `
@@ -251,7 +273,7 @@ app.get('/api/events', (req, res, next) => {
       })
       .catch(err => next(err));
   } else {
-    next(new ClientError('Invalid query.', 404));
+    next(new ClientError('Invalidquery.', 404));
   }
 });
 
