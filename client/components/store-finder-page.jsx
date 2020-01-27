@@ -14,7 +14,7 @@ export default class StoreFinder extends React.Component {
   }
 
   findStores(zipcode) {
-    Geocode.setApiKey('API_KEY!!!!');
+    Geocode.setApiKey('API_KEY');
     Geocode.fromAddress(zipcode)
       .then(data => this.setState({ center: data.results[0].geometry.location }));
     fetch(`/api/search/?zipcode=${zipcode}`)

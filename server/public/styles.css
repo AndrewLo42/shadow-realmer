@@ -406,6 +406,10 @@ body {
   color: #FCFF54;
 }
 
+.fa-store-alt {
+  color: rgb(255, 88, 88)
+}
+
 
 li a :visited {
   text-decoration: none;

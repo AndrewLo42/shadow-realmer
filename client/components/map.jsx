@@ -36,7 +36,7 @@ const WrappedMap = withScriptjs(withGoogleMap(MapView));
 export default function Map(props) {
   return (
     <WrappedMap
-      googleMapURL={'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=API_KEY!!!!'}
+      googleMapURL={'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=API_KEY'}
       loadingElement={<div style={{ height: '100%' }} />}
       containerElement={<div style={{ height: '100%' }} />}
       mapElement={<div style={{ height: '100%' }} />}
