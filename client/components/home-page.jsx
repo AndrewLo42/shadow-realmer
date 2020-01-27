@@ -1,5 +1,5 @@
 import React from 'react';
-import SearchBar from './search-bar';
+import NavBar from './search-bar';
 
 export default class HomePage extends React.Component {
   constructor(props) {
@@ -30,11 +30,9 @@ export default class HomePage extends React.Component {
     return haveEventsLoaded && haveHangoutsLoaded &&
       (
         <>
-          <SearchBar toggleSidebar={this.props.toggleSidebar} history={this.props.history} placeholder="Yee Dawg" />
+          <NavBar {...this.props} placeholder="Yee Dawg" />
           <div className="home-container">
-            <div className="home-main-title">Welcome to Shadow Realmer</div>
-            <div className="home-main-subtitle">Your one-stop shop for finding trading card meetups.</div>
-            <div className="home-events-title">Events</div>
+            <div className="title">Events</div>
             <div className="home-events-carousel-container">
               <div className="home-events-carousel">
                 {this.state.events.map(event => {
@@ -53,9 +51,9 @@ export default class HomePage extends React.Component {
                       key={event.eventId}
                       onClick={() => this.props.history.push(`/events/${event.eventId}`)}>
                       <div className="home-events-carousel-item">
-                        <h2>{event.eventName}</h2>
-                        <h3>{startTimeFormatted}</h3>
-                        <p>{event.description}</p>
+                        <h2>{event.eventName.slice(1, -1)}</h2>
+                        <h4>{startTimeFormatted}</h4>
+                        <p>{event.description.slice(1, -1)}</p>
                       </div>
                     </div>
                   );
