@@ -11,6 +11,7 @@ import {
 } from 'react-router-dom';
 import HomePage from './home-page';
 import StoreFinder from './store-finder-page';
+import StoreDetailsPage from './store-details-page';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -40,6 +41,7 @@ export default class App extends React.Component {
           <Route path="/create/hangouts" component={CreatePage} />
           <Route path="/create/events" component={CreatePage} />
           <Route path='/stores' render={props => <StoreFinder {...props} toggleSidebar={this.toggleSidebar} />} />
+          <Route path="/store/:name" component={StoreDetailsPage} />
         </Switch>
       </Router>
     );

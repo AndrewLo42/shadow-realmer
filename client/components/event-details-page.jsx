@@ -1,7 +1,7 @@
 import React from 'react';
 import Map from './map';
 
-export default class HangoutDetailsPage extends React.Component {
+export default class EventDetailsPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -57,12 +57,13 @@ function EventDetails(props) {
         {props.address.geometry && <Map zoom={14} center={props.address.geometry.location} stores={[props.address]} />}
       </div>
       <div className="details-main">
-        <h1 className="details-title">{props.details.hangoutName}</h1>
+        <h1 className="details-title">{props.details.eventName}</h1>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <h3>{startTimeFormatted}</h3>
-          <h3>{props.details.gameFormat}</h3>
+          <h4>{startTimeFormatted}</h4>
+          <h4>{props.details.gameFormat}</h4>
         </div>
         <p>{props.details.description}</p>
+        <h3 className="details-title">Fee: ${props.details.entranceFee}</h3>
       </div>
       <div className="details-footer">
         <h2 className="details-contact-info-title">Store Info</h2>

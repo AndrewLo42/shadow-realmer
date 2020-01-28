@@ -1,5 +1,6 @@
 import React from 'react';
 import { GoogleMap, withScriptjs, withGoogleMap, Marker, InfoWindow, Circle } from 'react-google-maps';
+import { NavLink } from 'react-router-dom';
 
 class MapView extends React.Component {
   constructor(props) {
@@ -35,6 +36,9 @@ class MapView extends React.Component {
           <div className="map-store-info">
             <h2>{this.state.selectedStore.name}</h2>
             <p>{this.state.selectedStore.formatted_address}</p>
+            <NavLink to={`/store/${this.state.selectedStore.name}`}>
+              <div className="small-text">More Info</div>
+            </NavLink>
           </div>
         </InfoWindow>
         }
