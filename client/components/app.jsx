@@ -1,6 +1,7 @@
 import React from 'react';
 import ListPage from './list-page';
-import DetailsPage from './details-page';
+import HangoutDetailsPage from './hangout-details-page';
+import EventDetailsPage from './event-details-page';
 import CreatePage from './create-page';
 import Sidebar from './sidebar';
 import {
@@ -34,8 +35,8 @@ export default class App extends React.Component {
           <Route exact path="/" render={props => <HomePage {...props} toggleSidebar={this.toggleSidebar} />} />
           <Route exact path="/hangouts" render={props => <ListPage {...props} toggleSidebar={this.toggleSidebar} />} />
           <Route exact path="/events" render={props => <ListPage {...props} toggleSidebar={this.toggleSidebar} />} />
-          <Route path="/hangouts/:id" component={DetailsPage} />
-          <Route path="/events/:id" component={DetailsPage} />
+          <Route path="/hangouts/:id" component={HangoutDetailsPage} />
+          <Route path="/events/:id" component={EventDetailsPage} />
           <Route path="/create/hangouts" component={CreatePage} />
           <Route path="/create/events" component={CreatePage} />
           <Route path='/stores' render={props => <StoreFinder {...props} toggleSidebar={this.toggleSidebar} />} />

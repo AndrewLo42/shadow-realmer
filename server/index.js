@@ -220,9 +220,8 @@ app.get('/api/storeEvents/:storeName', (req, res, next) => {
 app.get('/api/events', (req, res, next) => {
   if (Object.keys(req.query).length === 0) {
     const allEvents = `
-      select "e".*, "s"."storeName"
+      select "e".*
       from "events" as "e"
-      join "stores" as "s" on "s"."storeId" = "e"."storeId"
     `;
     db.query(allEvents)
       .then(response => {
@@ -237,9 +236,8 @@ app.get('/api/events', (req, res, next) => {
   } else if (req.query.id) {
     const parsedEventId = parseInt(req.query.id);
     const eventDetails = `
-      select "e".*, "s"."storeName"
+      select "e".*
       from "events" as "e"
-      join "stores" as "s" on "s"."storeId" = "e"."storeId"
       where "eventId" = $1
     `;
     const values = [parsedEventId];
@@ -620,6 +618,13 @@ app.get('/api/search', (req, res, next) => {
 
 app.get('/api/zipcode', (req, res, next) => {
   fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${req.query.zipcode}&key=${process.env.GOOGLE_MAPS_API_KEY}`)
+    .then(data => data.json())
+    .then(results => res.json(results))
+    .catch(err => console.error(err));
+});
+
+app.get('/api/address', (req, res, next) => {
+  fetch(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=${req.query.storeName}&key=${process.env.GOOGLE_MAPS_API_KEY}`)
     .then(data => data.json())
     .then(results => res.json(results))
     .catch(err => console.error(err));

@@ -78,29 +78,3 @@ function HangoutDetails(props) {
     </div>
   );
 }
-
-// function EventDetails(props) {
-//   const date = new Date(props.details.startTime);
-//   const day = dayOfWeek(date);
-//   const time = `${date.getHours()}:${date.getMinutes()}`;
-//   return (
-//     <div className="details-container">
-//       <div className="details-header">
-//         <i className="fas fa-angle-double-left" onClick={() => props.history.goBack()}></i>
-//         <i className="fas fa-poo-storm"></i>
-//       </div>
-//       <div className="details-main">
-//         <h1 className="details-title">{props.details.hangoutName}</h1>
-//         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-//           <h3>{day} {time}</h3>
-//           <h3>{props.details.gameFormat}</h3>
-//         </div>
-//         <p>{props.details.description}</p>
-//       </div>
-//       <div className="details-footer">
-//         <h2 className="details-contact-info-title">Store Info</h2>
-//         <h4>{props.details.contactInfo}</h4>
-//       </div>
-//     </div>
-//   );
-// }
