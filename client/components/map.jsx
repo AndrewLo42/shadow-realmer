@@ -9,15 +9,13 @@ class MapView extends React.Component {
   }
 
   checkForHangouts() {
-    if (this.props.match) {
-      if (this.props.match.path.includes('hangout')) {
-        return <Circle
-          center={this.props.center}
-          radius={1250}
-          defaultOptions={{
-            fillColor: '#9984F1'
-          }} />;
-      }
+    if (window.location.pathname.includes('hangout')) {
+      return <Circle
+        center={this.props.center}
+        radius={1250}
+        defaultOptions={{
+          fillColor: '#9984F1'
+        }} />;
     }
   }
 
@@ -58,7 +56,6 @@ export default function Map(props) {
       zoom={props.zoom}
       center={props.center}
       stores={props.stores}
-      match={props.match}
     />
   );
 }

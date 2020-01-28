@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default function ItemPage(props) {
-  return props.match.path.includes('/hangouts') ? <HangoutItem hangout={props.hangout} history={props.history} /> : <EventItem event={props.event} history={props.history} />;
+  return window.location.pathname.includes('/hangouts') ? <HangoutItem hangout={props.hangout} history={props.history} /> : <EventItem event={props.event} history={props.history} />;
 }
 
 function HangoutItem(props) {
