@@ -56,7 +56,7 @@ export default class HomePage extends React.Component {
                       key={event.eventId}
                       onClick={() => this.props.history.push(`/events/${event.eventId}`)}>
                       <div className="home-events-carousel-item">
-                        <h2>{event.eventName.slice(1, -1)}</h2>
+                        <h2>{event.eventName}</h2>
                         <h4>{startTimeFormatted}</h4>
                         <p>{`${gameType} – ${event.gameFormat.slice(1, -1)}`}</p>
                       </div>
