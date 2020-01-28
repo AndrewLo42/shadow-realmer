@@ -61,16 +61,23 @@ body {
 
 .add-button {
   font-size: 1.5rem;
-  position: absolute;
-  right: 37px;
-  top: 85px;
+}
+
+.back-button {
+  font-size: 2rem;
 }
 
 .title-container {
   display: flex;
   flex-flow: row;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
+}
+
+.amount-of-events {
+  font-size: 0.75rem;
+  color: rgb(128, 128, 128);
+  text-align: center;
 }
 
 .event-title {
@@ -79,7 +86,7 @@ body {
 }
 
 .store-name {
-  color: rgb(128, 128, 128);;
+  color: rgb(128, 128, 128);
 }
 
 .event-icon-container {
