@@ -12,13 +12,7 @@ const Sidebar = props => {
     <>
       <div className={`sidebar-container ${props.isSidebarHidden && 'off-screen-left'}`}>
         <i className="sidebar-exit-button fas fa-times" onClick={props.toggleSidebar}></i>
-        <NavLink to={'/account/'} className="sidebar-header" onClick={props.toggleSidebar}>
-          <i className="user-icon far fa-user-circle"></i>
-          <div className="user-info">
-            <h2>User Name</h2>
-            <h4>User Game || User Deck</h4>
-          </div>
-        </NavLink>
+        {props.user ? <UserLoggedIn toggleSidebar={props.toggleSidebar} /> : <NoUserLoggedIn toggleSidebar={props.toggleSidebar} />}
         <div className="sidebar-page-list">
           <ul className="sidebar-list-items" onClick={handlePageListItemClick}>
             <li >
@@ -53,3 +47,26 @@ const Sidebar = props => {
 };
 
 export default Sidebar;
+
+function UserLoggedIn(props) {
+  return (
+    <NavLink to={'/account/'} className="sidebar-header" onClick={props.toggleSidebar}>
+      <i className="user-icon far fa-user-circle"></i>
+      <div className="user-info">
+        <h2>User Name</h2>
+        <h4>User Game || User Deck</h4>
+      </div>
+    </NavLink>
+  );
+}
+
+function NoUserLoggedIn(props) {
+  return (
+    <NavLink to={'/log-in/'} className="sidebar-header" onClick={props.toggleSidebar}>
+      <i className="user-icon far fa-user-circle"></i>
+      <div className="user-info">
+        <h3>Log In || Sign Up</h3>
+      </div>
+    </NavLink>
+  );
+}

@@ -58,7 +58,7 @@ export default class HomePage extends React.Component {
                       <div className="home-events-carousel-item">
                         <h2>{event.eventName}</h2>
                         <h4>{startTimeFormatted}</h4>
-                        <p>{`${gameType} – ${event.gameFormat.slice(1, -1)}`}</p>
+                        <p>{`${gameType} – ${event.gameFormat}`}</p>
                       </div>
                     </div>
                   );

@@ -14,14 +14,17 @@ import StoreFinder from './store-finder-page';
 import StoreDetailsPage from './store-details-page';
 import AccountPage from './account-page';
 import AccountSettings from './account-settings-page';
+import LogInPage from './log-in-page';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isSidebarHidden: true
+      isSidebarHidden: true,
+      user: null
     };
     this.toggleSidebar = this.toggleSidebar.bind(this);
+    this.logInUser = this.logInUser.bind(this);
   }
 
   toggleSidebar() {
@@ -30,10 +33,14 @@ export default class App extends React.Component {
     }));
   }
 
+  logInUser(user) {
+    this.setState({ user });
+  }
+
   render() {
     return (
       <Router>
-        <Sidebar toggleSidebar={this.toggleSidebar} isSidebarHidden={this.state.isSidebarHidden} />
+        <Sidebar toggleSidebar={this.toggleSidebar} user={this.state.user} isSidebarHidden={this.state.isSidebarHidden} />
         <Switch>
           <Route exact path="/" render={props => <HomePage {...props} toggleSidebar={this.toggleSidebar} />} />
           <Route exact path="/hangouts" render={props => <ListPage {...props} toggleSidebar={this.toggleSidebar} />} />
@@ -46,6 +53,7 @@ export default class App extends React.Component {
           <Route path="/create/events" component={CreatePage} />
           <Route path='/stores' render={props => <StoreFinder {...props} toggleSidebar={this.toggleSidebar} />} />
           <Route path="/store/:name" component={StoreDetailsPage} />
+          <Route path="/log-in" render={props => <LogInPage {...props} logInUser={this.logInUser} />} />
         </Switch>
       </Router>
     );

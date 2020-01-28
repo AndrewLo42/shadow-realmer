@@ -223,6 +223,7 @@ app.get('/api/events', (req, res, next) => {
     const allEvents = `
       select "e".*
       from "events" as "e"
+      order by "startTime" asc
     `;
     db.query(allEvents)
       .then(response => {
@@ -611,7 +612,7 @@ app.put('/api/hangouts/:hangoutId', (req, res, next) => {
 });
 
 app.get('/api/search', (req, res, next) => {
-  fetch(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=magic+the+gathering+in+${req.query.zipcode}&radius=30000&key=${process.env.GOOGLE_MAPS_API_KEY}`)
+  fetch(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=magic+the+gathering+in+${req.query.zipcode}&radius=50000&key=${process.env.GOOGLE_MAPS_API_KEY}`)
     .then(data => data.json())
     .then(results => res.json(results))
     .catch(err => console.error(err));
@@ -671,8 +672,25 @@ app.post('/api/usersLogin', (req, res, next) => {
       const hash = result.rows;
       bcrypt.compare(myPlaintextPassword, hash[0].password)
         .then(response => {
-          res.json(response);
+          if (response === true) {
+            res.json(result.rows[0]);
+          } else {
+            next(new ClientError('Incorrect password or username', 400));
+          }
         });
+    })
+    .catch(err => next(err));
+});
+
+app.get('/api/userNameCheck', (req, res, next) => {
+  const checkUserName =
+    'select exists(select 1 from "users" where "userName"=$1)';
+  const inputtedUserName = [req.body.userName];
+
+  db.query(checkUserName, inputtedUserName)
+    .then(result => {
+      const userNameCheck = result.rows[0];
+      res.json(userNameCheck);
     })
     .catch(err => next(err));
 });
