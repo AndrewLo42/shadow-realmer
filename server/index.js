@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 require('dotenv/config');
 const express = require('express');
 
@@ -6,12 +7,12 @@ const ClientError = require('./client-error');
 const staticMiddleware = require('./static-middleware');
 const sessionMiddleware = require('./session-middleware');
 const fetch = require('node-fetch');
+const bcrypt = require('bcrypt');
 
 const app = express();
 
 app.use(staticMiddleware);
 app.use(sessionMiddleware);
-
 app.use(express.json());
 
 app.get('/api/health-check', (req, res, next) => {
@@ -592,6 +593,56 @@ app.get('/api/search', (req, res, next) => {
     .then(data => data.json())
     .then(results => res.json(results))
     .catch(err => console.error(err));
+});
+
+app.post('/api/users', (req, res, next) => {
+  const saltRounds = 12;
+  const text = `insert into "users" ("userName", "deckArchetype", "mainGameId", "email", "isStoreEmployee", "password")
+                values($1, $2, $3, $4, $5, $6)
+                returning *`;
+
+  bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
+    const values = [
+      req.body.userName,
+      req.body.deckArchetype,
+      req.body.mainGameId,
+      req.body.email,
+      req.body.isStoreEmployee,
+      hash
+    ];
+    db.query(text, values)
+      .then(result => {
+        const user = result.rows;
+        res.json(user);
+      })
+      .catch(err => {
+        console.error(err);
+        res.status(500).json({
+          error: 'An unexpected error occured.'
+        });
+      });
+    console.error(err);
+  });
+});
+
+app.post('/api/usersLogin', (req, res, next) => {
+  const myPlaintextPassword = req.body.password;
+  const valuesArr = [req.body.userName];
+  const getHash = 'select * from "users" where "userName"=$1';
+
+  db.query(getHash, valuesArr)
+    .then(result => {
+      const hash = result.rows;
+      // console.log(hash);
+      bcrypt.compare(myPlaintextPassword, hash[0].password, function (err, res) {
+        if (err) throw err;
+        console.log(res);
+      });
+    })
+    .then(res => {
+      // res.json();
+      console.log(res);
+    });
 });
 
 app.use('/api', (req, res, next) => {
