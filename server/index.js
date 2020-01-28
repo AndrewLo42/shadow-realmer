@@ -682,6 +682,19 @@ app.post('/api/usersLogin', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/api/userNameCheck', (req, res, next) => {
+  const checkUserName =
+    'select exists(select 1 from "users" where "userName"=$1)';
+  const inputtedUserName = [req.body.userName];
+
+  db.query(checkUserName, inputtedUserName)
+    .then(result => {
+      const userNameCheck = result.rows[0];
+      res.json(userNameCheck);
+    })
+    .catch(err => next(err));
+});
+
 app.use('/api', (req, res, next) => {
   next(new ClientError(`cannot ${req.method} ${req.originalUrl}`, 404));
 });
