@@ -49,7 +49,7 @@ export default class App extends React.Component {
           <Route path="/create/events" component={CreatePage} />
           <Route path='/stores' render={props => <StoreFinder {...props} toggleSidebar={this.toggleSidebar} />} />
           <Route path="/store/:name" component={StoreDetailsPage} />
-          <Route path="/log-in" render={props => <LogInPage {...props} signInUser={this.signInUser} />} />
+          <Route path="/log-in" render={props => <LogInPage {...props} logInUser={this.logInUser} />} />
         </Switch>
       </Router>
     );
