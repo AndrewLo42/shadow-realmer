@@ -1,7 +1,6 @@
 import React from 'react';
-import SearchBar from './search-bar';
+import NavBar from './navbar';
 import Map from './map';
-import Geocode from 'react-geocode';
 
 export default class StoreFinder extends React.Component {
   constructor(props) {
@@ -14,19 +13,23 @@ export default class StoreFinder extends React.Component {
   }
 
   findStores(zipcode) {
-    Geocode.setApiKey('AIzaSyAzm3jP30c24nZuF6Ct7PBgCAkxV1lzDuM');
-    Geocode.fromAddress(zipcode)
-      .then(data => this.setState({ center: data.results[0].geometry.location }));
-    fetch(`/api/search/?zipcode=${zipcode}`)
-      .then(data => data.json())
-      .then(results => this.setState({ stores: results.results }))
+    const getCenter = fetch(`/api/zipcode/?zipcode=${zipcode}`).then(res => res.json());
+    const getResults = fetch(`/api/search/?zipcode=${zipcode}`).then(res => res.json());
+    Promise
+      .all([getCenter, getResults])
+      .then(result => {
+        this.setState({
+          center: result[0].results[0].geometry.location,
+          stores: result[1].results
+        });
+      })
       .catch(err => console.error(err));
   }
 
   render() {
     return (
       <>
-        <SearchBar {...this.props} runSearch={this.findStores} placeholder='Enter Zip Code'/>
+        <NavBar {...this.props} runSearch={this.findStores} placeholder='Enter Zip Code'/>
         <div className="map-container">
           <Map zoom={12} center={this.state.center} stores={this.state.stores} />
         </div>

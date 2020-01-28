@@ -327,30 +327,21 @@ COPY public.events ("eventId", "eventName", "startTime", description, "gameForma
 7	Friday Night Magic	2020-02-07 07:00:00	Awesome Friday Night Magic! Whoo! We'll have a great time doing CHAOS DRAFT!  Prizing will depend on how many people enter, but will be store credit! FNM promo cards will be handed out randomly depending on our stock! 	Draft	1	15	Guardian Games
 8	Pioneer Weekly!	2020-02-15 07:00:00	 Our Pioneer weekly is here!  Proxies add +$1 to your entrance fee. Prize distribution depends on how many people join, we'll talk about it in store. Prize will be store credit, though! 	Pioneer	1	10	Guardian Games
 \.
-
-
 --
 -- Data for Name: game; Type: TABLE DATA; Schema: public; Owner: -
 --
-
 COPY public.game ("gameId", "gameName") FROM stdin;
 1	Magic The Gathering
 2	Yu-Gi-Oh
 \.
-
-
 --
 -- Data for Name: hangoutAttendees; Type: TABLE DATA; Schema: public; Owner: -
 --
-
 COPY public."hangoutAttendees" ("userId", "hangoutId") FROM stdin;
 \.
-
-
 --
 -- Data for Name: hangouts; Type: TABLE DATA; Schema: public; Owner: -
 --
-
 COPY public.hangouts ("hangoutId", "hangoutName", "hostId", "startTime", description, "gameFormat", "gameId", zipcode, "contactInfo") FROM stdin;
 1	Shadow Realm DUEL 	2	2020-01-30 03:00:00	Fight me	Yu-Gi-Oh	2	10280	949-420-6969
 2	Magic and Chill	1	2020-01-29 04:20:00	We play some Magic, then we chill. Haha, jk... unless? Hit me up though.	Pioneer	1	92618	618-897-5672
@@ -359,7 +350,7 @@ COPY public.hangouts ("hangoutId", "hangoutName", "hostId", "startTime", descrip
 5	Magic and Chill	1	2020-02-16 18:40:00	We play some Magic, then we chill. Haha, jk... unless? Hit me up though.	Pioneer	1	92618	618-897-5672
 6	Magic and Chill	1	2020-02-23 16:20:00	We play some Magic, then we chill. Haha, jk... unless? Hit me up though.	Pioneer	1	92618	618-897-5672
 7	Shadow Realm DUEL 	2	2020-02-17 13:00:00	Fight me. 	Yu-Gi-Oh	2	10280	949-420-6969
-8	Casual Magic	4	2020-02-18 16:00:00	I just want to play some casual Magic. Anyone is welcome! 	Casual	1	94105	 (312)-785-9934 
+8	Casual Magic	4	2020-02-18 16:00:00	I just want to play some casual Magic. Anyone is welcome! 	Casual	1	94105	 (312)-785-9934
 9	Commander Circle	5	2020-02-17 12:00:00	Casual Commander! Please no cEDH decks... 	Commander	1	10280	714-231-6434
 10	Casual Magic	4	2020-02-18 16:00:00	I just want to play some casual Magic. Anyone is welcome! Let me know !	Casual	1	92618	dragonmasterknight#3122
 11	Casual Magic	4	2020-02-25 16:00:00	I just want to play some casual Magic. Anyone is welcome! Let me know!	Casual	1	94105	714-231-6434
@@ -372,12 +363,9 @@ COPY public.hangouts ("hangoutId", "hangoutName", "hostId", "startTime", descrip
 22	David's Magic Dungeon	0	2020-02-28 18:00:00	Come to my den for some good magic fun!	Yu-Gi-Oh	2	92677	koreanman#1512
 23	Magic Dunkey	0	2020-02-15 12:30:00	We should all play some Magic!	Casual	1	94105	toaster#1451
 \.
-
-
 --
 -- Data for Name: stores; Type: TABLE DATA; Schema: public; Owner: -
 --
-
 COPY public.stores ("storeId", "storeName", long, lat, "openingTime", "closingTime", website, "phoneNumber") FROM stdin;
 1	"Yeezy Cards"	-116.515961	33.776993	10	8	"www.yeezycards.ye"	"(808) - 350 - 7500"
 2	"Down B Cards"	-118.546265	34.390118	12	10	"www.downbcards.com"	"(420) - 234 - 1221"
@@ -385,8 +373,6 @@ COPY public.stores ("storeId", "storeName", long, lat, "openingTime", "closingTi
 4	"Poop Storm Cards"	-118.236214	34.103405	11	7	"www.poopstormcards.art"	"(699) - 420 - 6996"
 5	"Fieri Cards"	-118.287399	34.090885	9	12	"www.fiericards.guy"	"(345) - 431 - 9786"
 \.
-
-
 --
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: -
 --
@@ -397,115 +383,72 @@ COPY public.users ("userId", "userName", "deckArchetype", "mainGameId", email, "
 3	HoogBoog	Sky Strikers	2	bigboihoog@hotmail.com	f	striker	\N
 4	TheGOAT	Scapegoat Control	2	goatguy@gmail.com	f	goats123	\N
 \.
-
-
 --
 -- Name: events_eventId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public."events_eventId_seq"', 8, true);
 
-
 --
 -- Name: game_gameId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
-
 SELECT pg_catalog.setval('public."game_gameId_seq"', 2, true);
-
-
 --
 -- Name: hangouts_hangoutId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
-
 SELECT pg_catalog.setval('public."hangouts_hangoutId_seq"', 23, true);
-
-
 --
 -- Name: stores_storeId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
-
 SELECT pg_catalog.setval('public."stores_storeId_seq"', 1, false);
-
-
 --
 -- Name: users_userId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
-
 SELECT pg_catalog.setval('public."users_userId_seq"', 2, true);
-
-
 --
 -- Name: eventAttendees eventAttendees_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
-
 ALTER TABLE ONLY public."eventAttendees"
     ADD CONSTRAINT "eventAttendees_pkey" PRIMARY KEY ("eventId", "userId");
-
-
 --
 -- Name: events events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
-
 ALTER TABLE ONLY public.events
     ADD CONSTRAINT events_pkey PRIMARY KEY ("eventId");
-
-
 --
 -- Name: game game_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
-
 ALTER TABLE ONLY public.game
     ADD CONSTRAINT game_pkey PRIMARY KEY ("gameId");
-
-
 --
 -- Name: hangouts hangouts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
-
 ALTER TABLE ONLY public.hangouts
     ADD CONSTRAINT hangouts_pkey PRIMARY KEY ("hangoutId");
-
-
 --
 -- Name: stores stores_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
-
 ALTER TABLE ONLY public.stores
     ADD CONSTRAINT stores_pkey PRIMARY KEY ("storeId");
-
-
 --
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
-
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY ("userId");
-
-
 --
 -- Name: hangoutAttendees hangoutAttendees_hangoutId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
-
 ALTER TABLE ONLY public."hangoutAttendees"
     ADD CONSTRAINT "hangoutAttendees_hangoutId_fkey" FOREIGN KEY ("hangoutId") REFERENCES public.hangouts("hangoutId");
-
-
 --
 -- Name: hangoutAttendees hangoutAttendees_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
-
 ALTER TABLE ONLY public."hangoutAttendees"
     ADD CONSTRAINT "hangoutAttendees_userId_fkey" FOREIGN KEY ("userId") REFERENCES public.users("userId");
-
-
 --
 -- Name: SCHEMA public; Type: ACL; Schema: -; Owner: -
 --
-
 GRANT ALL ON SCHEMA public TO PUBLIC;
-
-
 --
 -- PostgreSQL database dump complete
 --
-

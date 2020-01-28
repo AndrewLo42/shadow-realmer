@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 require('dotenv/config');
 const express = require('express');
 
@@ -6,12 +7,12 @@ const ClientError = require('./client-error');
 const staticMiddleware = require('./static-middleware');
 const sessionMiddleware = require('./session-middleware');
 const fetch = require('node-fetch');
+const bcrypt = require('bcrypt');
 
 const app = express();
 
 app.use(staticMiddleware);
 app.use(sessionMiddleware);
-
 app.use(express.json());
 
 app.get('/api/health-check', (req, res, next) => {
@@ -220,9 +221,8 @@ app.get('/api/storeEvents/:storeName', (req, res, next) => {
 app.get('/api/events', (req, res, next) => {
   if (Object.keys(req.query).length === 0) {
     const allEvents = `
-      select "e".*, "s"."storeName"
+      select "e".*
       from "events" as "e"
-      join "stores" as "s" on "s"."storeId" = "e"."storeId"
     `;
     db.query(allEvents)
       .then(response => {
@@ -237,9 +237,8 @@ app.get('/api/events', (req, res, next) => {
   } else if (req.query.id) {
     const parsedEventId = parseInt(req.query.id);
     const eventDetails = `
-      select "e".*, "s"."storeName"
+      select "e".*
       from "events" as "e"
-      join "stores" as "s" on "s"."storeId" = "e"."storeId"
       where "eventId" = $1
     `;
     const values = [parsedEventId];
@@ -612,10 +611,70 @@ app.put('/api/hangouts/:hangoutId', (req, res, next) => {
 });
 
 app.get('/api/search', (req, res, next) => {
-  fetch(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=magic+the+gathering+in+${req.query.zipcode}&radius=50000&key=${process.env.GOOGLE_MAPS_API_KEY}`)
+  fetch(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=magic+the+gathering+in+${req.query.zipcode}&radius=30000&key=${process.env.GOOGLE_MAPS_API_KEY}`)
     .then(data => data.json())
     .then(results => res.json(results))
     .catch(err => console.error(err));
+});
+
+app.get('/api/zipcode', (req, res, next) => {
+  fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${req.query.zipcode}&key=${process.env.GOOGLE_MAPS_API_KEY}`)
+    .then(data => data.json())
+    .then(results => res.json(results))
+    .catch(err => console.error(err));
+});
+
+app.get('/api/address', (req, res, next) => {
+  fetch(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=${req.query.storeName}&key=${process.env.GOOGLE_MAPS_API_KEY}`)
+    .then(data => data.json())
+    .then(results => res.json(results))
+    .catch(err => console.error(err));
+});
+
+app.post('/api/users', (req, res, next) => {
+  const saltRounds = 12;
+  const text = `insert into "users" ("userName", "deckArchetype", "mainGameId", "email", "isStoreEmployee", "password")
+                values($1, $2, $3, $4, $5, $6)
+                returning *`;
+
+  bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
+    const values = [
+      req.body.userName,
+      req.body.deckArchetype,
+      req.body.mainGameId,
+      req.body.email,
+      req.body.isStoreEmployee,
+      hash
+    ];
+    db.query(text, values)
+      .then(result => {
+        const user = result.rows;
+        res.json(user);
+      })
+      .catch(err => {
+        console.error(err);
+        res.status(500).json({
+          error: 'An unexpected error occured.'
+        });
+      });
+    console.error(err);
+  });
+});
+
+app.post('/api/usersLogin', (req, res, next) => {
+  const myPlaintextPassword = req.body.password;
+  const valuesArr = [req.body.userName];
+  const getHash = 'select * from "users" where "userName"=$1';
+
+  db.query(getHash, valuesArr)
+    .then(result => {
+      const hash = result.rows;
+      bcrypt.compare(myPlaintextPassword, hash[0].password)
+        .then(response => {
+          res.json(response);
+        });
+    })
+    .catch(err => next(err));
 });
 
 app.use('/api', (req, res, next) => {

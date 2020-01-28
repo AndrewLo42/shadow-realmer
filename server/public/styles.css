@@ -79,9 +79,7 @@ body {
 }
 
 .store-name {
-  font-size: 1rem;
   color: rgb(128, 128, 128);;
-
 }
 
 .event-icon-container {
@@ -110,39 +108,62 @@ body {
 }
 
 .details-container {
-  padding: 30px;
   height: 100vh;
   width: 100vw;
 }
 .details-header {
+  padding: 0 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  height: 10%;
 }
 .details-header > * {
   font-size: 3rem;
 }
+
+.details-map {
+  height: 35%;
+  width: 100%;
+}
+
 .details-main {
+  padding: 0 30px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 50%;
+  height: 30%;
   width: 100%;
 }
-.details-main * {
-  margin: 5px 0;
+.details-main *,
+.details-footer *,
+.store-details-main * {
+  text-align: center;
+  margin: 3px 0;
 }
 .details-footer {
-  height: 40%;
+  padding: 0 30px;
+  height: 25%;
   width: 100%;
 }
-.details-footer * {
-  margin: 5px 0;
-}
+
 .details-title,
 .details-contact-info-title {
   text-align: center;
+}
+
+.store-details-main {
+  padding: 0 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 20%;
+  width: 100%;
+}
+
+.store-details-footer {
+  width: 100%;
 }
 
 /* Create Hangouts Page */
@@ -443,6 +464,7 @@ li a :visited {
 
 .map-store-info {
   color: black;
+  text-align: center;
 }
 
 
