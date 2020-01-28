@@ -111,16 +111,19 @@ body {
   height: 100vh;
   width: 100vw;
 }
-.details-header {
+.details-header,
+.account-page-header {
   padding: 0 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
   height: 10%;
-}
-.details-header > * {
   font-size: 3rem;
+}
+
+.account-page-header {
+  margin-top: 5%;
 }
 
 .details-map {
@@ -128,7 +131,8 @@ body {
   width: 100%;
 }
 
-.details-main {
+.details-main,
+.account-page-main {
   padding: 0 30px;
   display: flex;
   flex-direction: column;
@@ -142,7 +146,8 @@ body {
   text-align: center;
   margin: 3px 0;
 }
-.details-footer {
+.details-footer,
+.account-page-footer {
   padding: 0 30px;
   height: 25%;
   width: 100%;
@@ -289,16 +294,18 @@ body {
   align-items: center;
   margin-bottom: 25px;
   padding: 30px;
+  text-decoration: none;
+  color: white;
 }
 .sidebar-user-icon {
   font-size: 50px;
 }
-.sidebar-user-info {
+.user-info {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.sidebar-user-info > * {
+.user-info > * {
   margin: 0;
 }
 .sidebar-page-list {

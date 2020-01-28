@@ -12,6 +12,8 @@ import {
 import HomePage from './home-page';
 import StoreFinder from './store-finder-page';
 import StoreDetailsPage from './store-details-page';
+import AccountPage from './account-page';
+import AccountSettings from './account-settings-page';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -36,6 +38,8 @@ export default class App extends React.Component {
           <Route exact path="/" render={props => <HomePage {...props} toggleSidebar={this.toggleSidebar} />} />
           <Route exact path="/hangouts" render={props => <ListPage {...props} toggleSidebar={this.toggleSidebar} />} />
           <Route exact path="/events" render={props => <ListPage {...props} toggleSidebar={this.toggleSidebar} />} />
+          <Route exact path='/account/' render={props => <AccountPage {...props} />} />
+          <Route path='/account/settings' render={props => <AccountSettings {...props} />} />
           <Route path="/hangouts/:id" component={HangoutDetailsPage} />
           <Route path="/events/:id" component={EventDetailsPage} />
           <Route path="/create/hangouts" component={CreatePage} />
