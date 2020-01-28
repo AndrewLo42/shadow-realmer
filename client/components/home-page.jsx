@@ -1,5 +1,5 @@
 import React from 'react';
-import NavBar from './search-bar';
+import NavBar from './navbar';
 
 export default class HomePage extends React.Component {
   constructor(props) {

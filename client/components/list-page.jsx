@@ -1,5 +1,5 @@
 import React from 'react';
-import NavBar from './search-bar';
+import NavBar from './navbar';
 import ItemPage from './item-page';
 
 export default class ListPage extends React.Component {

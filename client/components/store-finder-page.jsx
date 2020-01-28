@@ -1,5 +1,5 @@
 import React from 'react';
-import SearchBar from './search-bar';
+import NavBar from './navbar';
 import Map from './map';
 
 export default class StoreFinder extends React.Component {
@@ -29,7 +29,7 @@ export default class StoreFinder extends React.Component {
   render() {
     return (
       <>
-        <SearchBar {...this.props} runSearch={this.findStores} placeholder='Enter Zip Code'/>
+        <NavBar {...this.props} runSearch={this.findStores} placeholder='Enter Zip Code'/>
         <div className="map-container">
           <Map zoom={12} center={this.state.center} stores={this.state.stores} />
         </div>
