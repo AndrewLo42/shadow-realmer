@@ -26,7 +26,7 @@ export default class NavBar extends React.Component {
   handleEnterKeyUp(event) {
     const isEnterKeyPress = event.keyCode === 13;
     if (isEnterKeyPress) {
-      this.props.runSearch(this.state.inputText, window.location.pathname);
+      this.props.runSearch(this.state.inputText);
       this.setState({ inputText: '' });
       this.toggleSearchBar();
     }
