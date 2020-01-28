@@ -25,7 +25,7 @@ app.get('/api/hangouts', (req, res, next) => {
   if (Object.keys(req.query).length === 0) {
     const allHangouts = `
       select * from "hangouts"
-      order by "startTime" asce
+      order by "startTime" asc
     `;
     db.query(allHangouts)
       .then(response => {
@@ -672,7 +672,11 @@ app.post('/api/usersLogin', (req, res, next) => {
       const hash = result.rows;
       bcrypt.compare(myPlaintextPassword, hash[0].password)
         .then(response => {
-          res.json(response);
+          if (response === true) {
+            res.json(result.rows[0]);
+          } else {
+            next(new ClientError('Incorrect password or username', 400));
+          }
         });
     })
     .catch(err => next(err));
