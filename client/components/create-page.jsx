@@ -7,7 +7,7 @@ export default class CreatePage extends React.Component {
   }
 
   handleSubmit(info) {
-    const location = this.props.match.path.includes('hangout') ? '/hangouts' : '/events';
+    const location = window.location.pathname.includes('hangout') ? '/hangouts' : '/events';
     fetch(`/api${location}`, {
       method: 'POST',
       headers: {
@@ -20,7 +20,7 @@ export default class CreatePage extends React.Component {
   }
 
   render() {
-    return this.props.match.path.includes('hangout') ? <CreateHangout handleSubmit={this.handleSubmit} history={this.props.history} /> : <CreateEvent handleSubmit={this.handleSubmit} history={this.props.history} />;
+    return window.location.pathname.includes('hangout') ? <CreateHangout handleSubmit={this.handleSubmit} history={this.props.history} /> : <CreateEvent handleSubmit={this.handleSubmit} history={this.props.history} />;
   }
 }
 

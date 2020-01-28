@@ -376,6 +376,7 @@ COPY public.stores ("storeId", "storeName", long, lat, "openingTime", "closingTi
 --
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: -
 --
+
 COPY public.users ("userId", "userName", "deckArchetype", "mainGameId", email, "isStoreEmployee", password, "storeName") FROM stdin;
 1	BrianKibler	Dragons	1	bkibbles@gmail.com	f	dragonsrule	\N
 2	JimJamFlimFlam	Tron	1	PinkCards@gmail.com	t	nessisgreat	Magic & Monsters
@@ -385,7 +386,9 @@ COPY public.users ("userId", "userName", "deckArchetype", "mainGameId", email, "
 --
 -- Name: events_eventId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
+
 SELECT pg_catalog.setval('public."events_eventId_seq"', 8, true);
+
 --
 -- Name: game_gameId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --

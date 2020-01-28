@@ -23,7 +23,10 @@ app.get('/api/health-check', (req, res, next) => {
 
 app.get('/api/hangouts', (req, res, next) => {
   if (Object.keys(req.query).length === 0) {
-    const allHangouts = 'select * from "hangouts"';
+    const allHangouts = `
+      select * from "hangouts"
+      order by "startTime" asc
+    `;
     db.query(allHangouts)
       .then(response => {
         const hangoutsResponse = response.rows;
@@ -194,18 +197,38 @@ app.delete('/api/events/:eventId', (req, res, next) => {
   }
 });
 
+app.get('/api/storeEvents/:storeName', (req, res, next) => {
+  if (!req.params.storeName) {
+    return next(new ClientError('No store name provided.'), 400);
+  }
+  const storeEvents = `
+    select * from "events"
+    where "storeName" = $1
+    order by "startTime" asc;
+  `;
+  const params = [req.params.storeName];
+  db.query(storeEvents, params)
+    .then(response => {
+      const storeEventsList = response.rows;
+      if (!storeEventsList) {
+        return next(new ClientError('This store has no events'), 404);
+      }
+      res.json(storeEventsList);
+    })
+    .catch(err => next(err));
+});
+
 app.get('/api/events', (req, res, next) => {
   if (Object.keys(req.query).length === 0) {
     const allEvents = `
-      select "e".*, "s"."storeName"
+      select "e".*
       from "events" as "e"
-      join "stores" as "s" on "s"."storeId" = "e"."storeId"
     `;
     db.query(allEvents)
       .then(response => {
         const eventsResponse = response.rows;
-        if (!eventsResponse) {
-          next(new ClientError(`No Events found. ${req.method} ${req.originalUrl}`, 404));
+        if (eventsResponse.length === 0) {
+          return next(new ClientError(`No Events found. ${req.method} ${req.originalUrl}`, 404));
         } else {
           res.json(eventsResponse);
         }
@@ -214,9 +237,8 @@ app.get('/api/events', (req, res, next) => {
   } else if (req.query.id) {
     const parsedEventId = parseInt(req.query.id);
     const eventDetails = `
-      select "e".*, "s"."storeName"
+      select "e".*
       from "events" as "e"
-      join "stores" as "s" on "s"."storeId" = "e"."storeId"
       where "eventId" = $1
     `;
     const values = [parsedEventId];
@@ -589,7 +611,21 @@ app.put('/api/hangouts/:hangoutId', (req, res, next) => {
 });
 
 app.get('/api/search', (req, res, next) => {
-  fetch(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=magic+the+gathering+in+${req.query.zipcode}&radius=50000&key=${process.env.GOOGLE_MAPS_API_KEY}`)
+  fetch(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=magic+the+gathering+in+${req.query.zipcode}&radius=30000&key=${process.env.GOOGLE_MAPS_API_KEY}`)
+    .then(data => data.json())
+    .then(results => res.json(results))
+    .catch(err => console.error(err));
+});
+
+app.get('/api/zipcode', (req, res, next) => {
+  fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${req.query.zipcode}&key=${process.env.GOOGLE_MAPS_API_KEY}`)
+    .then(data => data.json())
+    .then(results => res.json(results))
+    .catch(err => console.error(err));
+});
+
+app.get('/api/address', (req, res, next) => {
+  fetch(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=${req.query.storeName}&key=${process.env.GOOGLE_MAPS_API_KEY}`)
     .then(data => data.json())
     .then(results => res.json(results))
     .catch(err => console.error(err));

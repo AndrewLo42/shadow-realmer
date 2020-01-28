@@ -11,58 +11,13 @@ body {
   padding: 0;
 }
 
-/* Search Bar Page */
-.search-bar-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 80px;
-}
-.search-bar {
-  z-index: 1;
-  position: fixed;
-  display: flex;
-  align-items: center;
-  height: 60px;
-  width: 90%;
-  border-radius: 50px 10px 10px 50px;
-  background-color: rgba(0, 0, 0, 0.8);
-  padding-right: 10px;
-  margin: auto 0;
-  box-shadow: 1px 1px 5px rgba(0,0,0,.5);
-}
-
-.icon-image {
-  height: 60px;
-  width: 60px;
-  border-radius: 50%;
-}
-
-.search-bar-input {
-  height: 80%;
-  width: 80%;
-  background-color: rgba(0, 0, 0, 0.8);
-  color: white;
-  font-size: 1.5rem;
-  border: none;
-  text-align: center;
-}
-
-.search-bar-input:focus {
-  outline: none;
-}
-
-.add-hangout {
-  font-size: 1.5rem;
-}
-
 /* Event List Page */
 .event-container {
   display: flex;
   justify-content: center;
   align-content: center;
   flex-flow: wrap;
-  margin-top: 20px;
+  margin-top: 10px;
   width: 100%;
 }
 
@@ -104,15 +59,27 @@ body {
   align-items: center;
 }
 
+.add-button {
+  font-size: 1.5rem;
+  position: absolute;
+  right: 37px;
+  top: 85px;
+}
+
+.title-container {
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  align-items: center;
+}
+
 .event-title {
   height: 70%;
   font-size: 1.25rem;
 }
 
 .store-name {
-  font-size: 1rem;
   color: rgb(128, 128, 128);;
-
 }
 
 .event-icon-container {
@@ -140,79 +107,63 @@ body {
   justify-content: space-between;
 }
 
-.search-bar-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 80px;
-}
-.search-bar {
-  z-index: 1;
-  position: fixed;
-  display: flex;
-  align-items: center;
-  height: 60px;
-  width: 90%;
-  border-radius: 50px 10px 10px 50px;
-  background-color: rgba(0, 0, 0, 0.8);
-  padding-right: 10px;
-  margin: auto 0;
-  box-shadow: 1px 1px 5px rgba(0,0,0,.5);
-}
-.icon-image {
-  height: 60px;
-  width: 60px;
-  border-radius: 50%;
-  cursor: pointer;
-}
-.search-bar-input {
-  height: 80%;
-  width: 80%;
-  background-color: rgba(0, 0, 0, 0.8);
-  color: white;
-  font-size: 1.5rem;
-  border: none;
-  text-align: center;
-}
-
-.search-bar-input:focus {
-  outline: none;
-}
-
 .details-container {
-  padding: 30px;
   height: 100vh;
   width: 100vw;
 }
 .details-header {
+  padding: 0 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  height: 10%;
 }
 .details-header > * {
   font-size: 3rem;
 }
+
+.details-map {
+  height: 35%;
+  width: 100%;
+}
+
 .details-main {
+  padding: 0 30px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 50%;
+  height: 30%;
   width: 100%;
 }
-.details-main * {
-  margin: 5px 0;
+.details-main *,
+.details-footer *,
+.store-details-main * {
+  text-align: center;
+  margin: 3px 0;
 }
 .details-footer {
-  height: 40%;
+  padding: 0 30px;
+  height: 25%;
   width: 100%;
 }
-.details-footer * {
-  margin: 5px 0;
-}
+
 .details-title,
 .details-contact-info-title {
   text-align: center;
+}
+
+.store-details-main {
+  padding: 0 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 20%;
+  width: 100%;
+}
+
+.store-details-footer {
+  width: 100%;
 }
 
 /* Create Hangouts Page */
@@ -416,13 +367,35 @@ li a :visited {
 }
 
 /* Homepage classes */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.home-greeting {
+  padding: 10px 10px 0;
+  margin: 0 0 10px 0;
+}
+.home-greeting > * {
+  margin: 0;
+  text-align: center;
+}
+.home-title {
+  font-size: 2rem;
+  margin-bottom: 5px;
+}
 .home-events-carousel-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 400px;
-  background-color: coral;
+  width: 90%;
+  height: 175px;
+  padding-top: 10px;
+  margin-bottom: 10px;
+  background-color: rgb(24, 24, 24);
+  border: 2px solid #9984F1;
+  border-radius: 10px;
 }
 .home-events-carousel {
   width: 90%;
@@ -432,9 +405,10 @@ li a :visited {
 }
 .home-events-carousel-item-container {
   display: inline-block;
-  width: 337.5px;
-  height: 350px;
-  background-color: lightskyblue;
+  width: 100%;
+  height: 90%;
+  border: 2px solid #333;
+  border-radius: 10px;
   margin-right: 30px;
 }
 .home-events-carousel-item-container:last-child {
@@ -446,15 +420,37 @@ li a :visited {
   align-items: center;
   padding: 10px;
 }
-.home-events-carousel-item > h2,
-.home-events-carousel-item > h3 {
-  margin: 15px 0 0;
+.home-events-carousel-item > * {
+  margin: 0 0 10px 0;
+  width: 100%;
+  white-space: normal;
+  text-align: center;
+}
+.home-events-carousel-item > p {
+  font-size: 0.9rem;
 }
 
 .home-hangouts-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 90%;
+  height: 350px;
+  border-radius: 10px;
+  background-color: rgb(24,24,24);
+  border: 2px #9984F1 solid;
+}
+.home-hangouts-list-item {
   width: 100%;
-  height: 200px;
-  background-color: chartreuse;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 2px #333 solid;
+}
+.home-hangouts-list-item:last-child {
+  border-bottom: 0;
 }
 
 /* Store Finder Styling */
@@ -468,8 +464,69 @@ li a :visited {
 
 .map-store-info {
   color: black;
+  text-align: center;
 }
 
+
+/* NavBar Styling */
+
+.navbar-container {
+ height: 9vh;
+}
+
+.navbar {
+  width: 100%;
+  height: 8vh;
+  display: flex;
+  justify-content: space-between;
+  background-color: rgb(24, 24, 24);
+  align-items: center;
+  padding: 15px;
+  position: fixed;
+  font-size: 1.25rem;
+  box-shadow: 1px 1px 5px rgba(0,0,0,.8);
+  z-index: 2;
+}
+
+.icon-image {
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.search-bar-container {
+  position: fixed;
+  height: 8vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  transition: transform .5s ease-in-out;
+  z-index: 1;
+}
+
+.search-bar-input {
+  height: 90%;
+  width: 80%;
+  background-color: black;
+  color: white;
+  font-size: 1.5rem;
+  border: none;
+  text-align: center;
+  box-shadow: 1px 1px 4px rgba(0,0,0,.5);
+}
+
+.search-bar-input:focus {
+  outline: none;
+}
+
+.show-search-bar {
+  transform: translateY(8vh);
+}
+
+.hidden {
+  visibility: hidden;
+}
 
 @keyframes fadein {
   from {opacity: 0;}
