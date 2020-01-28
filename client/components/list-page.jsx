@@ -42,7 +42,7 @@ export default class ListPage extends React.Component {
     return (
       <>
         <NavBar toggleSidebar={this.props.toggleSidebar} history={this.props.history} runSearch={this.searchByZip} placeholder="Enter Zip Code"/>
-        <Title history={this.props.history} match={this.props.match} />
+        <Title history={this.props.history} />
         <div className="event-container">
           {window.location.pathname.includes('hangout') ? hangoutList : eventList}
         </div>
