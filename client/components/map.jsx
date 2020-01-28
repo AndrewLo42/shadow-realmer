@@ -1,10 +1,24 @@
 import React from 'react';
-import { GoogleMap, withScriptjs, withGoogleMap, Marker, InfoWindow } from 'react-google-maps';
+import { GoogleMap, withScriptjs, withGoogleMap, Marker, InfoWindow, Circle } from 'react-google-maps';
 
 class MapView extends React.Component {
   constructor(props) {
     super(props);
     this.state = { selectedStore: null };
+    this.checkForHangouts = this.checkForHangouts.bind(this);
+  }
+
+  checkForHangouts() {
+    if (this.props.match) {
+      if (this.props.match.path.includes('hangout')) {
+        return <Circle
+          center={this.props.center}
+          radius={1250}
+          defaultOptions={{
+            fillColor: '#9984F1'
+          }} />;
+      }
+    }
   }
 
   render() {
@@ -26,6 +40,7 @@ class MapView extends React.Component {
           </div>
         </InfoWindow>
         }
+        {this.checkForHangouts()}
       </GoogleMap>
     );
   }
@@ -43,6 +58,7 @@ export default function Map(props) {
       zoom={props.zoom}
       center={props.center}
       stores={props.stores}
+      match={props.match}
     />
   );
 }
