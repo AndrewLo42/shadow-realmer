@@ -17,7 +17,7 @@ export default class HomePage extends React.Component {
         this.setState({ events });
       });
 
-    fetch('/api/hangouts?amount=5')
+    fetch('/api/hangouts?amount=8')
       .then(data => data.json())
       .then(hangouts => {
         this.setState({ hangouts });
@@ -32,7 +32,11 @@ export default class HomePage extends React.Component {
         <>
           <NavBar {...this.props} placeholder="Yee Dawg" />
           <div className="home-container">
-            <div className="title">Events</div>
+            <div className="home-greeting">
+              <h2>Welcome to Shadow Realmer</h2>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id ex ac turpis feugiat eleifend eu finibus nibh. Nulla porttitor.</p>
+            </div>
+            <div className="home-title">Events</div>
             <div className="home-events-carousel-container">
               <div className="home-events-carousel">
                 {this.state.events.map(event => {
@@ -45,6 +49,7 @@ export default class HomePage extends React.Component {
                     minute: 'numeric'
                   };
                   const startTimeFormatted = new Intl.DateTimeFormat('en-US', dateTimeFormatOptions).format(startTime);
+                  const gameType = event.gameId === 1 ? 'Magic: The Gathering' : 'Yu-Gi-Oh';
                   return (
                     <div
                       className="home-events-carousel-item-container"
@@ -53,14 +58,14 @@ export default class HomePage extends React.Component {
                       <div className="home-events-carousel-item">
                         <h2>{event.eventName.slice(1, -1)}</h2>
                         <h4>{startTimeFormatted}</h4>
-                        <p>{event.description.slice(1, -1)}</p>
+                        <p>{`${gameType} – ${event.gameFormat.slice(1, -1)}`}</p>
                       </div>
                     </div>
                   );
                 })}
               </div>
             </div>
-            <div className="home-hangouts-title">Hangouts</div>
+            <div className="home-title">Hangouts</div>
             <div className="home-hangouts-list">
               {this.state.hangouts.map(hangout => {
                 return (
