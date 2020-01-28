@@ -1,7 +1,7 @@
 import React from 'react';
 import ShadowRealmerIcon from './shadow-realmer-icon';
 
-export default class SignInPage extends React.Component {
+export default class LogInPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -37,7 +37,7 @@ export default class SignInPage extends React.Component {
     fetch('/api/usersLogin', requestParams)
       .then(data => data.json())
       .then(userData => {
-        this.props.signInUser(userData);
+        this.props.logInUser(userData);
         this.props.history.push('/');
       })
       .catch(err => console.error(err));
@@ -45,16 +45,19 @@ export default class SignInPage extends React.Component {
 
   render() {
     return (
-      <div className="sign-in-container">
+      <div className="log-in-container">
         <ShadowRealmerIcon />
         <div className="welcome-banner">
           Welcome to Shadow Realmer
         </div>
         <form onSubmit={this.handleSubmit}>
-          <div className="sign-in-form-children-container">
+          <div className="log-in-form-children-container">
             <input type="text" className="long-input input" placeholder="Username" onChange={this.handleUserNameChange} value={this.state.userName} />
             <input type="password" className="long-input input" placeholder="Password" onChange={this.handlePasswordChange} value={this.state.password} />
-            <button type="submit" className="short-input input confirm">Sign In</button>
+            <div className="log-in-form-button-container">
+              <button type="submit" className="short-input input confirm">Log In</button>
+              <button className="short-input input green" onClick={() => this.props.history.push('/sign-up')}>Sign Up</button>
+            </div>
           </div>
         </form>
       </div>

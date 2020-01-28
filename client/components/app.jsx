@@ -12,7 +12,7 @@ import {
 import HomePage from './home-page';
 import StoreFinder from './store-finder-page';
 import StoreDetailsPage from './store-details-page';
-import SignInPage from './sign-in-page';
+import LogInPage from './log-in-page';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -22,7 +22,7 @@ export default class App extends React.Component {
       user: null
     };
     this.toggleSidebar = this.toggleSidebar.bind(this);
-    this.signInUser = this.signInUser.bind(this);
+    this.logInUser = this.logInUser.bind(this);
   }
 
   toggleSidebar() {
@@ -31,7 +31,7 @@ export default class App extends React.Component {
     }));
   }
 
-  signInUser(user) {
+  logInUser(user) {
     this.setState({ user });
   }
 
@@ -49,7 +49,7 @@ export default class App extends React.Component {
           <Route path="/create/events" component={CreatePage} />
           <Route path='/stores' render={props => <StoreFinder {...props} toggleSidebar={this.toggleSidebar} />} />
           <Route path="/store/:name" component={StoreDetailsPage} />
-          <Route path="/sign-in" render={props => <SignInPage {...props} signInUser={this.signInUser} />} />
+          <Route path="/log-in" render={props => <LogInPage {...props} signInUser={this.signInUser} />} />
         </Switch>
       </Router>
     );
