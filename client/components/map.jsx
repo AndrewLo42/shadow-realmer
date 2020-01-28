@@ -37,7 +37,7 @@ class MapView extends React.Component {
             <h2>{this.state.selectedStore.name}</h2>
             <p>{this.state.selectedStore.formatted_address}</p>
             <NavLink to={`/store/${this.state.selectedStore.name}`}>
-              <div className="small-text">More Info</div>
+              <div className="small-text">See Store Events</div>
             </NavLink>
           </div>
         </InfoWindow>
