@@ -633,16 +633,12 @@ app.post('/api/usersLogin', (req, res, next) => {
   db.query(getHash, valuesArr)
     .then(result => {
       const hash = result.rows;
-      // console.log(hash);
-      bcrypt.compare(myPlaintextPassword, hash[0].password, function (err, res) {
-        if (err) throw err;
-        console.log(res);
-      });
+      bcrypt.compare(myPlaintextPassword, hash[0].password)
+        .then(response => {
+          res.json(response);
+        });
     })
-    .then(res => {
-      // res.json();
-      console.log(res);
-    });
+    .catch(err => next(err));
 });
 
 app.use('/api', (req, res, next) => {
