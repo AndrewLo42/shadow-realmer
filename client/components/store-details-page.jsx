@@ -1,5 +1,6 @@
 import React from 'react';
 import Map from './map';
+import ItemPage from './item-page';
 
 export default class StoreDetailsPage extends React.Component {
   constructor(props) {
@@ -21,7 +22,7 @@ export default class StoreDetailsPage extends React.Component {
   }
 
   getStoreEvents() {
-    fetch(`/api/storeEvents/?storeName=${this.props.match.params.name}`)
+    fetch(`/api/storeEvents/${this.props.match.params.name}`)
       .then(data => data.json())
       .then(result => this.setState({ events: result }))
       .catch(err => console.error(err));
@@ -33,7 +34,7 @@ export default class StoreDetailsPage extends React.Component {
   }
 
   render() {
-    return this.state.details ? <StoreDetails details={this.state.details} history={this.props.history} /> : <div className="title">Loading...</div>;
+    return this.state.details ? <StoreDetails details={this.state.details} events={this.state.events} history={this.props.history} /> : <div className="title">Loading...</div>;
   }
 }
 
@@ -54,6 +55,7 @@ function StoreDetails(props) {
       </div>
       <div className="store-details-footer">
         <h2 className="details-contact-info-title">Events</h2>
+        {props.events.length ? props.events.map(event => <ItemPage event={event} key={event.eventId} history={props.history} />) : <div className="title">No Scheduled Events</div>}
       </div>
     </div>
   );
