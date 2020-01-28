@@ -25,7 +25,7 @@ app.get('/api/hangouts', (req, res, next) => {
   if (Object.keys(req.query).length === 0) {
     const allHangouts = `
       select * from "hangouts"
-      order by "startTime" asc
+      order by "startTime" asce
     `;
     db.query(allHangouts)
       .then(response => {
@@ -223,6 +223,7 @@ app.get('/api/events', (req, res, next) => {
     const allEvents = `
       select "e".*
       from "events" as "e"
+      order by "startTime" asc
     `;
     db.query(allEvents)
       .then(response => {
