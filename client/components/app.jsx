@@ -12,20 +12,27 @@ import {
 import HomePage from './home-page';
 import StoreFinder from './store-finder-page';
 import StoreDetailsPage from './store-details-page';
+import SignInPage from './sign-in-page';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isSidebarHidden: true
+      isSidebarHidden: true,
+      user: null
     };
     this.toggleSidebar = this.toggleSidebar.bind(this);
+    this.signInUser = this.signInUser.bind(this);
   }
 
   toggleSidebar() {
     this.setState(prevState => ({
       isSidebarHidden: !prevState.isSidebarHidden
     }));
+  }
+
+  signInUser(user) {
+    this.setState({ user });
   }
 
   render() {
@@ -42,6 +49,7 @@ export default class App extends React.Component {
           <Route path="/create/events" component={CreatePage} />
           <Route path='/stores' render={props => <StoreFinder {...props} toggleSidebar={this.toggleSidebar} />} />
           <Route path="/store/:name" component={StoreDetailsPage} />
+          <Route path="/sign-in" component={SignInPage} signInUser={this.signInUser} />
         </Switch>
       </Router>
     );
