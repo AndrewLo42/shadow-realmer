@@ -1,20 +1,38 @@
 import React from 'react';
+import Map from './map';
 
-export default class DetailsPage extends React.Component {
+export default class HangoutDetailsPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      details: null
+      details: null,
+      center: {}
     };
     this.getDetails = this.getDetails.bind(this);
+    this.getLocation = this.getLocation.bind(this);
+    this.whichView = this.whichView.bind(this);
   }
 
   getDetails() {
-    const location = this.props.match.path.includes('hangout') ? '/hangouts' : '/events';
-    fetch(`/api${location}/?id=${this.props.match.params.id}`)
+    fetch(`/api/hangouts/?id=${this.props.match.params.id}`)
       .then(data => data.json())
       .then(result => this.setState({ details: result }))
+      .then(() => this.getLocation())
       .catch(err => console.error(err));
+  }
+
+  getLocation() {
+    fetch(`/api/zipcode/?zipcode=${this.state.details.zipcode}`)
+      .then(data => data.json())
+      .then(result => this.setState({ center: result.results[0].geometry.location }))
+      .catch(err => console.error(err));
+  }
+
+  whichView() {
+    if (this.state.details && Object.keys(this.state.center).length !== 0) {
+      return <HangoutDetails details={this.state.details} history={this.props.history} match={this.props.match} center={this.state.center} />;
+    }
+    return <div className="title">Loading...</div>;
   }
 
   componentDidMount() {
@@ -22,25 +40,33 @@ export default class DetailsPage extends React.Component {
   }
 
   render() {
-    return this.state.details
-      ? (this.props.match.path.includes('hangout') ? <HangoutDetails details={this.state.details} history={this.props.history} /> : <EventDetails details={this.state.details} history={this.props.history} />) : null;
+    return this.whichView();
   }
 }
 
 function HangoutDetails(props) {
-  const date = new Date(props.details.startTime);
-  const day = dayOfWeek(date);
-  const time = `${date.getHours()}:${date.getMinutes()}`;
+  const startTime = new Date(props.details.startTime);
+  const dateTimeFormatOptions = {
+    month: 'short',
+    day: 'numeric',
+    hour12: true,
+    hour: 'numeric',
+    minute: 'numeric'
+  };
+  const startTimeFormatted = new Intl.DateTimeFormat('en-US', dateTimeFormatOptions).format(startTime);
   return (
     <div className="details-container">
       <div className="details-header">
         <i className="fas fa-angle-double-left" onClick={() => props.history.goBack()}></i>
         <i className="fas fa-poo-storm"></i>
       </div>
+      <div className="details-map">
+        {props.center && <Map zoom={13} center={props.center} match={props.match} />}
+      </div>
       <div className="details-main">
         <h1 className="details-title">{props.details.hangoutName}</h1>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <h3>{day} {time}</h3>
+          <h3>{ startTimeFormatted }</h3>
           <h3>{props.details.gameFormat}</h3>
         </div>
         <p>{props.details.description}</p>
@@ -53,49 +79,28 @@ function HangoutDetails(props) {
   );
 }
 
-function EventDetails(props) {
-  const date = new Date(props.details.startTime);
-  const day = dayOfWeek(date);
-  const time = `${date.getHours()}:${date.getMinutes()}`;
-  return (
-    <div className="details-container">
-      <div className="details-header">
-        <i className="fas fa-angle-double-left" onClick={() => props.history.goBack()}></i>
-        <i className="fas fa-poo-storm"></i>
-      </div>
-      <div className="details-main">
-        <h1 className="details-title">{props.details.hangoutName}</h1>
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <h3>{day} {time}</h3>
-          <h3>{props.details.gameFormat}</h3>
-        </div>
-        <p>{props.details.description}</p>
-      </div>
-      <div className="details-footer">
-        <h2 className="details-contact-info-title">Store Info</h2>
-        <h4>{props.details.contactInfo}</h4>
-      </div>
-    </div>
-  );
-}
-
-function dayOfWeek(date) {
-  switch (date.getDay()) {
-    case 0:
-      return 'Sun';
-    case 1:
-      return 'Mon';
-    case 2:
-      return 'Tues';
-    case 3:
-      return 'Wed';
-    case 4:
-      return 'Thurs';
-    case 5:
-      return 'Fri';
-    case 6:
-      return 'Sat';
-    default:
-      return 'Unknown';
-  }
-}
+// function EventDetails(props) {
+//   const date = new Date(props.details.startTime);
+//   const day = dayOfWeek(date);
+//   const time = `${date.getHours()}:${date.getMinutes()}`;
+//   return (
+//     <div className="details-container">
+//       <div className="details-header">
+//         <i className="fas fa-angle-double-left" onClick={() => props.history.goBack()}></i>
+//         <i className="fas fa-poo-storm"></i>
+//       </div>
+//       <div className="details-main">
+//         <h1 className="details-title">{props.details.hangoutName}</h1>
+//         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+//           <h3>{day} {time}</h3>
+//           <h3>{props.details.gameFormat}</h3>
+//         </div>
+//         <p>{props.details.description}</p>
+//       </div>
+//       <div className="details-footer">
+//         <h2 className="details-contact-info-title">Store Info</h2>
+//         <h4>{props.details.contactInfo}</h4>
+//       </div>
+//     </div>
+//   );
+// }
