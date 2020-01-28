@@ -26,7 +26,7 @@ export default class NavBar extends React.Component {
   handleEnterKeyUp(event) {
     const isEnterKeyPress = event.keyCode === 13;
     if (isEnterKeyPress) {
-      this.props.runSearch(this.state.inputText, this.props.match.path);
+      this.props.runSearch(this.state.inputText, window.location.pathname);
       this.setState({ inputText: '' });
       this.toggleSearchBar();
     }
@@ -38,7 +38,7 @@ export default class NavBar extends React.Component {
         <div className="navbar">
           <i className="navbar-sidebar-opener fa fa-bars" onClick={this.props.toggleSidebar} />
           <ShadowRealmerIcon history={this.props.history} />
-          <i className={`navbar-search fa fa-search ${this.props.match.path === '/' && 'hidden'}`} onClick={this.toggleSearchBar} />
+          <i className={`navbar-search fa fa-search ${window.location.pathname === '/' && 'hidden'}`} onClick={this.toggleSearchBar} />
         </div>
         <div className={`search-bar-container ${this.state.searchBarShowing && 'show-search-bar'}`}>
           <input className="search-bar-input" placeholder={this.props.placeholder} onChange={this.handleChange} onKeyUp={this.handleEnterKeyUp} value={this.state.inputText} />

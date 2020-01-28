@@ -132,7 +132,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 30%;
+  height: 25%;
   width: 100%;
 }
 .details-main * {

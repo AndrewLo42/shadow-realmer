@@ -30,7 +30,7 @@ export default class HangoutDetailsPage extends React.Component {
 
   whichView() {
     if (this.state.details && Object.keys(this.state.center).length !== 0) {
-      return <HangoutDetails details={this.state.details} history={this.props.history} match={this.props.match} center={this.state.center} />;
+      return <HangoutDetails details={this.state.details} history={this.props.history} center={this.state.center} />;
     }
     return <div className="title">Loading...</div>;
   }
@@ -61,7 +61,7 @@ function HangoutDetails(props) {
         <i className="fas fa-poo-storm"></i>
       </div>
       <div className="details-map">
-        {props.center && <Map zoom={13} center={props.center} match={props.match} />}
+        {props.center && <Map zoom={13} center={props.center} />}
       </div>
       <div className="details-main">
         <h1 className="details-title">{props.details.hangoutName}</h1>

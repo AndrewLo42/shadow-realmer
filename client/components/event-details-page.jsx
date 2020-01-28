@@ -54,7 +54,7 @@ function EventDetails(props) {
         <i className="fas fa-poo-storm"></i>
       </div>
       <div className="details-map">
-        {props.address.geometry && <Map zoom={14} match={props.match} center={props.address.geometry.location} stores={[props.address]} />}
+        {props.address.geometry && <Map zoom={14} center={props.address.geometry.location} stores={[props.address]} />}
       </div>
       <div className="details-main">
         <h1 className="details-title">{props.details.hangoutName}</h1>
