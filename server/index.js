@@ -766,7 +766,6 @@ app.put('/api/users/:userId', (req, res, next) => {
         userAttributes.email,
         req.params.userId
       ];
-      console.log(userAttributesValues);
       db.query(editAccountSQL, userAttributesValues)
         .then(result => {
           const userChanges = result.rows;
