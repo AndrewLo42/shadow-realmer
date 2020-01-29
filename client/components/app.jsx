@@ -50,7 +50,7 @@ export default class App extends React.Component {
           <Route exact path='/account/:userName' render={props => <AccountPage {...props} user={this.state.user} />} />
           <Route path='/account/:userName/settings' render={props => <AccountSettings {...props} user={this.state.user} />} />
           <Route path="/hangouts/:id" component={HangoutDetailsPage} />
-          <Route path="/events/:id" component={EventDetailsPage} />
+          <Route path="/events/:id" render={props => <EventDetailsPage {...props} user={this.state.user} />} />
           <Route path="/create/hangouts" component={CreatePage} />
           <Route path="/create/events" component={CreatePage} user={this.state.user} />
           <Route path='/stores' render={props => <StoreFinder {...props} toggleSidebar={this.toggleSidebar} />} />
