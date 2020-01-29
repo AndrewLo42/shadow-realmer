@@ -281,6 +281,10 @@ body {
   border-radius: 10px 0 0 10px;
 }
 
+.is-invalid {
+  border: 1px solid red;
+}
+
 /* Sidebar styling */
 .sidebar-container {
   width: 300px;
@@ -541,14 +545,14 @@ li a :visited {
   transform: translateY(8vh);
 }
 
-/* Sign In Page Styling */
-.sign-in-container {
+/* Log In Page Styling */
+.log-in-container {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
 }
-.sign-in-container > img {
+.log-in-container > img {
   height: 150px;
   width: 150px;
   pointer-events: none;
@@ -556,23 +560,34 @@ li a :visited {
 .welcome-banner {
   width: 100%;
   height: 30px;
+  font-size: 18px;
   background-color: #9984F1;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.sign-in-form-children-container {
+.log-in-form-children-container {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
 }
-.sign-in-form-children-container > input {
+.log-in-form-children-container > input {
   width: 275px;
   height: 50px;
   padding: 10px;
 }
-.sign-in-form-children-container > button {
+.log-in-form-children-container button {
   width: 150px;
   height: 50px;
+}
+.log-in-form-children-container button:last-child {
+  background-color: #86CD99;
+}
+.log-in-form-button-container {
+  display: flex;
+  justify-content: space-around;
+  width: 325px;
 }
 
 

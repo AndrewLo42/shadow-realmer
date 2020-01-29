@@ -16,7 +16,8 @@ export default class SignUpPage extends React.Component {
       storeCode: '',
       validEmail: false,
       validPassword: false,
-      samePassword: false
+      samePassword: false,
+      submitted: false
     };
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleEmailChange = this.handleEmailChange.bind(this);
@@ -57,6 +58,7 @@ export default class SignUpPage extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+
     if (this.state.email !== prevState.email) {
       this.validation();
     } else if (this.state.password !== prevState.password) {
@@ -65,8 +67,11 @@ export default class SignUpPage extends React.Component {
   }
 
   handleSubmit(info) {
+
     if (!this.state.validEmail || !this.state.validPassword) {
-      // console.log('NO');
+      if (!this.state.submitted) {
+        this.setState({ submitted: true });
+      }
     } else {
       fetch(`/api/userNameCheck/${info.userName}`, {
       })
@@ -92,7 +97,6 @@ export default class SignUpPage extends React.Component {
     })
       .then(response => response.json())
       .then(userData => {
-        // console.log(userData);
         this.props.logInUser(userData);
         // this.props.history.push('/');
       })
@@ -144,6 +148,12 @@ export default class SignUpPage extends React.Component {
   }
 
   render() {
+    let invalidEmail = null;
+    let invalidPassword = null;
+    if (this.state.submitted) {
+      invalidEmail = this.state.validEmail === false ? 'is-invalid' : null;
+      invalidPassword = this.state.validPassword === false ? 'is-invalid' : null;
+    }
     return (
       <div className="create-page">
         <div className="details-header">
@@ -152,7 +162,7 @@ export default class SignUpPage extends React.Component {
         </div>
         <header className="title">Sign up</header>
         <input type="text" className="long-input input" placeholder="User Name" onChange={this.handleNameChange} value={this.state.userName} />
-        <input type="text" name="email" className="long-input input" placeholder="E-Mail" onChange={this.handleEmailChange} value={this.state.email} />
+        <input type="text" name="email" className={`long-input input ${invalidEmail}`} placeholder="E-Mail" onChange={this.handleEmailChange} value={this.state.email} />
         <select name="game" className="input short-input" onChange={this.handleGameIdChange} value={this.state.mainGameId}>
           <option value="null">Game</option>
           <option value="1">Magic</option>
@@ -165,8 +175,8 @@ export default class SignUpPage extends React.Component {
           <button className="short-input input store-confirm" onClick={() => this.handleStoreSubmit(this.state.storeCode)}>Confirm</button>
         </div>
         {this.renderStoreInput()}
-        <div>Password</div>
-        <input type="password" name="password" className="long-input input" placeholder="Password" onChange={this.handlePasswordChange} value={this.state.password} />
+        {this.renderPasswordError()}
+        <input type="password" name="password" className={`long-input input ${invalidPassword}`} placeholder="Password" onChange={this.handlePasswordChange} value={this.state.password} />
         <input type="password" name="confirmPassword" className="long-input input" placeholder="Confirm Password" onChange={this.handlePasswordConfirmChange} value={this.state.confirmPassword} />
         <div className="short-container">
           <button className="short-input input cancel" onClick={() => this.props.history.push('/')}>Cancel</button>
