@@ -49,7 +49,7 @@ export default class LogInPage extends React.Component {
       })
       .then(userData => {
         this.props.logInUser(userData);
-        this.props.history.push('/');
+        this.props.history.goBack();
       })
       .catch(err => console.error(err));
   }
