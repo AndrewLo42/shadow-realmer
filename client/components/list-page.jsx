@@ -57,7 +57,7 @@ export default class ListPage extends React.Component {
     return (
       <>
         <NavBar toggleSidebar={this.props.toggleSidebar} history={this.props.history} runSearch={window.location.pathname.includes('hangout') ? this.searchByZip : this.searchForEvents} placeholder="Enter Zip Code"/>
-        <Title history={this.props.history} showAll={this.state.showAll} getAll={this.getItems} amountOfEvents={this.state.events.length} />
+        <Title history={this.props.history} showAll={this.state.showAll} getAll={this.getItems} amountOfEvents={this.state.events.length} user={this.props.user} />
         <div className="event-container">
           {window.location.pathname.includes('hangout') ? hangoutList : eventList}
         </div>
@@ -72,7 +72,7 @@ function Title(props) {
       <div className="title-container">
         <span className={`back-button ${props.showAll && 'hidden'}`} onClick={() => props.getAll(window.location.pathname)}><i className="fa fa-angle-left"></i></span>
         {window.location.pathname.includes('hangout') ? <div className="title">Hangouts</div> : <div className="title">Events</div>}
-        <span className="add-button" onClick={() => props.history.push(`/create${window.location.pathname}`)}><i className="fa fa-plus"></i></span>
+        <span className={`add-button ${!props.user && 'hidden'}`} onClick={() => props.history.push(`/create${window.location.pathname}`)}><i className="fa fa-plus"></i></span>
       </div>
       <div className="amount-of-events">Showing {props.amountOfEvents} Events</div>
     </>

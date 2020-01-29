@@ -34,7 +34,7 @@ export default class HomePage extends React.Component {
           <div className="home-container">
             <div className="home-greeting">
               <h2>Welcome to Shadow Realmer</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id ex ac turpis feugiat eleifend eu finibus nibh. Nulla porttitor.</p>
+              <p>Hangout with both new and old friends. Find local TCG stores in your area and events that they are hosting. Remember to believe in the heart of the cards!</p>
             </div>
             <div className="home-title">Events</div>
             <div className="home-events-carousel-container">

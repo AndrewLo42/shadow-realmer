@@ -45,14 +45,14 @@ export default class App extends React.Component {
         <Sidebar toggleSidebar={this.toggleSidebar} user={this.state.user} isSidebarHidden={this.state.isSidebarHidden} />
         <Switch>
           <Route exact path="/" render={props => <HomePage {...props} toggleSidebar={this.toggleSidebar} />} />
-          <Route exact path="/hangouts" render={props => <ListPage {...props} toggleSidebar={this.toggleSidebar} />} />
-          <Route exact path="/events" render={props => <ListPage {...props} toggleSidebar={this.toggleSidebar} />} />
+          <Route exact path="/hangouts" render={props => <ListPage {...props} toggleSidebar={this.toggleSidebar} user={this.state.user} />} />
+          <Route exact path="/events" render={props => <ListPage {...props} toggleSidebar={this.toggleSidebar} user={this.state.user} />} />
           <Route exact path='/account/:userName' render={props => <AccountPage {...props} user={this.state.user} />} />
           <Route path='/account/:userName/settings' render={props => <AccountSettings {...props} user={this.state.user} />} />
           <Route path="/hangouts/:id" component={HangoutDetailsPage} />
           <Route path="/events/:id" component={EventDetailsPage} />
           <Route path="/create/hangouts" component={CreatePage} />
-          <Route path="/create/events" component={CreatePage} />
+          <Route path="/create/events" component={CreatePage} user={this.state.user} />
           <Route path='/stores' render={props => <StoreFinder {...props} toggleSidebar={this.toggleSidebar} />} />
           <Route path="/store/:name" component={StoreDetailsPage} />
           <Route path="/log-in" render={props => <LogInPage {...props} logInUser={this.logInUser} />} />

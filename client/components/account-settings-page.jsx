@@ -55,7 +55,7 @@ export default class AccountSettings extends React.Component {
           <input type="password" className="input long-input" placeholder="Confirm Password" onChange={this.handleConfirmedPasswordChange} value={this.state.confirmedPassword} />
           <button className="input long-input confirm">Confirm</button>
           <div className="account-page-footer">
-            <button className="input long-input confirm" type="submit" onClick={() => this.props.history.push('/secret')}>Log Out</button>
+            <button className="input long-input cancel" type="submit" onClick={() => this.props.history.push('/secret')}>Log Out</button>
           </div>
         </div>
       </>
