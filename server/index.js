@@ -698,10 +698,10 @@ app.get('/api/userNameCheck', (req, res, next) => {
 
 app.put('/api/users/:userId', (req, res, next) => {
   const editAccountSQL = `update "users"
-                          set "email"=$1, "deckArchetype"=$2, "mainGameId"=$3, "password"=$4,
-                          where "userId"=$5
+                          set "deckArchetype"=$1, "mainGameId"=$2, "email"=$3
+                          where "userId"=$4
                           returning *`;
-  const getExistingInfo = `select "email", "mainGameId", "deckArchetype", "password"
+  const getExistingInfo = `select "deckArchetype", "mainGameId", "email"
                             from "users"
                             where "userId"=$1`;
 
@@ -709,24 +709,24 @@ app.put('/api/users/:userId', (req, res, next) => {
   db.query(getExistingInfo, userId)
     .then(response => {
       const userAttributes = response.rows[0];
-
-      if (!req.body.email) {
+      if (req.body.email) {
         userAttributes.email = req.body.email;
       }
 
-      if (!req.body.deckArchetype) {
+      if (req.body.deckArchetype) {
         userAttributes.deckArchetype = req.body.deckArchetype;
       }
 
-      if (!req.body.mainGameId) {
+      if (req.body.mainGameId) {
         userAttributes.mainGameId = req.body.mainGameId;
       }
       const userAttributesValues = [
-        userAttributes.email,
         userAttributes.deckArchetype,
         userAttributes.mainGameId,
+        userAttributes.email,
         req.params.userId
       ];
+      console.log(userAttributesValues);
       db.query(editAccountSQL, userAttributesValues)
         .then(result => {
           const userChanges = result.rows;
@@ -743,22 +743,19 @@ app.put('/api/users/:userId', (req, res, next) => {
 
 app.put('/api/userpassword/:userId', (req, res, next) => {
   const updatePassword = `update "users"
-                          set "password"='$1'
+                          set "password"=$1
                           where "userId"=$2
                           returning *`;
   const saltRounds = 12;
   bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
     const hasher = [
-      hash
+      hash,
+      req.params.userId
     ];
-    console.log('this is in the hash', hasher);
     db.query(updatePassword, hasher)
       .then(result => {
         const user = result.rows;
         res.json(user);
-        // if (!hasher) {
-        //   user.hash = req.body.password;
-        // }
       })
       .catch(err => {
         console.error(err);
