@@ -7,7 +7,7 @@ export default class SignUpPage extends React.Component {
     this.state = {
       userName: '',
       deckArchetype: '',
-      mainGameId: '',
+      mainGameId: '0',
       email: '',
       isStoreEmployee: false,
       password: '',
@@ -17,13 +17,16 @@ export default class SignUpPage extends React.Component {
       validEmail: false,
       validPassword: false,
       samePassword: false,
+      existingUser: false,
       submitted: false
     };
+    this.validation = this.validation.bind(this);
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handleGameIdChange = this.handleGameIdChange.bind(this);
     this.handleDeckChange = this.handleDeckChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
+    this.checkForm = this.checkForm.bind(this);
     this.handlePasswordConfirmChange = this.handlePasswordConfirmChange.bind(this);
     this.handleStoreChange = this.handleStoreChange.bind(this);
     this.handleStoreNameChange = this.handleStoreNameChange.bind(this);
@@ -58,7 +61,6 @@ export default class SignUpPage extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-
     if (this.state.email !== prevState.email) {
       this.validation();
     } else if (this.state.password !== prevState.password) {
@@ -67,13 +69,23 @@ export default class SignUpPage extends React.Component {
   }
 
   handleSubmit(info) {
+    if (this.state.password === this.state.confirmPassword) {
+      this.setState({ samePassword: true });
+    } else {
+      this.setState({ samePassword: false });
+    }
 
-    if (!this.state.validEmail || !this.state.validPassword) {
+    if (!this.state.validEmail || !this.state.validPassword || !this.state.samePassword || this.state.existingUser) {
       if (!this.state.submitted) {
         this.setState({
-          submitted: true,
-          password: ''
+          submitted: true
         });
+      }
+      if (!this.state.validPassword) {
+        this.setState({ password: '' });
+      }
+      if (!this.state.samePassword) {
+        this.setState({ confirmPassword: '' });
       }
     } else {
       fetch(`/api/userNameCheck/${info.userName}`, {
@@ -83,10 +95,37 @@ export default class SignUpPage extends React.Component {
         })
         .then(data => {
           if (!data.exists) {
-            this.createUser(info);
+            this.setState({ existingUser: false });
+            this.checkForm(info);
+          } else {
+            this.setState({ existingUser: true });
           }
         })
         .catch(err => console.error(err));
+    }
+  }
+
+  checkForm(info) {
+    if (this.state.password === this.state.confirmPassword) {
+      this.setState({ samePassword: true });
+    } else {
+      this.setState({ samePassword: false });
+    }
+
+    if (!this.state.validEmail || !this.state.validPassword || !this.state.samePassword) {
+      if (!this.state.submitted) {
+        this.setState({
+          submitted: true
+        });
+      }
+      if (!this.state.validPassword) {
+        this.setState({ password: '' });
+      }
+      if (!this.state.samePassword) {
+        this.setState({ confirmPassword: '' });
+      }
+    } else {
+      this.createUser(info);
     }
   }
 
@@ -101,7 +140,7 @@ export default class SignUpPage extends React.Component {
       .then(response => response.json())
       .then(userData => {
         this.props.logInUser(userData);
-        // this.props.history.push('/');
+        this.props.history.push('/');
       })
       .catch(err => console.error(err));
   }
@@ -152,20 +191,47 @@ export default class SignUpPage extends React.Component {
 
   renderPasswordError() {
     if (!this.state.validPassword && this.state.submitted) {
+      if (!this.state.validPassword && this.state.submitted && this.state.password !== '') {
+        return null;
+      }
       return (
-        <div className="is-invalid error-blurb">
+        <div className=" error-blurb">
           <div>Password requires</div>
           <div> 7 Characters with at least 1 number</div>
         </div>);
     }
   }
 
+  renderPasswordTip() {
+    if (this.state.password === '') {
+      return <div> Seven characters, at least one number</div>;
+    }
+  }
+
+  renderConfirmPasswordError() {
+    if (!this.state.samePassword && this.state.submitted) {
+      if (!this.state.validPassword && this.state.submitted && this.state.confirmPassword !== '') {
+        return null;
+      }
+      return (<div className=" error-blurb">Passwords did not Match</div>);
+    }
+  }
+
+  renderUserNameError() {
+    if (this.state.existingUser && this.state.submitted) {
+
+      return (<div className=" error-blurb">Username already exists</div>);
+    }
+  }
+
   render() {
     let invalidEmail = null;
     let invalidPassword = null;
+    let invalidUser = null;
     if (this.state.submitted) {
       invalidEmail = this.state.validEmail === false ? 'is-invalid' : null;
       invalidPassword = this.state.validPassword === false ? 'is-invalid' : null;
+      invalidUser = this.state.existingUser === true ? 'is-invalid' : null;
     }
     return (
       <div className="create-page">
@@ -173,8 +239,9 @@ export default class SignUpPage extends React.Component {
           <i className="fas fa-angle-double-left" onClick={() => this.props.history.goBack()}></i>
           <ShadowRealmerIcon history={this.props.history} />
         </div>
-        <header className="title">Sign up</header>
-        <input type="text" className="long-input input" placeholder="User Name" onChange={this.handleNameChange} value={this.state.userName} />
+        <header className="title">Sign Up</header>
+        <input type="text" className={`long-input input ${invalidUser}`} placeholder="User Name" onChange={this.handleNameChange} value={this.state.userName} />
+        {this.renderUserNameError()}
         <input type="text" name="email" className={`long-input input ${invalidEmail}`} placeholder="E-Mail" onChange={this.handleEmailChange} value={this.state.email} />
         <select name="game" className="input short-input" onChange={this.handleGameIdChange} value={this.state.mainGameId}>
           <option value="null">Game</option>
@@ -190,7 +257,9 @@ export default class SignUpPage extends React.Component {
         {this.renderStoreInput()}
         {this.renderPasswordError()}
         <input type="password" name="password" className={`long-input input ${invalidPassword}`} placeholder="Password" onChange={this.handlePasswordChange} value={this.state.password} />
+        {this.renderPasswordTip()}
         <input type="password" name="confirmPassword" className="long-input input" placeholder="Confirm Password" onChange={this.handlePasswordConfirmChange} value={this.state.confirmPassword} />
+        {this.renderConfirmPasswordError()}
         <div className="short-container">
           <button className="short-input input cancel" onClick={() => this.props.history.push('/')}>Cancel</button>
           <button className="short-input input confirm" onClick={() => this.handleSubmit(this.state)}>Sign Up!</button>

@@ -299,6 +299,7 @@ body {
 
 .error-blurb {
   border-radius: 10px;
+  color: red;
 }
 
 /* Sidebar styling */
