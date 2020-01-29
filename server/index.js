@@ -634,8 +634,8 @@ app.get('/api/address', (req, res, next) => {
 
 app.post('/api/users', (req, res, next) => {
   const saltRounds = 12;
-  const text = `insert into "users" ("userName", "deckArchetype", "mainGameId", "email", "isStoreEmployee", "password")
-                values($1, $2, $3, $4, $5, $6)
+  const text = `insert into "users" ("userName", "deckArchetype", "mainGameId", "email", "isStoreEmployee", "password", "storeName")
+                values($1, $2, $3, $4, $5, $6, $7)
                 returning *`;
 
   bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
@@ -645,7 +645,8 @@ app.post('/api/users', (req, res, next) => {
       req.body.mainGameId,
       req.body.email,
       req.body.isStoreEmployee,
-      hash
+      hash,
+      req.body.storeName
     ];
     db.query(text, values)
       .then(result => {
@@ -693,6 +694,80 @@ app.get('/api/userNameCheck', (req, res, next) => {
       res.json(userNameCheck);
     })
     .catch(err => next(err));
+});
+
+app.put('/api/users/:userId', (req, res, next) => {
+  const editAccountSQL = `update "users"
+                          set "email"=$1, "deckArchetype"=$2, "mainGameId"=$3, "password"=$4,
+                          where "userId"=$5
+                          returning *`;
+  const getExistingInfo = `select "email", "mainGameId", "deckArchetype", "password"
+                            from "users"
+                            where "userId"=$1`;
+
+  const userId = [req.params.userId];
+  db.query(getExistingInfo, userId)
+    .then(response => {
+      const userAttributes = response.rows[0];
+
+      if (!req.body.email) {
+        userAttributes.email = req.body.email;
+      }
+
+      if (!req.body.deckArchetype) {
+        userAttributes.deckArchetype = req.body.deckArchetype;
+      }
+
+      if (!req.body.mainGameId) {
+        userAttributes.mainGameId = req.body.mainGameId;
+      }
+      const userAttributesValues = [
+        userAttributes.email,
+        userAttributes.deckArchetype,
+        userAttributes.mainGameId,
+        req.params.userId
+      ];
+      db.query(editAccountSQL, userAttributesValues)
+        .then(result => {
+          const userChanges = result.rows;
+          res.json(userChanges);
+        })
+        .catch(err => {
+          console.error(err);
+          res.status(500).json({
+            error: 'An unexpected error occured.'
+          });
+        });
+    });
+});
+
+app.put('/api/userpassword/:userId', (req, res, next) => {
+  const updatePassword = `update "users"
+                          set "password"='$1'
+                          where "userId"=$2
+                          returning *`;
+  const saltRounds = 12;
+  bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
+    const hasher = [
+      hash
+    ];
+    console.log('this is in the hash', hasher);
+    db.query(updatePassword, hasher)
+      .then(result => {
+        const user = result.rows;
+        res.json(user);
+        // if (!hasher) {
+        //   user.hash = req.body.password;
+        // }
+      })
+      .catch(err => {
+        console.error(err);
+        res.status(500).json({
+          error: 'An unexpected error occured.'
+        });
+      });
+    console.error(err);
+  });
 });
 
 app.use('/api', (req, res, next) => {
