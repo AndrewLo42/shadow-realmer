@@ -713,7 +713,8 @@ app.post('/api/users', (req, res, next) => {
     ];
     db.query(text, values)
       .then(result => {
-        const user = result.rows;
+        const user = result.rows[0];
+        req.session.userId = user.userId;
         res.json(user);
       })
       .catch(err => {

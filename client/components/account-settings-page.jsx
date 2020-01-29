@@ -13,6 +13,7 @@ export default class AccountSettings extends React.Component {
     this.handleGameFormatChange = this.handleGameFormatChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleConfirmedPasswordChange = this.handleConfirmedPasswordChange.bind(this);
+    this.handleLogOut = this.handleLogOut.bind(this);
   }
 
   handleGameIdChange(event) {
@@ -37,6 +38,11 @@ export default class AccountSettings extends React.Component {
     }
   }
 
+  handleLogOut() {
+    this.props.logOutUser();
+    this.props.history.push('/secret');
+  }
+
   render() {
     return (
       <>
@@ -55,7 +61,7 @@ export default class AccountSettings extends React.Component {
           <input type="password" className="input long-input" placeholder="Confirm Password" onChange={this.handleConfirmedPasswordChange} value={this.state.confirmedPassword} />
           <button className="input long-input confirm">Confirm</button>
           <div className="account-page-footer">
-            <button className="input long-input cancel" type="submit" onClick={() => this.props.history.push('/secret')}>Log Out</button>
+            <button className="input long-input cancel" type="submit" onClick={this.handleLogOut}>Log Out</button>
           </div>
         </div>
       </>
