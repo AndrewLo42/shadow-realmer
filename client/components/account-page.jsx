@@ -6,14 +6,15 @@ export default function AccountPage(props) {
     <div className="account-page">
       <div className="account-page-header">
         <i className="fas fa-angle-double-left" onClick={() => props.history.goBack()}></i>
-        <NavLink to={'/account/settings'}>
+        <NavLink to={`/account/${props.user.userName}/settings`}>
           <i className="fas fa-cog"></i>
         </NavLink>
       </div>
       <div className="account-page-main">
+        <i className="user-icon far fa-user-circle"></i>
         <div className="user-info">
-          <h1>User Name</h1>
-          <h4>User Game || User Deck</h4>
+          <h2>{props.user.userName}</h2>
+          <div className="user-details-text">{props.user.mainGameId === 1 ? 'Magic' : 'Yu-Gi-Oh'} || {props.user.deckArchetype}</div>
         </div>
       </div>
       <div className="account-page-footer">

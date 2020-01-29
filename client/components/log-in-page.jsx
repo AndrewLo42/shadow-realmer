@@ -54,7 +54,10 @@ export default class LogInPage extends React.Component {
           <div className="log-in-form-children-container">
             <input type="text" className="long-input input" placeholder="Username" onChange={this.handleUserNameChange} value={this.state.userName} />
             <input type="password" className="long-input input" placeholder="Password" onChange={this.handlePasswordChange} value={this.state.password} />
-            <button type="submit" className="short-input input confirm">Log In</button>
+            <div className="log-in-form-button-container">
+              <button type="submit" className="short-input input confirm">Log In</button>
+              <button className="short-input input green" onClick={() => this.props.history.push('/sign-up')}>Sign Up</button>
+            </div>
           </div>
         </form>
       </div>
