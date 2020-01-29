@@ -30,7 +30,7 @@ export default class HomePage extends React.Component {
     return haveEventsLoaded && haveHangoutsLoaded &&
       (
         <>
-          <NavBar {...this.props} placeholder="Yee Dawg" />
+          <NavBar {...this.props} />
           <div className="home-container">
             <div className="home-greeting">
               <h2>Welcome to Shadow Realmer</h2>
