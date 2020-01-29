@@ -244,7 +244,7 @@ export default class SignUpPage extends React.Component {
         {this.renderUserNameError()}
         <input type="text" name="email" className={`long-input input ${invalidEmail}`} placeholder="E-Mail" onChange={this.handleEmailChange} value={this.state.email} />
         <select name="game" className="input short-input" onChange={this.handleGameIdChange} value={this.state.mainGameId}>
-          <option value="null">Game</option>
+          <option value="0" hidden className="default-select-option">Game</option>
           <option value="1">Magic</option>
           <option value="2">Yu-Gi-Oh</option>
         </select>
