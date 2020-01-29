@@ -40,7 +40,7 @@ export default class AccountSettings extends React.Component {
 
   handleLogOut() {
     this.props.logOutUser();
-    this.props.history.push('/');
+    this.props.history.push('/secret');
   }
 
   render() {
