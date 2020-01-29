@@ -10,6 +10,7 @@ import StoreDetailsPage from './store-details-page';
 import AccountPage from './account-page';
 import AccountSettings from './account-settings-page';
 import LogInPage from './log-in-page';
+import SignUpPage from './sign-up-page';
 import SecretPage from './secret-page';
 import {
   BrowserRouter as Router,
@@ -55,6 +56,7 @@ export default class App extends React.Component {
           <Route path='/stores' render={props => <StoreFinder {...props} toggleSidebar={this.toggleSidebar} />} />
           <Route path="/store/:name" component={StoreDetailsPage} />
           <Route path="/log-in" render={props => <LogInPage {...props} logInUser={this.logInUser} />} />
+          <Route path="/sign-up" render={props => <SignUpPage {...props} signInUser={this.signInUser} />} />
           <Route path="/secret" component={SecretPage} />
         </Switch>
       </Router>

@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+
 require('dotenv/config');
 const express = require('express');
 
@@ -682,11 +682,10 @@ app.post('/api/usersLogin', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.get('/api/userNameCheck', (req, res, next) => {
+app.get('/api/userNameCheck/:userName', (req, res, next) => {
   const checkUserName =
     'select exists(select 1 from "users" where "userName"=$1)';
-  const inputtedUserName = [req.body.userName];
-
+  const inputtedUserName = [req.params.userName];
   db.query(checkUserName, inputtedUserName)
     .then(result => {
       const userNameCheck = result.rows[0];

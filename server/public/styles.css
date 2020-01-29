@@ -258,6 +258,14 @@ select {
   background-color: rgb(105, 153, 255);
 }
 
+.confirm:hover {
+  background-color: rgb(53, 109, 232);
+}
+
+.store-confirm {
+  background-color: rgba(231, 233, 78, 0.803);
+}
+
 .cancel {
   background-color: rgb(255, 85, 85);
 }
@@ -300,6 +308,7 @@ select {
 
 .error-blurb {
   border-radius: 10px;
+  color: red;
 }
 
 /* Sidebar styling */
@@ -643,4 +652,10 @@ li a :visited {
 @keyframes fadein {
   from {opacity: 0;}
   to {opacity: 1;}
+}
+
+/* Attempt to center Select box text */
+select {
+  text-align: center;
+  text-align-last: center;
 }
