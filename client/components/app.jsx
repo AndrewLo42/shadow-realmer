@@ -27,6 +27,7 @@ export default class App extends React.Component {
     };
     this.toggleSidebar = this.toggleSidebar.bind(this);
     this.logInUser = this.logInUser.bind(this);
+    this.logOutUser = this.logOutUser.bind(this);
   }
 
   toggleSidebar() {
@@ -39,16 +40,39 @@ export default class App extends React.Component {
     this.setState({ user });
   }
 
+  logOutUser() {
+    fetch('/api/usersLogout', {
+      method: 'POST'
+    })
+      .then(() => {
+        this.setState({ user: null });
+      });
+  }
+
+  componentDidMount() {
+    fetch('api/users')
+      .then(response => {
+        return response.json();
+      })
+      .then(userData => {
+        if (userData.error) {
+          this.setState({ user: null });
+        } else {
+          this.setState({ user: userData });
+        }
+      });
+  }
+
   render() {
     return (
       <Router>
         <Sidebar toggleSidebar={this.toggleSidebar} user={this.state.user} isSidebarHidden={this.state.isSidebarHidden} />
         <Switch>
-          <Route exact path="/" render={props => <HomePage {...props} toggleSidebar={this.toggleSidebar} />} />
+          <Route exact path="/" render={props => <HomePage {...props} toggleSidebar={this.toggleSidebar}/>} />
           <Route exact path="/hangouts" render={props => <ListPage {...props} toggleSidebar={this.toggleSidebar} user={this.state.user} />} />
           <Route exact path="/events" render={props => <ListPage {...props} toggleSidebar={this.toggleSidebar} user={this.state.user} />} />
           <Route exact path='/account/:userName' render={props => <AccountPage {...props} user={this.state.user} />} />
-          <Route path='/account/:userName/settings' render={props => <AccountSettings {...props} user={this.state.user} />} />
+          <Route path='/account/:userName/settings' render={props => <AccountSettings {...props} user={this.state.user} logOutUser={this.logOutUser}/>} />
           <Route path="/hangouts/:id" component={HangoutDetailsPage} />
           <Route path="/events/:id" component={EventDetailsPage} />
           <Route path="/create/hangouts" component={CreatePage} />

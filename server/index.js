@@ -670,7 +670,8 @@ app.post('/api/users', (req, res, next) => {
     ];
     db.query(text, values)
       .then(result => {
-        const user = result.rows;
+        const user = result.rows[0];
+        req.session.userId = user.userId;
         res.json(user);
       })
       .catch(err => {
@@ -755,7 +756,6 @@ app.put('/api/users/:userId', (req, res, next) => {
         userAttributes.email,
         req.params.userId
       ];
-      console.log(userAttributesValues);
       db.query(editAccountSQL, userAttributesValues)
         .then(result => {
           const userChanges = result.rows;
