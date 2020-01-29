@@ -6,16 +6,52 @@ export default class EventDetailsPage extends React.Component {
     super(props);
     this.state = {
       details: null,
-      address: {}
+      address: {},
+      isUserRSVPed: false
     };
     this.getDetails = this.getDetails.bind(this);
+    this.rsvpForEvent = this.rsvpForEvent.bind(this);
+    this.unrsvpForEvent = this.unrsvpForEvent.bind(this);
+  }
+
+  rsvpForEvent() {
+    const requestBody = JSON.stringify({
+      eventId: this.state.details.eventId,
+      userId: this.props.user.userId
+    });
+    const requestConfig = {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: requestBody,
+      method: 'POST'
+    };
+    fetch('/api/eventAttendees', requestConfig)
+      .then(() => this.setState(prevState => ({
+        isUserRSVPed: true
+      })))
+      .catch(err => console.error(err));
+  }
+
+  unrsvpForEvent() {
 
   }
 
   getDetails() {
     fetch(`/api/events/?id=${this.props.match.params.id}`)
       .then(data => data.json())
-      .then(result => this.setState({ details: result }))
+      .then(result => {
+        this.setState({ details: result });
+        if (this.props.user) {
+          fetch(`/api/eventAttendees?eventId=${this.state.details.eventId}`)
+            .then(data => data.json())
+            .then(eventAttendees => {
+              const isUserRSVPed = eventAttendees.findIndex(attendee => attendee.userId === this.props.user.userId) !== -1;
+              this.setState({ isUserRSVPed });
+            })
+            .catch(err => console.error(err));
+        }
+      })
       .then(data => this.getAddress())
       .catch(err => console.error(err));
   }
@@ -33,7 +69,15 @@ export default class EventDetailsPage extends React.Component {
   }
 
   render() {
-    return this.state.details ? <EventDetails details={this.state.details} history={this.props.history} address={this.state.address} /> : <div className="title">Loading...</div>;
+    return ((this.state.details && !this.props.user) || (this.state.details && this.state.isUserRSVPed !== null)
+      ? <EventDetails
+        isUserLoggedIn={!!this.props.user}
+        isUserRSVPed={this.state.isUserRSVPed}
+        details={this.state.details}
+        history={this.props.history}
+        address={this.state.address}
+        rsvpForEvent={this.rsvpForEvent} />
+      : <div className="title">Loading...</div>);
   }
 }
 
@@ -47,11 +91,22 @@ function EventDetails(props) {
     minute: 'numeric'
   };
   const startTimeFormatted = new Intl.DateTimeFormat('en-US', dateTimeFormatOptions).format(startTime);
+  let topRightIcon = null;
+  if (props.isUserLoggedIn) {
+    if (props.isUserRSVPed) {
+      topRightIcon = <i className="details-rsvp-icon fas fa-calendar-check"></i>;
+    } else {
+      topRightIcon = <i className="details-rsvp-icon fas fa-calendar" onClick={props.rsvpForEvent}></i>;
+    }
+  }
   return (
     <div className="details-container">
       <div className="details-header">
         <i className="fas fa-angle-double-left" onClick={() => props.history.goBack()}></i>
-        <i className="fas fa-poo-storm"></i>
+        <div className="details-rsvp-container" style={{ color: props.isUserRSVPed ? '#9984F1' : null }}>
+          {topRightIcon}
+          {props.isUserLoggedIn ? <div>RSVP</div> : null}
+        </div>
       </div>
       <div className="details-map">
         {props.address.geometry && <Map zoom={14} center={props.address.geometry.location} stores={[props.address]} />}

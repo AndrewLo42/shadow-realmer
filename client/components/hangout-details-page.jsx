@@ -58,7 +58,6 @@ function HangoutDetails(props) {
     <div className="details-container">
       <div className="details-header">
         <i className="fas fa-angle-double-left" onClick={() => props.history.goBack()}></i>
-        <i className="fas fa-poo-storm"></i>
       </div>
       <div className="details-map">
         {props.center && <Map zoom={13} center={props.center} />}
