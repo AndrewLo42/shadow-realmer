@@ -2,6 +2,7 @@
   box-sizing: border-box;
   font-family: 'Roboto', sans-serif;
   animation: fadein .5s;
+  -webkit-appearance: none;
 }
 
 body {
@@ -118,16 +119,19 @@ body {
   height: 100vh;
   width: 100vw;
 }
-.details-header {
+.details-header,
+.account-page-header {
   padding: 0 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
   height: 10%;
-}
-.details-header > * {
   font-size: 3rem;
+}
+
+.account-page-header {
+  margin-top: 5%;
 }
 
 .details-map {
@@ -135,7 +139,8 @@ body {
   width: 100%;
 }
 
-.details-main {
+.details-main,
+.account-page-main {
   padding: 0 30px;
   display: flex;
   flex-direction: column;
@@ -143,13 +148,19 @@ body {
   height: 30%;
   width: 100%;
 }
+
+.account-page-main {
+  text-align: center;
+}
+
 .details-main *,
 .details-footer *,
 .store-details-main * {
   text-align: center;
   margin: 3px 0;
 }
-.details-footer {
+.details-footer,
+.account-page-footer {
   padding: 0 30px;
   height: 25%;
   width: 100%;
@@ -171,6 +182,12 @@ body {
 
 .store-details-footer {
   width: 100%;
+}
+
+.fa-cog,
+.fa-cog:visited {
+  color: white;
+  text-decoration: none;
 }
 
 /* Create Hangouts Page */
@@ -214,7 +231,6 @@ body {
 .short-input {
   background-color: #333;
   width: 47%;
-  -webkit-appearance: none;
   color: white;
 }
 
@@ -227,9 +243,6 @@ body {
   height: 8vh;
   text-align: center;
   color: white;
-  -webkit-appearance: none;
-  outline: none;
-  cursor: pointer;
 }
 
 .confirm {
@@ -260,7 +273,6 @@ body {
   font-size: 1.25rem;
   background-color: #333;
   border: none;
-  -webkit-appearance: none;
   color: white;
 }
 
@@ -310,22 +322,36 @@ body {
 }
 .sidebar-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   margin-bottom: 25px;
   padding: 30px;
+  text-decoration: none;
+  color: white;
 }
 .sidebar-user-icon {
   font-size: 50px;
 }
-.sidebar-user-info {
+.user-info {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.sidebar-user-info > * {
+
+.user-icon {
+  font-size: 3rem;
+  color: #9984F1;
+}
+
+.user-info > * {
   margin: 0;
 }
+
+.user-details-text {
+  font-size: 1.25rem;
+  color: #9984F1;
+}
+
 .sidebar-page-list {
   display: flex;
   flex-direction: column;
@@ -556,6 +582,10 @@ li a :visited {
   justify-content: space-around;
   align-items: center;
 }
+.log-in-header {
+  width: 100%;
+  padding: 30px;
+}
 .log-in-container > img {
   height: 150px;
   width: 150px;
@@ -581,6 +611,9 @@ li a :visited {
   height: 50px;
   padding: 10px;
 }
+.log-in-error-border {
+  border: 2px red solid;
+}
 .log-in-form-children-container button {
   width: 150px;
   height: 50px;
@@ -593,7 +626,6 @@ li a :visited {
   justify-content: space-around;
   width: 325px;
 }
-
 
 .hidden {
   visibility: hidden;
