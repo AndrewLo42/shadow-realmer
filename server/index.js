@@ -632,6 +632,26 @@ app.get('/api/address', (req, res, next) => {
     .catch(err => console.error(err));
 });
 
+app.get('/api/users/', (req, res, next) => {
+  const userInfo = `
+    select *
+    from "users"
+    where "userId" = $1
+  `;
+
+  if (req.session.userId) {
+    const params = [req.session.userId];
+    db.query(userInfo, params)
+      .then(userData => {
+        res.status(200).json(userData.rows[0]);
+      })
+      .catch(err => console.error(err));
+  } else {
+    next(new ClientError('No user was logged in', 404));
+  }
+
+});
+
 app.post('/api/users', (req, res, next) => {
   const saltRounds = 12;
   const text = `insert into "users" ("userName", "deckArchetype", "mainGameId", "email", "isStoreEmployee", "password", "storeName")
@@ -674,6 +694,7 @@ app.post('/api/usersLogin', (req, res, next) => {
       bcrypt.compare(myPlaintextPassword, hash[0].password)
         .then(response => {
           if (response === true) {
+            req.session.userId = result.rows[0].userId;
             res.json(result.rows[0]);
           } else {
             next(new ClientError('Incorrect password or username', 400));
@@ -681,6 +702,15 @@ app.post('/api/usersLogin', (req, res, next) => {
         });
     })
     .catch(err => next(err));
+});
+
+app.post('/api/usersLogout', (req, res, next) => {
+  if (req.session.userId) {
+    delete req.session.userId;
+    res.status(200).json('Signed Out');
+  } else {
+    next(new ClientError('No user was logged in', 404));
+  }
 });
 
 app.get('/api/userNameCheck/:userName', (req, res, next) => {
