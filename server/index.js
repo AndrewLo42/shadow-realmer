@@ -385,6 +385,28 @@ app.post('/api/eventAttendees', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.delete('/api/eventAttendees/:userId', (req, res, next) => {
+  const deleteEventRSVP = 'delete from "eventAttendees" where "userId"=$1';
+  const params = [req.params.userId];
+  db.query(deleteEventRSVP, params)
+    .then(response => {
+      const deleteResponse = response.rows;
+      if (!deleteResponse) {
+        next(
+          new ClientError(
+                `No rsvp for event found.${req.method} ${req.originalUrl}`,
+                404
+          )
+        );
+      } else {
+        res.json(deleteResponse);
+      }
+    })
+    .catch(err => {
+      next(err);
+    });
+});
+
 app.get('/api/eventAttendees/:userId', (req, res, next) => {
   const pastAttendanceEvents = `select
                                 "e"."gameId",
@@ -529,6 +551,25 @@ app.get('/api/hangoutAttendees/', (req, res, next) => {
       res.status(200).json(pastHangouts);
     })
     .catch(err => next(err));
+});
+
+app.delete('/api/hangoutAttendees/:userId', (req, res, next) => {
+  const deleteHangoutRSVP = 'delete from "hangoutAttendees" where "userId"=$1';
+  const params = [req.params.userId];
+  db.query(deleteHangoutRSVP, params)
+    .then(response => {
+      const deleteResponse = response.rows;
+      if (!deleteResponse) {
+        next(
+          new ClientError(`No rsvp for hangout found.${req.method} ${req.originalUrl}`, 404)
+        );
+      } else {
+        res.json(deleteResponse);
+      }
+    })
+    .catch(err => {
+      next(err);
+    });
 });
 
 app.put('/api/events/:eventId', (req, res, next) => {
@@ -755,7 +796,6 @@ app.put('/api/users/:userId', (req, res, next) => {
         userAttributes.email,
         req.params.userId
       ];
-      console.log(userAttributesValues);
       db.query(editAccountSQL, userAttributesValues)
         .then(result => {
           const userChanges = result.rows;
