@@ -385,9 +385,9 @@ app.post('/api/eventAttendees', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.delete('/api/eventAttendees/:userId', (req, res, next) => {
+app.delete('/api/eventAttendees/', (req, res, next) => {
   const deleteEventRSVP = 'delete from "eventAttendees" where "userId"=$1 AND "eventId"=$2';
-  const params = [req.params.userId,
+  const params = [req.body.userId,
     req.body.eventId];
   db.query(deleteEventRSVP, params)
     .then(response => {
@@ -554,9 +554,9 @@ app.get('/api/hangoutAttendees/', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.delete('/api/hangoutAttendees/:userId', (req, res, next) => {
+app.delete('/api/hangoutAttendees/', (req, res, next) => {
   const deleteHangoutRSVP = 'delete from "hangoutAttendees" where "userId"=$1 AND "hangoutId"=$2';
-  const params = [req.params.userId,
+  const params = [req.body.userId,
     req.body.hangoutId];
   db.query(deleteHangoutRSVP, params)
     .then(response => {
