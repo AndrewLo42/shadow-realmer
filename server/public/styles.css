@@ -61,16 +61,23 @@ body {
 
 .add-button {
   font-size: 1.5rem;
-  position: absolute;
-  right: 37px;
-  top: 85px;
+}
+
+.back-button {
+  font-size: 2rem;
 }
 
 .title-container {
   display: flex;
   flex-flow: row;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
+}
+
+.amount-of-events {
+  font-size: 0.75rem;
+  color: rgb(128, 128, 128);
+  text-align: center;
 }
 
 .event-title {
@@ -79,7 +86,7 @@ body {
 }
 
 .store-name {
-  color: rgb(128, 128, 128);;
+  color: rgb(128, 128, 128);
 }
 
 .event-icon-container {
@@ -533,6 +540,41 @@ li a :visited {
 .show-search-bar {
   transform: translateY(8vh);
 }
+
+/* Sign In Page Styling */
+.sign-in-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+.sign-in-container > img {
+  height: 150px;
+  width: 150px;
+  pointer-events: none;
+}
+.welcome-banner {
+  width: 100%;
+  height: 30px;
+  background-color: #9984F1;
+  text-align: center;
+}
+.sign-in-form-children-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+.sign-in-form-children-container > input {
+  width: 275px;
+  height: 50px;
+  padding: 10px;
+}
+.sign-in-form-children-container > button {
+  width: 150px;
+  height: 50px;
+}
+
 
 .hidden {
   visibility: hidden;

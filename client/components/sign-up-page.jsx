@@ -65,6 +65,24 @@ export default class SignUpPage extends React.Component {
   }
 
   handleSubmit(info) {
+    if (!this.state.validEmail || !this.state.validPassword) {
+      // console.log('NO');
+    } else {
+      fetch(`/api/userNameCheck/${info.userName}`, {
+      })
+        .then(response => {
+          return response.json();
+        })
+        .then(data => {
+          if (!data.exists) {
+            this.createUser(info);
+          }
+        })
+        .catch(err => console.error(err));
+    }
+  }
+
+  createUser(info) {
     fetch('/api/users', {
       method: 'POST',
       headers: {
@@ -72,7 +90,12 @@ export default class SignUpPage extends React.Component {
       },
       body: JSON.stringify(info)
     })
-      .then(() => this.props.history.push(`${location}`))
+      .then(response => response.json())
+      .then(userData => {
+        // console.log(userData);
+        this.props.logInUser(userData);
+        // this.props.history.push('/');
+      })
       .catch(err => console.error(err));
   }
 
