@@ -70,7 +70,10 @@ export default class SignUpPage extends React.Component {
 
     if (!this.state.validEmail || !this.state.validPassword) {
       if (!this.state.submitted) {
-        this.setState({ submitted: true });
+        this.setState({
+          submitted: true,
+          password: ''
+        });
       }
     } else {
       fetch(`/api/userNameCheck/${info.userName}`, {
@@ -144,6 +147,16 @@ export default class SignUpPage extends React.Component {
   renderStoreInput() {
     if (this.state.isStoreEmployee === true) {
       return (<input type="text" className="long-input input" placeholder="Store Name" onChange={this.handleStoreNameChange} value={this.state.storeName} />);
+    }
+  }
+
+  renderPasswordError() {
+    if (!this.state.validPassword && this.state.submitted) {
+      return (
+        <div className="is-invalid error-blurb">
+          <div>Password requires</div>
+          <div> 7 Characters with at least 1 number</div>
+        </div>);
     }
   }
 

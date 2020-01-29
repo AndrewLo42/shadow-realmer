@@ -285,6 +285,10 @@ body {
   border: 1px solid red;
 }
 
+.error-blurb {
+  border-radius: 10px;
+}
+
 /* Sidebar styling */
 .sidebar-container {
   width: 300px;
