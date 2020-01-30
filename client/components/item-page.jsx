@@ -1,10 +1,6 @@
 import React from 'react';
 
-export default function ItemPage(props) {
-  return window.location.pathname.includes('/hangouts') ? <HangoutItem hangout={props.hangout} history={props.history} /> : <EventItem event={props.event} history={props.history} />;
-}
-
-function HangoutItem(props) {
+export function HangoutItem(props) {
   const icon = props.hangout.gameFormat === 'Yu-Gi-Oh' ? '/images/yugioh.png' : '/images/mtg.png';
   const date = new Date(props.hangout.startTime);
   const dateFormatOptions = {
@@ -33,7 +29,7 @@ function HangoutItem(props) {
   );
 }
 
-function EventItem(props) {
+export function EventItem(props) {
   const date = new Date(props.event.startTime);
   const dateFormatOptions = {
     month: 'short',

@@ -33,7 +33,9 @@ export default class EventDetailsPage extends React.Component {
   }
 
   render() {
-    return this.state.details ? <EventDetails details={this.state.details} history={this.props.history} address={this.state.address} /> : <div className="title">Loading...</div>;
+    return this.state.details
+      ? <EventDetails details={this.state.details} history={this.props.history} address={this.state.address} />
+      : <div className="title">Loading...</div>;
   }
 }
 
