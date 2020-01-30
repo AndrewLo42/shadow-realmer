@@ -690,7 +690,7 @@ app.get('/api/users/', (req, res, next) => {
       })
       .catch(err => console.error(err));
   } else {
-    next(new ClientError('No user was logged in', 404));
+    next(new ClientError('No user was logged in', 200));
   }
 
 });
@@ -753,7 +753,7 @@ app.post('/api/usersLogout', (req, res, next) => {
     delete req.session.userId;
     res.status(200).json('Signed Out');
   } else {
-    next(new ClientError('No user was logged in', 404));
+    next(new ClientError('No user was logged in', 200));
   }
 });
 

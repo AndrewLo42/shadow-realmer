@@ -65,6 +65,7 @@ class CreateHangout extends React.Component {
 
   handleZipCodeChange(event) {
     this.setState({ zipCode: event.target.value });
+
   }
 
   handleMonthChange(event) {
@@ -99,13 +100,43 @@ class CreateHangout extends React.Component {
     this.setState({ gameFormat: event.target.value });
   }
 
+  renderFormatOptions() {
+    if (this.state.gameId === '1') {
+      return (
+        <select name="format" className="input short-input" onChange={this.handleGameFormatChange} value={this.state.gameFormat}>
+          <option value="null" hidden>Format</option>
+          <option value="Modern">Modern</option>
+          <option value="Standard">Standard</option>
+          <option value="Pioneer">Pioneer</option>
+          <option value="Commander">Commander</option>
+          <option value="Legacy">Legacy</option>
+        </select>
+      );
+    } else if (this.state.gameId === '2') {
+      return (
+        <select name="format" className="input short-input" onChange={this.handleGameFormatChange} value={this.state.gameFormat}>
+          <option value="Yu-Gi-Oh">Yu-Gi-Oh</option>
+        </select>
+      );
+    } else {
+      return (
+        <select name="format" className="input short-input" onChange={this.handleGameFormatChange} value={this.state.gameFormat}>
+        </select>
+      );
+    }
+  }
+
   render() {
+    let disabledOption = false;
+    if (this.state.gameId) {
+      disabledOption = true;
+    }
     return (
       <div className="create-page">
         <header className="title">Create Hangout</header>
         <input type="text" className="long-input input" placeholder="Hangout Title" onChange={this.handleTitleChange} value={this.state.name}/>
         <input type="text" className="long-input input" placeholder="Contact Info" onChange={this.handleContactInfoChange} value={this.state.contactInfo}/>
-        <input type="number" className="long-input input" placeholder="Zip Code" onChange={this.handleZipCodeChange} value={this.state.zipCode}/>
+        <input type="number" maxLength="5" className="long-input input" placeholder="Zip Code" onChange={this.handleZipCodeChange} value={this.state.zipCode}/>
         <div className="short-container">
           <div className="date-container short-input input">
             <select name="month" className="date-selector selector-left" onChange={this.handleMonthChange} value={this.state.month}>
@@ -186,19 +217,11 @@ class CreateHangout extends React.Component {
         <textarea name="description" cols="30" rows="10" placeholder="Description" className="input long-input description" onChange={this.handleDescriptionChange} value={this.state.description}/>
         <div className="short-container">
           <select name="game" className="input short-input" onChange={this.handleGameIdChange} value={this.state.gameId}>
-            <option value="null">Game</option>
+            <option value="null" disabled={disabledOption}>Game</option>
             <option value="1">Magic</option>
             <option value="2">Yu-Gi-Oh</option>
           </select>
-          <select name="format" className="input short-input" onChange={this.handleGameFormatChange} value={this.state.gameFormat}>
-            <option value="null">Format</option>
-            <option value="Modern">Modern</option>
-            <option value="Standard">Standard</option>
-            <option value="Pioneer">Pioneer</option>
-            <option value="Commander">Commander</option>
-            <option value="Legacy">Legacy</option>
-            <option value="Yu-Gi-Oh">Yu-Gi-Oh</option>
-          </select>
+          {this.renderFormatOptions()}
         </div>
         <div className="short-container">
           <button className="short-input input cancel" onClick={() => this.props.history.push('/hangouts')}>Cancel</button>
@@ -380,7 +403,7 @@ class CreateEvent extends React.Component {
             <option value="2">Yu-Gi-Oh</option>
           </select>
           <select name="format" className="input short-input" onChange={this.handleGameFormatChange} value={this.state.gameFormat}>
-            <option value="null">Format</option>
+            <option value="null" hidden>Format</option>
             <option value="Modern">Modern</option>
             <option value="Standard">Standard</option>
             <option value="Pioneer">Pioneer</option>
