@@ -92,12 +92,12 @@ CREATE TABLE public."eventAttendees" (
 CREATE TABLE public.events (
     "eventId" integer NOT NULL,
     "eventName" text NOT NULL,
-    "storeId" integer NOT NULL,
     "startTime" timestamp without time zone NOT NULL,
     description text NOT NULL,
     "gameFormat" text NOT NULL,
     "gameId" integer NOT NULL,
-    "entranceFee" numeric NOT NULL
+    "entranceFee" numeric NOT NULL,
+    "storeName" text
 );
 
 
@@ -244,7 +244,9 @@ CREATE TABLE public.users (
     "deckArchetype" text,
     "mainGameId" integer,
     email text NOT NULL,
-    "isStoreEmployee" boolean
+    "isStoreEmployee" boolean,
+    password text NOT NULL,
+    "storeName" text
 );
 
 
@@ -315,12 +317,15 @@ COPY public."eventAttendees" ("eventId", "userId") FROM stdin;
 -- Data for Name: events; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.events ("eventId", "eventName", "storeId", "startTime", description, "gameFormat", "gameId", "entranceFee") FROM stdin;
-1	"Friday Night Magic"	1	2020-02-15 01:30:00	"Come play Magic this friday at Chad's Cards Shop"	"Vintage"	1	5
-2	"Saturday Night Yu Gi Oh"	2	2020-02-16 01:30:00	"Come play Yu Gi Oh at Pinks Cards Saturday Night"	"Tournament"	2	10
-3	"Sunday Morning Magic"	3	2020-02-17 01:30:00	"Come play Magic this sunday morning at Kuz Cards"	"Standard"	1	3
-4	"Monday Night Yu Gi Oh"	4	2020-02-18 01:30:00	"Come play Yu Gi Oh after work Monday Night at Caruso Cards"	"Standard"	2	7
-5	"Tuesday Night Magic"	5	2020-02-19 01:30:00	"Come play Magic sunday night at Lebrons Cards"	"Booster Draft"	1	10
+COPY public.events ("eventId", "eventName", "startTime", description, "gameFormat", "gameId", "entranceFee", "storeName") FROM stdin;
+1	Modern Nights	2020-02-15 06:30:00	Good ol' Modern! Our weekly is super dope! We have some loaner decks for those who don't have a sweet deck yet. Proxies add +$2 to your entrance fee. Prize distribution depends on how many people join, we'll talk about it in store. Prize will be store credit, though! 	Modern	1	5	Magic & Monsters
+2	Friday Night Magic	2020-02-07 06:30:00	The Classic Friday Night Magic! Whoo! We'll have standard AND draft! Mostly draft, though! Also we'll have our Smash set up running if you need to SETTLE IT! Prizing will depend on how many people enter, but will be PACKS instead of our usual store credit! FNM promo cards will be handed out randomly depending on our stock! 	Draft	1	15	Magic & Monsters
+3	Yu-Gi-Oh Fight!	2020-02-20 06:30:00	Yu-Gi-Oh tournament! Get a Star Pack with entrance! Prizing will be more Star Packs, because you're a star! 	Yu-Gi-Oh	2	5	Magic & Monsters
+4	Friday Night Magic	2020-02-07 06:30:00	The Classic Friday Night Magic! Whoo! We'll have standard AND draft! Mostly draft, though! Also we'll have our Smash set up running if you need to SETTLE IT! Prizing will depend on how many people enter, but will be PACKS instead of our usual store credit! FNM promo cards will be handed out randomly depending on our stock! 	Draft	1	15	The Uncommons
+5	Yu-Gi-Oh Fight!	2020-02-10 07:30:00	Yu-Gi-Oh tournament! Get a Star Pack with entrance! Prizing will be handed out as store credit. Please shower beforehand! 	Yu-Gi-Oh	2	5	The Uncommons
+6	Pioneer Weekly!	2020-02-12 07:30:00	The newest, most premier format... PIONEER! Our weekly is super dope!  Proxies add +$2 to your entrance fee. Prize distribution depends on how many people join, we'll talk about it in store. Prize will be store credit, though! 	Pioneer	1	10	The Uncommons
+7	Friday Night Magic	2020-02-07 07:00:00	Awesome Friday Night Magic! Whoo! We'll have a great time doing CHAOS DRAFT!  Prizing will depend on how many people enter, but will be store credit! FNM promo cards will be handed out randomly depending on our stock! 	Draft	1	15	Guardian Games
+8	Pioneer Weekly!	2020-02-15 07:00:00	 Our Pioneer weekly is here!  Proxies add +$1 to your entrance fee. Prize distribution depends on how many people join, we'll talk about it in store. Prize will be store credit, though! 	Pioneer	1	10	Guardian Games
 \.
 
 
@@ -339,12 +344,6 @@ COPY public.game ("gameId", "gameName") FROM stdin;
 --
 
 COPY public."hangoutAttendees" ("userId", "hangoutId") FROM stdin;
-2	5
-2	7
-1	7
-1	2
-2	10
-2	10
 \.
 
 
@@ -360,7 +359,7 @@ COPY public.hangouts ("hangoutId", "hangoutName", "hostId", "startTime", descrip
 5	Magic and Chill	1	2020-02-16 18:40:00	We play some Magic, then we chill. Haha, jk... unless? Hit me up though.	Pioneer	1	92618	618-897-5672
 6	Magic and Chill	1	2020-02-23 16:20:00	We play some Magic, then we chill. Haha, jk... unless? Hit me up though.	Pioneer	1	92618	618-897-5672
 7	Shadow Realm DUEL 	2	2020-02-17 13:00:00	Fight me. 	Yu-Gi-Oh	2	10280	949-420-6969
-8	Casual Magic	4	2020-02-18 16:00:00	I just want to play some casual Magic. Anyone is welcome! 	Casual	1	94105	 (312)-785-9934 
+8	Casual Magic	4	2020-02-18 16:00:00	I just want to play some casual Magic. Anyone is welcome! 	Casual	1	94105	 (312)-785-9934
 9	Commander Circle	5	2020-02-17 12:00:00	Casual Commander! Please no cEDH decks... 	Commander	1	10280	714-231-6434
 10	Casual Magic	4	2020-02-18 16:00:00	I just want to play some casual Magic. Anyone is welcome! Let me know !	Casual	1	92618	dragonmasterknight#3122
 11	Casual Magic	4	2020-02-25 16:00:00	I just want to play some casual Magic. Anyone is welcome! Let me know!	Casual	1	94105	714-231-6434
@@ -392,9 +391,14 @@ COPY public.stores ("storeId", "storeName", long, lat, "openingTime", "closingTi
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.users ("userId", "userName", "deckArchetype", "mainGameId", email, "isStoreEmployee") FROM stdin;
-1	BrianKibler	Dragons	1	kibbles@gmail.com	f
-2	JimJamFlimFlam	5C Niv	1	comicsarecool@gmail.com	t
+COPY public.users ("userId", "userName", "deckArchetype", "mainGameId", email, "isStoreEmployee", password, "storeName") FROM stdin;
+12	Kobe	Lakers	1	blackmamba24@gmail.com	f	$2b$12$cok9xQCkOxTQ2QJX1TO89ea6mb.osOUI2KdNfMKbUZsfDLZAqV8JW	\N
+13	Kanye	Yeezy	2	808sandmagic@gmail.com	t	$2b$12$prK4SLB5E1L4nGpoqoEruOa9UB0J8PyWOY7iv4SNbO/F7LeTcOBMi	\N
+14	Kanye	Yeezy	2	808sandmagic@gmail.com	t	$2b$12$pqp8dl0XNlg4TJexKAuGLOvLKM3z3R2ehqetIgrT81EkhwwYCQCh2	Pablos Cards
+15	Spike Spiegal	Bebop	1	spacecowboy@gmail.com	f	$2b$12$n/4J2z0lRVdnyUpbj6/A2e5mqdanBJwPlqVSsO6MtBYTa.eQ1/B6u	null
+16	Rocky	Boxer	2	italianstallion@gmail.com	f	$2b$12$iGB3eI4lLWMuEtiXOy/FZ.pgQaK8HT4agTHZ7Eh8NTh7MQwUQsOJW	null
+17	Yugi Mutou	Dueler	2	yugiohnumber1@gmail.com	f	$2b$12$puSVQVuQbrVE0/4NHAFMH.WdundVU2NbyQteaC/0mWDMe757XKqDy	null
+18	Kid Cudi	Rager	1	daynnite@gmail.com	t	$2b$12$JqpRBcEKjoTrq3lw4IJkquTzOfRVQu2U8UbyzKRJDcI.RiAjXinqK	Man On The Moon Cards
 \.
 
 
@@ -402,7 +406,7 @@ COPY public.users ("userId", "userName", "deckArchetype", "mainGameId", email, "
 -- Name: events_eventId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."events_eventId_seq"', 1, false);
+SELECT pg_catalog.setval('public."events_eventId_seq"', 8, true);
 
 
 --
@@ -430,7 +434,7 @@ SELECT pg_catalog.setval('public."stores_storeId_seq"', 1, false);
 -- Name: users_userId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."users_userId_seq"', 2, true);
+SELECT pg_catalog.setval('public."users_userId_seq"', 18, true);
 
 
 --
