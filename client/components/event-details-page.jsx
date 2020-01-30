@@ -34,7 +34,22 @@ export default class EventDetailsPage extends React.Component {
   }
 
   unrsvpForEvent() {
-
+    const requestBody = JSON.stringify({
+      eventId: this.state.details.eventId,
+      userId: this.props.user.userId
+    });
+    const requestConfig = {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: requestBody,
+      method: 'DELETE'
+    };
+    fetch('/api/eventAttendees', requestConfig)
+      .then(() => this.setState(prevState => ({
+        isUserRSVPed: false
+      })))
+      .catch(err => console.error(err));
   }
 
   getDetails() {
@@ -76,7 +91,8 @@ export default class EventDetailsPage extends React.Component {
         details={this.state.details}
         history={this.props.history}
         address={this.state.address}
-        rsvpForEvent={this.rsvpForEvent} />
+        rsvpForEvent={this.rsvpForEvent}
+        unrsvpForEvent={this.unrsvpForEvent} />
       : <div className="title">Loading...</div>);
   }
 }
@@ -94,7 +110,7 @@ function EventDetails(props) {
   let topRightIcon = null;
   if (props.isUserLoggedIn) {
     if (props.isUserRSVPed) {
-      topRightIcon = <i className="details-rsvp-icon fas fa-calendar-check"></i>;
+      topRightIcon = <i className="details-rsvp-icon fas fa-calendar-check" onClick={props.unrsvpForEvent}></i>;
     } else {
       topRightIcon = <i className="details-rsvp-icon fas fa-calendar" onClick={props.rsvpForEvent}></i>;
     }
