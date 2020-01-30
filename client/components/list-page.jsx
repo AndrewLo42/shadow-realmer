@@ -1,7 +1,8 @@
 import React from 'react';
 import NavBar from './navbar';
-import { HangoutItem, EventItem } from './item-page';
-import { SRContext } from './context';
+import HangoutItem from './hangout-item-page';
+import EventItem from './event-item-page';
+import SRContext from './context';
 
 export default class ListPage extends React.Component {
   constructor(props) {
@@ -60,7 +61,7 @@ export default class ListPage extends React.Component {
     return (
       <>
         <NavBar history={this.props.history} runSearch={window.location.pathname.includes('hangout') ? this.searchByZip : this.searchForEvents} />
-        <Title history={this.props.history} showAll={this.state.showAll} getAll={this.getItems} amountOfEvents={this.state.events.length} />
+        <Title history={this.props.history} showAll={this.state.showAll} getAll={this.getItems} amountOfEvents={this.state.events.length} user={this.context.user} />
         <div className="event-container">
           { list }
         </div>
@@ -71,18 +72,15 @@ export default class ListPage extends React.Component {
 
 function Title(props) {
   return (
-    <SRContext.Consumer>{context => {
-      return (
-        <>
-          <div className="title-container">
-            <span className={`back-button ${props.showAll && 'hidden'}`} onClick={() => props.getAll(window.location.pathname)}><i className="fa fa-angle-left"></i></span>
-            {window.location.pathname.includes('hangout') ? <div className="title">Hangouts</div> : <div className="title">Events</div>}
-            <span className={`add-button ${!context.user && 'hidden'}`} onClick={() => props.history.push(`/create${window.location.pathname}`)}><i className="fa fa-plus"></i></span>
-          </div>
-          <div className="amount-of-events">Showing {props.amountOfEvents} Events</div>
-        </>
-      );
-    }}
-    </SRContext.Consumer>
+    <>
+      <div className="title-container">
+        <span className={`back-button ${props.showAll && 'hidden'}`} onClick={() => props.getAll(window.location.pathname)}><i className="fa fa-angle-left"></i></span>
+        {window.location.pathname.includes('hangout') ? <div className="title">Hangouts</div> : <div className="title">Events</div>}
+        <span className={`add-button ${!props.user && 'hidden'}`} onClick={() => props.history.push(`/create${window.location.pathname}`)}><i className="fa fa-plus"></i></span>
+      </div>
+      <div className="amount-of-events">Showing {props.amountOfEvents} Events</div>
+    </>
   );
 }
+
+ListPage.contextType = SRContext;

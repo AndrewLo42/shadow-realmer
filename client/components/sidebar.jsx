@@ -2,7 +2,7 @@ import React from 'react';
 import {
   NavLink
 } from 'react-router-dom';
-import { SRContext } from './context';
+import SRContext from './context';
 
 export default function Sidebar(props) {
   return (
@@ -12,7 +12,7 @@ export default function Sidebar(props) {
           <div className={`sidebar-container ${!context.showSidebar && 'off-screen-left'}`}>
             <i className="sidebar-exit-button fas fa-times" onClick={context.toggleSidebar} />
             {context.user
-              ? <UserLoggedIn user={props.user} toggleSidebar={context.toggleSidebar} />
+              ? <UserLoggedIn user={context.user} toggleSidebar={context.toggleSidebar} />
               : <NoUserLoggedIn toggleSidebar={context.toggleSidebar} />}
             <div className="sidebar-page-list">
               <ul className="sidebar-list-items" onClick={context.toggleSidebar}>

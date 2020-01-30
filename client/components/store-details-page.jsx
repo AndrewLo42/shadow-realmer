@@ -1,6 +1,6 @@
 import React from 'react';
 import Map from './map';
-import { EventItem } from './item-page';
+import EventItem from './event-item-page';
 
 export default class StoreDetailsPage extends React.Component {
   constructor(props) {
@@ -45,7 +45,6 @@ function StoreDetails(props) {
     <div className="details-container">
       <div className="details-header">
         <i className="fas fa-angle-double-left" onClick={() => props.history.goBack()}></i>
-        <i className="fas fa-poo-storm"></i>
       </div>
       <div className="details-map">
         {props.details.geometry && <Map zoom={14} center={props.details.geometry.location} stores={[props.details]} />}

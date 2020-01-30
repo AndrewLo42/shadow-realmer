@@ -17,24 +17,67 @@ import {
   Switch,
   Route
 } from 'react-router-dom';
-import SRProvider from './context';
+import SRContext from './context';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: null
+      user: null,
+      showSidebar: false
     };
+    this.toggleSidebar = this.toggleSidebar.bind(this);
     this.logInUser = this.logInUser.bind(this);
+    this.logOutUser = this.logOutUser.bind(this);
+  }
+
+  toggleSidebar() {
+    this.setState({ showSidebar: !this.state.showSidebar });
   }
 
   logInUser(user) {
     this.setState({ user });
   }
 
+  logOutUser() {
+    fetch('/api/usersLogout', {
+      method: 'POST'
+    })
+      .then(() => {
+        this.setState({ user: null });
+      })
+      .catch(err => console.error(err));
+  }
+
+  componentDidMount() {
+    fetch('api/users')
+      .then(response => {
+        return response.json();
+      })
+      .then(userData => {
+        if (userData.error) {
+          this.setState({ user: null });
+        } else {
+          this.setState({ user: userData });
+        }
+      })
+      .catch(err => console.error(err));
+  }
+
   render() {
+    const user = this.state.user;
+    const showSidebar = this.state.showSidebar;
+    const toggleSidebar = this.toggleSidebar;
+    const logInUser = this.logInUser;
+    const logOutUser = this.logOutUser;
     return (
-      <SRProvider>
+      <SRContext.Provider value={{
+        user,
+        showSidebar,
+        toggleSidebar,
+        logInUser,
+        logOutUser
+      }}>
         <Router>
           <Sidebar />
           <Switch>
@@ -54,7 +97,7 @@ export default class App extends React.Component {
             <Route path="/secret" component={SecretPage} />
           </Switch>
         </Router>
-      </SRProvider>
+      </SRContext.Provider>
     );
   }
 }

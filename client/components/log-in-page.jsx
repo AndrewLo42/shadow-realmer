@@ -1,5 +1,6 @@
 import React from 'react';
 import ShadowRealmerIcon from './shadow-realmer-icon';
+import SRContext from './context';
 
 export default class LogInPage extends React.Component {
   constructor(props) {
@@ -48,7 +49,7 @@ export default class LogInPage extends React.Component {
         throw new Error('Log in unsuccessful.');
       })
       .then(userData => {
-        this.props.logInUser(userData);
+        this.context.logInUser(userData);
         this.props.history.goBack();
       })
       .catch(err => console.error(err));
@@ -90,3 +91,5 @@ export default class LogInPage extends React.Component {
     );
   }
 }
+
+LogInPage.contextType = SRContext;

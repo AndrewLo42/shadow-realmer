@@ -1,5 +1,6 @@
 import React from 'react';
 import ShadowRealmerIcon from './shadow-realmer-icon';
+import SRContext from './context';
 
 export default class SignUpPage extends React.Component {
   constructor(props) {
@@ -139,7 +140,7 @@ export default class SignUpPage extends React.Component {
     })
       .then(response => response.json())
       .then(userData => {
-        this.props.logInUser(userData);
+        this.context.logInUser(userData);
         this.props.history.push('/');
       })
       .catch(err => console.error(err));
@@ -244,7 +245,7 @@ export default class SignUpPage extends React.Component {
         {this.renderUserNameError()}
         <input type="text" name="email" className={`long-input input ${invalidEmail}`} placeholder="E-Mail" onChange={this.handleEmailChange} value={this.state.email} />
         <select name="game" className="input short-input" onChange={this.handleGameIdChange} value={this.state.mainGameId}>
-          <option value="null">Game</option>
+          <option value="0" hidden className="default-select-option">Game</option>
           <option value="1">Magic</option>
           <option value="2">Yu-Gi-Oh</option>
         </select>
@@ -268,3 +269,5 @@ export default class SignUpPage extends React.Component {
     );
   }
 }
+
+SignUpPage.contextType = SRContext;

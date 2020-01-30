@@ -385,6 +385,29 @@ app.post('/api/eventAttendees', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.delete('/api/eventAttendees/', (req, res, next) => {
+  const deleteEventRSVP = 'delete from "eventAttendees" where "userId"=$1 AND "eventId"=$2';
+  const params = [req.body.userId,
+    req.body.eventId];
+  db.query(deleteEventRSVP, params)
+    .then(response => {
+      const deleteResponse = response.rows;
+      if (!deleteResponse) {
+        next(
+          new ClientError(
+                `No rsvp for event found.${req.method} ${req.originalUrl}`,
+                404
+          )
+        );
+      } else {
+        res.json(deleteResponse);
+      }
+    })
+    .catch(err => {
+      next(err);
+    });
+});
+
 app.get('/api/eventAttendees/:userId', (req, res, next) => {
   const pastAttendanceEvents = `select
                                 "e"."gameId",
@@ -531,6 +554,26 @@ app.get('/api/hangoutAttendees/', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.delete('/api/hangoutAttendees/', (req, res, next) => {
+  const deleteHangoutRSVP = 'delete from "hangoutAttendees" where "userId"=$1 AND "hangoutId"=$2';
+  const params = [req.body.userId,
+    req.body.hangoutId];
+  db.query(deleteHangoutRSVP, params)
+    .then(response => {
+      const deleteResponse = response.rows;
+      if (!deleteResponse) {
+        next(
+          new ClientError(`No rsvp for hangout found.${req.method} ${req.originalUrl}`, 404)
+        );
+      } else {
+        res.json(deleteResponse);
+      }
+    })
+    .catch(err => {
+      next(err);
+    });
+});
+
 app.put('/api/events/:eventId', (req, res, next) => {
   const parse = parseInt(req.params.eventId);
   const text = `update "events"
@@ -632,10 +675,30 @@ app.get('/api/address', (req, res, next) => {
     .catch(err => console.error(err));
 });
 
+app.get('/api/users/', (req, res, next) => {
+  const userInfo = `
+    select *
+    from "users"
+    where "userId" = $1
+  `;
+
+  if (req.session.userId) {
+    const params = [req.session.userId];
+    db.query(userInfo, params)
+      .then(userData => {
+        res.status(200).json(userData.rows[0]);
+      })
+      .catch(err => console.error(err));
+  } else {
+    next(new ClientError('No user was logged in', 404));
+  }
+
+});
+
 app.post('/api/users', (req, res, next) => {
   const saltRounds = 12;
-  const text = `insert into "users" ("userName", "deckArchetype", "mainGameId", "email", "isStoreEmployee", "password")
-                values($1, $2, $3, $4, $5, $6)
+  const text = `insert into "users" ("userName", "deckArchetype", "mainGameId", "email", "isStoreEmployee", "password", "storeName")
+                values($1, $2, $3, $4, $5, $6, $7)
                 returning *`;
 
   bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
@@ -645,11 +708,13 @@ app.post('/api/users', (req, res, next) => {
       req.body.mainGameId,
       req.body.email,
       req.body.isStoreEmployee,
-      hash
+      hash,
+      req.body.storeName
     ];
     db.query(text, values)
       .then(result => {
-        const user = result.rows;
+        const user = result.rows[0];
+        req.session.userId = user.userId;
         res.json(user);
       })
       .catch(err => {
@@ -673,6 +738,7 @@ app.post('/api/usersLogin', (req, res, next) => {
       bcrypt.compare(myPlaintextPassword, hash[0].password)
         .then(response => {
           if (response === true) {
+            req.session.userId = result.rows[0].userId;
             res.json(result.rows[0]);
           } else {
             next(new ClientError('Incorrect password or username', 400));
@@ -680,6 +746,15 @@ app.post('/api/usersLogin', (req, res, next) => {
         });
     })
     .catch(err => next(err));
+});
+
+app.post('/api/usersLogout', (req, res, next) => {
+  if (req.session.userId) {
+    delete req.session.userId;
+    res.status(200).json('Signed Out');
+  } else {
+    next(new ClientError('No user was logged in', 404));
+  }
 });
 
 app.get('/api/userNameCheck/:userName', (req, res, next) => {
@@ -692,6 +767,76 @@ app.get('/api/userNameCheck/:userName', (req, res, next) => {
       res.json(userNameCheck);
     })
     .catch(err => next(err));
+});
+
+app.put('/api/users/:userId', (req, res, next) => {
+  const editAccountSQL = `update "users"
+                          set "deckArchetype"=$1, "mainGameId"=$2, "email"=$3
+                          where "userId"=$4
+                          returning *`;
+  const getExistingInfo = `select "deckArchetype", "mainGameId", "email"
+                            from "users"
+                            where "userId"=$1`;
+
+  const userId = [req.params.userId];
+  db.query(getExistingInfo, userId)
+    .then(response => {
+      const userAttributes = response.rows[0];
+      if (req.body.email) {
+        userAttributes.email = req.body.email;
+      }
+
+      if (req.body.deckArchetype) {
+        userAttributes.deckArchetype = req.body.deckArchetype;
+      }
+
+      if (req.body.mainGameId) {
+        userAttributes.mainGameId = req.body.mainGameId;
+      }
+      const userAttributesValues = [
+        userAttributes.deckArchetype,
+        userAttributes.mainGameId,
+        userAttributes.email,
+        req.params.userId
+      ];
+      db.query(editAccountSQL, userAttributesValues)
+        .then(result => {
+          const userChanges = result.rows;
+          res.json(userChanges);
+        })
+        .catch(err => {
+          console.error(err);
+          res.status(500).json({
+            error: 'An unexpected error occured.'
+          });
+        });
+    });
+});
+
+app.put('/api/userpassword/:userId', (req, res, next) => {
+  const updatePassword = `update "users"
+                          set "password"=$1
+                          where "userId"=$2
+                          returning *`;
+  const saltRounds = 12;
+  bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
+    const hasher = [
+      hash,
+      req.params.userId
+    ];
+    db.query(updatePassword, hasher)
+      .then(result => {
+        const user = result.rows;
+        res.json(user);
+      })
+      .catch(err => {
+        console.error(err);
+        res.status(500).json({
+          error: 'An unexpected error occured.'
+        });
+      });
+    console.error(err);
+  });
 });
 
 app.use('/api', (req, res, next) => {
