@@ -1,5 +1,6 @@
 import React from 'react';
 import Map from './map';
+import SRContext from './context';
 
 export default class EventDetailsPage extends React.Component {
   constructor(props) {
@@ -17,7 +18,7 @@ export default class EventDetailsPage extends React.Component {
   rsvpForEvent() {
     const requestBody = JSON.stringify({
       eventId: this.state.details.eventId,
-      userId: this.props.user.userId
+      userId: this.context.user.userId
     });
     const requestConfig = {
       headers: {
@@ -36,7 +37,7 @@ export default class EventDetailsPage extends React.Component {
   unrsvpForEvent() {
     const requestBody = JSON.stringify({
       eventId: this.state.details.eventId,
-      userId: this.props.user.userId
+      userId: this.context.user.userId
     });
     const requestConfig = {
       headers: {
@@ -57,11 +58,11 @@ export default class EventDetailsPage extends React.Component {
       .then(data => data.json())
       .then(result => {
         this.setState({ details: result });
-        if (this.props.user) {
+        if (this.context.user) {
           fetch(`/api/eventAttendees?eventId=${this.state.details.eventId}`)
             .then(data => data.json())
             .then(eventAttendees => {
-              const isUserRSVPed = eventAttendees.findIndex(attendee => attendee.userId === this.props.user.userId) !== -1;
+              const isUserRSVPed = eventAttendees.findIndex(attendee => attendee.userId === this.context.user.userId) !== -1;
               this.setState({ isUserRSVPed });
             })
             .catch(err => console.error(err));
@@ -84,16 +85,18 @@ export default class EventDetailsPage extends React.Component {
   }
 
   render() {
-    return ((this.state.details && !this.props.user) || (this.state.details && this.state.isUserRSVPed !== null)
-      ? <EventDetails
-        isUserLoggedIn={!!this.props.user}
-        isUserRSVPed={this.state.isUserRSVPed}
-        details={this.state.details}
-        history={this.props.history}
-        address={this.state.address}
-        rsvpForEvent={this.rsvpForEvent}
-        unrsvpForEvent={this.unrsvpForEvent} />
-      : <div className="title">Loading...</div>);
+    return (
+      (this.state.details && !this.context.user) || (this.state.details && this.state.isUserRSVPed !== null)
+        ? <EventDetails
+          isUserLoggedIn={!!this.context.user}
+          isUserRSVPed={this.state.isUserRSVPed}
+          details={this.state.details}
+          history={this.props.history}
+          address={this.state.address}
+          rsvpForEvent={this.rsvpForEvent}
+          unrsvpForEvent={this.unrsvpForEvent} />
+        : <div className="title">Loading...</div>
+    );
   }
 }
 
@@ -145,3 +148,5 @@ function EventDetails(props) {
     </div>
   );
 }
+
+EventDetailsPage.contextType = SRContext;

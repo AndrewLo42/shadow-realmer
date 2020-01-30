@@ -1,4 +1,5 @@
 import React from 'react';
+import SRContext from './context';
 
 export default class AccountSettings extends React.Component {
   constructor(props) {
@@ -39,7 +40,7 @@ export default class AccountSettings extends React.Component {
   }
 
   handleLogOut() {
-    this.props.logOutUser();
+    this.context.logOutUser();
     this.props.history.push('/secret');
   }
 
@@ -68,3 +69,5 @@ export default class AccountSettings extends React.Component {
     );
   }
 }
+
+AccountSettings.contextType = SRContext;

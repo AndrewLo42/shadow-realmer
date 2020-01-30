@@ -1,6 +1,7 @@
 import React from 'react';
-import ItemPage from './item-page';
+import EventItem from './event-item-page';
 import { NavLink } from 'react-router-dom';
+import SRContext from './context';
 
 export default class AccountPage extends React.Component {
   constructor(props) {
@@ -11,7 +12,7 @@ export default class AccountPage extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`/api/eventAttendees?userId=${this.props.user.userId}`)
+    fetch(`/api/eventAttendees?userId=${this.context.user.userId}`)
       .then(data => data.json())
       .then(events => {
         this.setState({ events });
@@ -21,27 +22,27 @@ export default class AccountPage extends React.Component {
 
   render() {
     return (
-      this.props.user
-        ? <div className="account-page">
-          <div className="account-page-header">
-            <i className="fas fa-angle-double-left" onClick={() => this.props.history.goBack()}></i>
-            <NavLink to={`/account/${this.props.user.userName}/settings`}>
-              <i className="fas fa-cog"></i>
-            </NavLink>
-          </div>
-          <div className="account-page-main">
-            <i className="user-icon far fa-user-circle"></i>
-            <div className="user-info">
-              <h2>{this.props.user.userName}</h2>
-              <div className="user-details-text">{this.props.user.mainGameId === 1 ? 'Magic' : 'Yu-Gi-Oh'} || {this.props.user.deckArchetype}</div>
-            </div>
-          </div>
-          <div className="account-page-footer">
-            <div className="title">Events</div>
-            {this.state.events.length ? this.state.events.map(event => <ItemPage event={event} key={event.eventId} history={this.props.history} />) : <div className="title">No Events</div>}
+      <div className="account-page">
+        <div className="account-page-header">
+          <i className="fas fa-angle-double-left" onClick={() => this.props.history.goBack()}></i>
+          <NavLink to={`/account/${this.context.user.userName}/settings`}>
+            <i className="fas fa-cog"></i>
+          </NavLink>
+        </div>
+        <div className="account-page-main">
+          <i className="user-icon far fa-user-circle"></i>
+          <div className="user-info">
+            <h2>{this.context.user.userName}</h2>
+            <div className="user-details-text">{this.context.user.mainGameId === 1 ? 'Magic' : 'Yu-Gi-Oh'} || {this.context.user.deckArchetype}</div>
           </div>
         </div>
-        : null
+        <div className="account-page-footer">
+          <div className="title">Events</div>
+          {this.state.events.length ? this.state.events.map(event => <EventItem event={event} key={event.eventId} history={this.props.history} />) : <div className="title">No Events</div>}
+        </div>
+      </div>
     );
   }
 }
+
+AccountPage.contextType = SRContext;
