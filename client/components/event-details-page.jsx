@@ -55,12 +55,12 @@ export default class EventDetailsPage extends React.Component {
   }
 
   getRSVPStatus(eventId) {
-    return fetch(`/api/eventAttendees?eventId=${eventId}`)
-      .then(response => response.json())
-      .then(eventAttendees => {
-        const isUserRSVPed = eventAttendees.findIndex(attendee => attendee.userId === this.context.user.userId) !== -1;
-        return isUserRSVPed;
-      });
+    if (this.context.user) {
+      return fetch(`/api/eventAttendees?eventId=${eventId}`)
+        .then(response => response.json())
+        .then(eventAttendees => eventAttendees.find(attendee => attendee.userId === this.context.user.userId));
+    }
+    return null;
   }
 
   getAddress(storeName) {

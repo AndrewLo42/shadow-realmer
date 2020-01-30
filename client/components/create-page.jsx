@@ -114,7 +114,8 @@ class CreateHangout extends React.Component {
       );
     } else if (this.state.gameId === '2') {
       return (
-        <select name="format" className="input short-input" onChange={this.handleGameFormatChange} value={this.state.gameFormat}>
+        <select name="format" className="input short-input" onChange={this.handleGameFormatChange} value={this.state.gameFormat} >
+          <option value="null" hidden>Format</option>
           <option value="Yu-Gi-Oh">Yu-Gi-Oh</option>
         </select>
       );
