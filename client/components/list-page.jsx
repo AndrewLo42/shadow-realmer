@@ -45,7 +45,6 @@ export default class ListPage extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.match.path !== this.props.match.path) {
-      this.setState({ events: [] });
       this.getItems(window.location.pathname);
     }
   }
