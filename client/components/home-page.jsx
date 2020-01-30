@@ -1,5 +1,6 @@
 import React from 'react';
 import NavBar from './navbar';
+import SRContext from './context';
 
 export default class HomePage extends React.Component {
   constructor(props) {
@@ -83,3 +84,5 @@ export default class HomePage extends React.Component {
       );
   }
 }
+
+HomePage.contextType = SRContext;

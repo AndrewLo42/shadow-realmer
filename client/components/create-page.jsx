@@ -20,7 +20,9 @@ export default class CreatePage extends React.Component {
   }
 
   render() {
-    return window.location.pathname.includes('hangout') ? <CreateHangout handleSubmit={this.handleSubmit} history={this.props.history} /> : <CreateEvent handleSubmit={this.handleSubmit} history={this.props.history} />;
+    return window.location.pathname.includes('hangout')
+      ? <CreateHangout handleSubmit={this.handleSubmit} history={this.props.history} />
+      : <CreateEvent handleSubmit={this.handleSubmit} history={this.props.history} />;
   }
 }
 

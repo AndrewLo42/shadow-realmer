@@ -1,6 +1,8 @@
 import React from 'react';
 import NavBar from './navbar';
-import ItemPage from './item-page';
+import HangoutItem from './hangout-item-page';
+import EventItem from './event-item-page';
+import SRContext from './context';
 
 export default class ListPage extends React.Component {
   constructor(props) {
@@ -52,14 +54,15 @@ export default class ListPage extends React.Component {
   }
 
   render() {
-    const hangoutList = this.state.events.length && this.state.events.map(hangout => <ItemPage hangout={hangout} key={hangout.hangoutId} history={this.props.history} />);
-    const eventList = this.state.events.length && this.state.events.map(event => <ItemPage event={event} key={event.eventId} history={this.props.history} />);
+    const list = this.state.events.length && window.location.pathname.includes('hangout')
+      ? this.state.events.map(hangout => <HangoutItem hangout={hangout} key={hangout.hangoutId} history={this.props.history} />)
+      : this.state.events.map(event => <EventItem event={event} key={event.eventId} history={this.props.history} />);
     return (
       <>
-        <NavBar toggleSidebar={this.props.toggleSidebar} history={this.props.history} runSearch={window.location.pathname.includes('hangout') ? this.searchByZip : this.searchForEvents} placeholder="Enter Zip Code"/>
-        <Title history={this.props.history} showAll={this.state.showAll} getAll={this.getItems} amountOfEvents={this.state.events.length} user={this.props.user} />
+        <NavBar history={this.props.history} runSearch={window.location.pathname.includes('hangout') ? this.searchByZip : this.searchForEvents} />
+        <Title history={this.props.history} showAll={this.state.showAll} getAll={this.getItems} amountOfEvents={this.state.events.length} user={this.context.user} />
         <div className="event-container">
-          {window.location.pathname.includes('hangout') ? hangoutList : eventList}
+          { list }
         </div>
       </>
     );
@@ -78,3 +81,5 @@ function Title(props) {
     </>
   );
 }
+
+ListPage.contextType = SRContext;
