@@ -24,7 +24,8 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       user: null,
-      showSidebar: false
+      showSidebar: false,
+      isAuthorizing: true
     };
     this.toggleSidebar = this.toggleSidebar.bind(this);
     this.logInUser = this.logInUser.bind(this);
@@ -50,15 +51,26 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    fetch('api/users')
+    fetch('/api/users', {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      }
+    })
       .then(response => {
         return response.json();
       })
       .then(userData => {
         if (userData.error) {
-          this.setState({ user: null });
+          this.setState({
+            user: null,
+            isAuthorizing: false
+          });
         } else {
-          this.setState({ user: userData });
+          this.setState({
+            user: userData,
+            isAuthorizing: false
+          });
         }
       })
       .catch(err => console.error(err));
@@ -70,6 +82,7 @@ export default class App extends React.Component {
     const toggleSidebar = this.toggleSidebar;
     const logInUser = this.logInUser;
     const logOutUser = this.logOutUser;
+    if (this.state.isAuthorizing) return null;
     return (
       <SRContext.Provider value={{
         user,
