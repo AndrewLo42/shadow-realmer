@@ -8,7 +8,8 @@ export default class EventDetailsPage extends React.Component {
     this.state = {
       details: null,
       address: {},
-      isUserRSVPed: false
+      isUserRSVPed: false,
+      isLoading: true
     };
     this.getDetails = this.getDetails.bind(this);
     this.rsvpForEvent = this.rsvpForEvent.bind(this);
@@ -53,40 +54,52 @@ export default class EventDetailsPage extends React.Component {
       .catch(err => console.error(err));
   }
 
-  getDetails() {
-    fetch(`/api/events/?id=${this.props.match.params.id}`)
-      .then(data => data.json())
-      .then(result => {
-        this.setState({ details: result });
-        if (this.context.user) {
-          fetch(`/api/eventAttendees?eventId=${this.state.details.eventId}`)
-            .then(data => data.json())
-            .then(eventAttendees => {
-              const isUserRSVPed = eventAttendees.findIndex(attendee => attendee.userId === this.context.user.userId) !== -1;
-              this.setState({ isUserRSVPed });
-            })
-            .catch(err => console.error(err));
-        }
-      })
-      .then(data => this.getAddress())
-      .catch(err => console.error(err));
+  getRSVPStatus(eventId) {
+    return fetch(`/api/eventAttendees?eventId=${eventId}`)
+      .then(response => response.json())
+      .then(eventAttendees => {
+        const isUserRSVPed = eventAttendees.findIndex(attendee => attendee.userId === this.context.user.userId) !== -1;
+        return isUserRSVPed;
+      });
   }
 
-  getAddress() {
-    fetch(`/api/address/?storeName=${this.state.details.storeName}`)
-      .then(data => data.json())
-      .then(result => result.results.filter(store => store.name === this.state.details.storeName))
-      .then(data => this.setState({ address: data[0] }))
-      .catch(err => console.error(err));
+  getAddress(storeName) {
+    return fetch(`/api/address/?storeName=${storeName}`)
+      .then(response => response.json())
+      .then(addresses => addresses.results.find(store => store.name === storeName));
+  }
+
+  getDetails() {
+    return fetch(`/api/events/?id=${this.props.match.params.id}`)
+      .then(response => response.json());
   }
 
   componentDidMount() {
-    this.getDetails();
+    this.getDetails()
+      .then(details => {
+        return (Promise.all([
+          details,
+          this.getRSVPStatus(details.eventId),
+          this.getAddress(details.storeName)
+        ]));
+      })
+      .then(result => {
+        this.setState({
+          details: result[0],
+          isUserRSVPed: result[1],
+          address: result[2],
+          isLoading: false
+        });
+      })
+      .catch(err => {
+        console.error(err);
+      });
   }
 
   render() {
+
     return (
-      (this.state.details && !this.context.user) || (this.state.details && this.state.isUserRSVPed !== null)
+      (!this.state.isLoading)
         ? <EventDetails
           isUserLoggedIn={!!this.context.user}
           isUserRSVPed={this.state.isUserRSVPed}
