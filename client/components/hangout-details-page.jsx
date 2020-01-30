@@ -1,5 +1,6 @@
 import React from 'react';
 import Map from './map';
+import LoadingScreen from './loading-screen';
 
 export default class HangoutDetailsPage extends React.Component {
   constructor(props) {
@@ -32,7 +33,7 @@ export default class HangoutDetailsPage extends React.Component {
     if (this.state.details && Object.keys(this.state.center).length !== 0) {
       return <HangoutDetails details={this.state.details} history={this.props.history} center={this.state.center} />;
     }
-    return <div className="title">Loading...</div>;
+    return <LoadingScreen />;
   }
 
   componentDidMount() {

@@ -1,6 +1,7 @@
 import React from 'react';
 import Map from './map';
 import SRContext from './context';
+import LoadingScreen from './loading-screen';
 
 export default class EventDetailsPage extends React.Component {
   constructor(props) {
@@ -108,7 +109,7 @@ export default class EventDetailsPage extends React.Component {
           address={this.state.address}
           rsvpForEvent={this.rsvpForEvent}
           unrsvpForEvent={this.unrsvpForEvent} />
-        : <div className="title">Loading...</div>
+        : <LoadingScreen />
     );
   }
 }
