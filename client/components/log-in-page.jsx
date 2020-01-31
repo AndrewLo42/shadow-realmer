@@ -87,8 +87,10 @@ export default class LogInPage extends React.Component {
             onChange={this.handlePasswordChange}
             value={this.state.password} />
           <div className="log-in-form-button-container">
-            <button className="short-input input confirm" onClick={this.handleSubmit}>Log In</button>
-            <button className="short-input input green" onClick={() => this.props.history.push('/sign-up')}>Sign Up</button>
+            <button className="long-input input confirm" onClick={this.handleSubmit}>Log In</button>
+            <div className="new-user">
+              <div className="small-text" onClick={() => this.props.history.push('/sign-up')}>New to the Realm? Click Here!</div>
+            </div>
           </div>
           {this.renderLoginError()}
         </div>

@@ -124,7 +124,8 @@ class CreateHangout extends React.Component {
   }
 
   handleValidForm(info) {
-    if (!info.name || !info.gameId || !info.gameFormat || !info.description) {
+    const zipRegex = RegExp(/^\d{5}[-\s]?(?:\d{4})?$/gm);
+    if (!zipRegex.test(this.state.zipCode) || !info.name || !info.gameId || !info.gameFormat || !info.description || !info.contactInfo) {
       this.setState({ isValid: false });
     } else {
       this.props.handleSubmit(info);
