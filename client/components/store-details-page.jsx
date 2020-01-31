@@ -19,12 +19,14 @@ export default class StoreDetailsPage extends React.Component {
   getAddress(storeName) {
     return fetch(`/api/address/?storeName=${storeName}`)
       .then(response => response.json())
-      .then(addresses => addresses.results.find(store => store.name === storeName));
+      .then(addresses => addresses.results.find(store => store.name === storeName))
+      .catch(err => console.error(err));
   }
 
   getStoreEvents(storeName) {
     return fetch(`/api/storeEvents/${storeName}`)
-      .then(response => response.json());
+      .then(response => response.json())
+      .catch(err => console.error(err));
   }
 
   getInfo() {
@@ -38,7 +40,8 @@ export default class StoreDetailsPage extends React.Component {
           events: response[1],
           isLoading: false
         });
-      });
+      })
+      .catch(err => console.error(err));
   }
 
   componentDidMount() {
