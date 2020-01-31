@@ -42,15 +42,8 @@ export default class App extends React.Component {
   }
 
   getUser() {
-    fetch('/api/users', {
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
-      }
-    })
-      .then(response => {
-        return response.json();
-      })
+    fetch('/api/users')
+      .then(response => response.json())
       .then(userData => {
         if (userData.error) {
           this.setState({

@@ -12,6 +12,7 @@ export default class HomePage extends React.Component {
   }
 
   componentDidMount() {
+    this.parseTime('09', '30', '02', '00', 'PM');
     fetch('/api/events?amount=3')
       .then(data => data.json())
       .then(events => {
@@ -23,6 +24,37 @@ export default class HomePage extends React.Component {
       .then(hangouts => {
         this.setState({ hangouts });
       });
+  }
+
+  parseTime(month, day, hour, minute, ampm) {
+    if (hour === '12') {
+      hour = '00';
+    }
+    if (ampm === 'PM') {
+      hour = parseInt(hour, 10) + 12;
+    }
+    const date = new Date(
+      new Date().getFullYear(),
+      parseInt(month) - 1,
+      parseInt(day),
+      parseInt(hour),
+      parseInt(minute)
+    );
+      // eslint-disable-next-line no-console
+    console.log('date: ', date);
+    // eslint-disable-next-line no-console
+    console.log('date-UTC: ', date.toUTCString());
+    const time = Date.parse(date);
+    // eslint-disable-next-line no-console
+    console.log('time: ', time);
+    const offset = date.getTimezoneOffset() * 60000;
+    // eslint-disable-next-line no-console
+    console.log('offset, ', offset);
+    const result = new Date(time + offset);
+    // eslint-disable-next-line no-console
+    console.log('result: ', result);
+    // eslint-disable-next-line no-console
+    console.log(result.toISOString());
   }
 
   render() {

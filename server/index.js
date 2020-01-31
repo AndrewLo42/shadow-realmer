@@ -309,14 +309,31 @@ app.post('/api/events', (req, res, next) => {
 });
 
 function parseTime(month, day, hour, minute, ampm) {
-  if (ampm === 'PM') {
-    if (hour !== '12') {
-      hour = parseInt(hour) + 12;
-    }
-  } else {
-    hour = hour === '12' ? '00' : hour;
+  if (hour === '12') {
+    hour = '00';
   }
-  return `2020-${(month)}-${(day)} ${hour}:${(minute)}:00;`;
+  if (ampm === 'PM') {
+    hour = parseInt(hour, 10) + 12;
+  }
+  const date = new Date(
+    new Date().getFullYear(),
+    parseInt(month) - 1,
+    parseInt(day),
+    parseInt(hour),
+    parseInt(minute)
+  );
+    // eslint-disable-next-line no-console
+  console.log('date: ', date);
+  // console.log("date-UTC: ", date.toUTCString())
+  const time = Date.parse(date);
+  // eslint-disable-next-line no-console
+  console.log('time: ', time);
+  // const offset = date.getTimezoneOffset() * 60000
+  // console.log("offset, ", offset)
+  // const result = new Date(time + offset)
+  // console.log("result: ", result)
+  // console.log(result.toISOString())
+  return null;
 }
 
 app.post('/api/hangouts', (req, res, next) => {
@@ -677,7 +694,6 @@ app.get('/api/users/', (req, res, next) => {
     from "users"
     where "userId" = $1
   `;
-
   if (req.session.userId) {
     const params = [req.session.userId];
     db.query(userInfo, params)
@@ -688,7 +704,6 @@ app.get('/api/users/', (req, res, next) => {
   } else {
     next(new ClientError('No user was logged in', 200));
   }
-
 });
 
 app.post('/api/users', (req, res, next) => {
