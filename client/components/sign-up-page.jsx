@@ -82,12 +82,6 @@ export default class SignUpPage extends React.Component {
           submitted: true
         });
       }
-      if (!this.state.validPassword) {
-        this.setState({ password: '' });
-      }
-      if (!this.state.samePassword) {
-        this.setState({ confirmPassword: '' });
-      }
     } else {
       fetch(`/api/userNameCheck/${info.userName}`, {
       })
@@ -118,12 +112,6 @@ export default class SignUpPage extends React.Component {
         this.setState({
           submitted: true
         });
-      }
-      if (!this.state.validPassword) {
-        this.setState({ password: '' });
-      }
-      if (!this.state.samePassword) {
-        this.setState({ confirmPassword: '' });
       }
     } else {
       this.createUser(info);

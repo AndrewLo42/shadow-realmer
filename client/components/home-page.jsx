@@ -12,13 +12,13 @@ export default class HomePage extends React.Component {
   }
 
   componentDidMount() {
-    fetch('/api/events?amount=5')
+    fetch('/api/events?amount=3')
       .then(data => data.json())
       .then(events => {
         this.setState({ events });
       });
 
-    fetch('/api/hangouts?amount=8')
+    fetch('/api/hangouts?amount=4')
       .then(data => data.json())
       .then(hangouts => {
         this.setState({ hangouts });
@@ -37,7 +37,7 @@ export default class HomePage extends React.Component {
               <h2>Welcome to Shadow Realmer</h2>
               <p>Hangout with both new and old friends. Find local TCG stores in your area and events that they are hosting. Remember to believe in the heart of the cards!</p>
             </div>
-            <div className="home-title">Events</div>
+            <div className="home-title">Quick Events</div>
             <div className="home-events-carousel-container">
               <div className="home-events-carousel">
                 {this.state.events.map(event => {
@@ -66,7 +66,7 @@ export default class HomePage extends React.Component {
                 })}
               </div>
             </div>
-            <div className="home-title">Hangouts</div>
+            <div className="home-title">Quick Hangouts</div>
             <div className="home-hangouts-list">
               {this.state.hangouts.map(hangout => {
                 return (
