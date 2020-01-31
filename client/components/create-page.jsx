@@ -1,4 +1,5 @@
 import React from 'react';
+import SRContext from './context';
 
 export default class CreatePage extends React.Component {
   constructor(props) {
@@ -21,8 +22,8 @@ export default class CreatePage extends React.Component {
 
   render() {
     return window.location.pathname.includes('hangout')
-      ? <CreateHangout handleSubmit={this.handleSubmit} history={this.props.history} />
-      : <CreateEvent handleSubmit={this.handleSubmit} history={this.props.history} />;
+      ? <CreateHangout handleSubmit={this.handleSubmit} history={this.props.history} user={this.context.user} />
+      : <CreateEvent handleSubmit={this.handleSubmit} history={this.props.history} user={this.context.user} />;
   }
 }
 
@@ -40,7 +41,8 @@ class CreateHangout extends React.Component {
       ampm: 'AM',
       description: '',
       gameId: '',
-      gameFormat: ''
+      gameFormat: '',
+      isValid: true
     };
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleContactInfoChange = this.handleContactInfoChange.bind(this);
@@ -53,6 +55,7 @@ class CreateHangout extends React.Component {
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     this.handleGameIdChange = this.handleGameIdChange.bind(this);
     this.handleGameFormatChange = this.handleGameFormatChange.bind(this);
+    this.handleValidForm = this.handleValidForm.bind(this);
   }
 
   handleTitleChange(event) {
@@ -100,6 +103,14 @@ class CreateHangout extends React.Component {
     this.setState({ gameFormat: event.target.value });
   }
 
+  handleValidForm(info) {
+    if (!info.name || !info.gameId || !info.gameFormat || !info.description) {
+      this.setState({ isValid: false });
+    } else {
+      this.props.handleSubmit(info);
+    }
+  }
+
   renderFormatOptions() {
     if (this.state.gameId === '1') {
       return (
@@ -128,6 +139,11 @@ class CreateHangout extends React.Component {
   }
 
   render() {
+    let invalidForm = 'hidden';
+    if (!this.state.isValid) {
+      invalidForm = null;
+    }
+
     let disabledOption = false;
     if (this.state.gameId) {
       disabledOption = true;
@@ -226,8 +242,9 @@ class CreateHangout extends React.Component {
         </div>
         <div className="short-container">
           <button className="short-input input cancel" onClick={() => this.props.history.push('/hangouts')}>Cancel</button>
-          <button className="short-input input confirm" onClick={() => this.props.handleSubmit(this.state)}>Confirm</button>
+          <button className="short-input input confirm" onClick={() => this.handleValidForm(this.state)}>Confirm</button>
         </div>
+        <div className={`${invalidForm} error-blurb error-text`} >Missing Information</div>
       </div>
     );
   }
@@ -238,7 +255,7 @@ class CreateEvent extends React.Component {
     super(props);
     this.state = {
       name: '',
-      storeId: '',
+      storeName: this.props.user.storeName,
       month: '01',
       day: '01',
       hour: '1',
@@ -247,7 +264,8 @@ class CreateEvent extends React.Component {
       description: '',
       gameId: '',
       gameFormat: '',
-      entranceFee: ''
+      entranceFee: '',
+      isValid: true
     };
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleStoreChange = this.handleStoreChange.bind(this);
@@ -260,6 +278,7 @@ class CreateEvent extends React.Component {
     this.handleGameIdChange = this.handleGameIdChange.bind(this);
     this.handleGameFormatChange = this.handleGameFormatChange.bind(this);
     this.handleEntranceFeeChange = this.handleEntranceFeeChange.bind(this);
+    this.handleValidForm = this.handleValidForm.bind(this);
   }
 
   handleTitleChange(event) {
@@ -267,7 +286,7 @@ class CreateEvent extends React.Component {
   }
 
   handleStoreChange(event) {
-    this.setState({ storeId: event.target.value });
+    this.setState({ storeName: event.target.value });
   }
 
   handleMonthChange(event) {
@@ -306,19 +325,52 @@ class CreateEvent extends React.Component {
     this.setState({ entranceFee: event.target.value });
   }
 
+  handleValidForm(info) {
+    if (!info.name || !info.gameId || !info.gameFormat || !info.description || !info.entranceFee) {
+      this.setState({ isValid: false });
+    } else {
+      this.props.handleSubmit(info);
+    }
+  }
+
+  renderFormatOptions() {
+    if (this.state.gameId === '1') {
+      return (
+        <select name="format" className="input short-input" onChange={this.handleGameFormatChange} value={this.state.gameFormat}>
+          <option value="null" hidden>Format</option>
+          <option value="Modern">Modern</option>
+          <option value="Standard">Standard</option>
+          <option value="Pioneer">Pioneer</option>
+          <option value="Commander">Commander</option>
+          <option value="Legacy">Legacy</option>
+        </select>
+      );
+    } else if (this.state.gameId === '2') {
+      return (
+        <select name="format" className="input short-input" onChange={this.handleGameFormatChange} value={this.state.gameFormat} >
+          <option value="null" hidden>Format</option>
+          <option value="Yu-Gi-Oh">Yu-Gi-Oh</option>
+        </select>
+      );
+    } else {
+      return (
+        <select name="format" className="input short-input" onChange={this.handleGameFormatChange} value={this.state.gameFormat}>
+        </select>
+      );
+    }
+  }
+
   render() {
+    let invalidForm = 'hidden';
+    if (!this.state.isValid) {
+      invalidForm = null;
+    }
+
     return (
       <div className="create-page">
         <header className="title">Create Event</header>
         <input type="text" className="long-input input" placeholder="Event Title" onChange={this.handleTitleChange} value={this.state.name} />
-        <select name="store" className="long-input input" onChange={this.handleStoreChange} value={this.state.storeId}>
-          <option value="">Store Name</option>
-          <option value="1">Yeezy Cards</option>
-          <option value="2">Down B Cards</option>
-          <option value="3">Pink Gang Cards</option>
-          <option value="4">Poop Storm Cards</option>
-          <option value="5">Fieri Cards</option>
-        </select>
+        {/* <div className="long-input input">{this.state.storeName}</div> */}
         <div className="short-container">
           <div className="date-container short-input input">
             <select name="month" className="date-selector selector-left" onChange={this.handleMonthChange} value={this.state.month}>
@@ -403,22 +455,17 @@ class CreateEvent extends React.Component {
             <option value="1">Magic</option>
             <option value="2">Yu-Gi-Oh</option>
           </select>
-          <select name="format" className="input short-input" onChange={this.handleGameFormatChange} value={this.state.gameFormat}>
-            <option value="null" hidden>Format</option>
-            <option value="Modern">Modern</option>
-            <option value="Standard">Standard</option>
-            <option value="Pioneer">Pioneer</option>
-            <option value="Commander">Commander</option>
-            <option value="Legacy">Legacy</option>
-            <option value="Yu-Gi-Oh">Yu-Gi-Oh</option>
-          </select>
+          {this.renderFormatOptions()}
         </div>
         <input type="number" className="long-input input" placeholder="Entrance Fee" onChange={this.handleEntranceFeeChange} value={this.state.entranceFee}/>
         <div className="short-container">
           <button className="short-input input cancel" onClick={() => this.props.history.push('/events')}>Cancel</button>
-          <button className="short-input input confirm" onClick={() => this.props.handleSubmit(this.state)}>Confirm</button>
+          <button className="short-input input confirm" onClick={() => this.handleValidForm(this.state)}>Confirm</button>
         </div>
+        <div className={`${invalidForm} error-blurb error-text`} >Missing Information</div>
       </div>
     );
   }
 }
+
+CreatePage.contextType = SRContext;
