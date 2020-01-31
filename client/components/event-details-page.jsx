@@ -100,7 +100,7 @@ export default class EventDetailsPage extends React.Component {
   render() {
 
     return (
-      (!this.state.isLoading)
+      (!this.state.isLoading && this.state.address.geometry)
         ? <EventDetails
           isUserLoggedIn={!!this.context.user}
           isUserRSVPed={this.state.isUserRSVPed}
