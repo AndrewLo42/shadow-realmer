@@ -19,7 +19,8 @@ export default class SignUpPage extends React.Component {
       validPassword: false,
       samePassword: false,
       existingUser: false,
-      submitted: false
+      submitted: false,
+      storeCodeActivation: false
     };
     this.validation = this.validation.bind(this);
     this.handleNameChange = this.handleNameChange.bind(this);
@@ -32,6 +33,7 @@ export default class SignUpPage extends React.Component {
     this.handleStoreChange = this.handleStoreChange.bind(this);
     this.handleStoreNameChange = this.handleStoreNameChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.showStoreCode = this.showStoreCode.bind(this);
   }
 
   validation() {
@@ -213,10 +215,18 @@ export default class SignUpPage extends React.Component {
     }
   }
 
+  showStoreCode() {
+    this.setState({ storeCodeActivation: !this.state.storeCodeActivation });
+  }
+
   render() {
     let invalidEmail = null;
     let invalidPassword = null;
     let invalidUser = null;
+    let showStoreCode = { display: 'none' };
+    if (this.state.storeCodeActivation) {
+      showStoreCode = { display: 'flex' };
+    }
     if (this.state.submitted) {
       invalidEmail = this.state.validEmail === false ? 'is-invalid' : null;
       invalidPassword = this.state.validPassword === false ? 'is-invalid' : null;
@@ -239,8 +249,9 @@ export default class SignUpPage extends React.Component {
           <option value="2">Yu-Gi-Oh</option>
         </select>
         <input type="text" className="long-input input" placeholder="Deck Archetype" onChange={this.handleDeckChange} value={this.state.deckArchetype} />
+        <button className="long-input input store-confirm" onClick={() => this.showStoreCode()}>Store Employee?</button>
 
-        <div className="short-container">
+        <div style={showStoreCode} className="short-container">
           <input type="text" className="short-input input" placeholder="Store Code" onChange={this.handleStoreChange} value={this.state.storeCode} />
           <button className="short-input input store-confirm" onClick={() => this.handleStoreSubmit(this.state.storeCode)}>Confirm</button>
         </div>
@@ -251,8 +262,8 @@ export default class SignUpPage extends React.Component {
         <input type="password" name="confirmPassword" className="long-input input" placeholder="Confirm Password" onChange={this.handlePasswordConfirmChange} value={this.state.confirmPassword} />
         {this.renderConfirmPasswordError()}
         <div className="short-container">
-          <button className="short-input input cancel" onClick={() => this.props.history.push('/')}>Cancel</button>
-          <button className="short-input input confirm" onClick={() => this.handleSubmit(this.state)}>Sign Up!</button>
+          <button type="button" className="short-input input cancel" onClick={() => this.props.history.push('/')}>Cancel</button>
+          <button type="submit" className="short-input input confirm" onClick={() => this.handleSubmit(this.state)}>Sign Up!</button>
         </div>
       </div>
     );
