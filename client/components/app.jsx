@@ -10,7 +10,7 @@ import AccountPage from './account-page';
 import AccountSettings from './account-settings-page';
 import LogInPage from './log-in-page';
 import SignUpPage from './sign-up-page';
-import SecretPage from './secret-page';
+import SignOutPage from './sign-out-page';
 import Sidebar from './sidebar';
 import {
   BrowserRouter as Router,
@@ -107,7 +107,7 @@ export default class App extends React.Component {
             <Route path="/store/:name" component={StoreDetailsPage} />
             <Route path="/log-in" component={LogInPage} />
             <Route path="/sign-up" component={SignUpPage} />
-            <Route path="/secret" component={SecretPage} />
+            <Route path="/signed-out" component={SignOutPage} />
           </Switch>
         </Router>
       </SRContext.Provider>

@@ -18,22 +18,26 @@ export default function Sidebar(props) {
               <ul className="sidebar-list-items" onClick={context.toggleSidebar}>
                 <li >
                   <NavLink to={'/'} className="sidebar-page-list-item sidebar-home" >
-                    <i className="fas fa-home" /> Home
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to={'/hangouts'} className="sidebar-page-list-item sidebar-hangouts">
-                    <i className="fas fa-bullhorn" /> Hangouts
+                    <i className="fas fa-home" />
+                    Home
                   </NavLink>
                 </li>
                 <li>
                   <NavLink to={'/events'} className="sidebar-page-list-item sidebar-events">
-                    <i className="fas fa-calendar-alt" /> Events
+                    <i className="fas fa-calendar-alt" />
+                    Events
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to={'/hangouts'} className="sidebar-page-list-item sidebar-hangouts">
+                    <i className="fas fa-bullhorn" />
+                    Hangouts
                   </NavLink>
                 </li>
                 <li>
                   <NavLink to={'/stores'} className="sidebar-page-list-item sidebar-store-finder">
-                    <i className="fas fa-store-alt" /> Store Finder
+                    <i className="fas fa-store-alt" />
+                    Store Finder
                   </NavLink>
                 </li>
               </ul>
