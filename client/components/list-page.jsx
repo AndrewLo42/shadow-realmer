@@ -82,7 +82,10 @@ function Title(props) {
         {window.location.pathname.includes('hangout')
           ? <div className="title">Hangouts</div>
           : <div className="title">Events</div>}
-        <span className={`add-button ${!props.user && 'hidden'}`} onClick={() => props.history.push(`/create${window.location.pathname}`)}><i className="fa fa-plus"></i></span>
+        {window.location.pathname.includes('events') && props.user
+          ? <span className={`add-button ${!props.user.isStoreEmployee && 'hidden'}`} onClick={() => props.history.push(`/create${window.location.pathname}`)}><i className="fa fa-plus"></i></span>
+          : <span className={`add-button ${!props.user && 'hidden'}`} onClick={() => props.history.push(`/create${window.location.pathname}`)}><i className="fa fa-plus"></i></span>
+        }
       </div>
       <div className="amount-of-events">Showing {props.amountOfEvents} Events</div>
     </>
