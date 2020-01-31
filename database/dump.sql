@@ -310,6 +310,10 @@ ALTER TABLE ONLY public.users ALTER COLUMN "userId" SET DEFAULT nextval('public.
 --
 
 COPY public."eventAttendees" ("eventId", "userId") FROM stdin;
+1	12
+1	13
+1	14
+2	14
 \.
 
 
@@ -318,6 +322,14 @@ COPY public."eventAttendees" ("eventId", "userId") FROM stdin;
 --
 
 COPY public.events ("eventId", "eventName", "startTime", description, "gameFormat", "gameId", "entranceFee", "storeName") FROM stdin;
+1	Modern Nights	2020-02-15 06:30:00	Good ol' Modern! Our weekly is super dope! We have some loaner decks for those who don't have a sweet deck yet. Proxies add +$2 to your entrance fee. Prize distribution depends on how many people join, we'll talk about it in store. Prize will be store credit, though! 	Modern	1	5	Magic & Monsters
+2	Friday Night Magic	2020-02-07 06:30:00	The Classic Friday Night Magic! Whoo! We'll have standard AND draft! Mostly draft, though! Also we'll have our Smash set up running if you need to SETTLE IT! Prizing will depend on how many people enter, but will be PACKS instead of our usual store credit! FNM promo cards will be handed out randomly depending on our stock! 	Draft	1	15	Magic & Monsters
+3	Yu-Gi-Oh Fight!	2020-02-20 06:30:00	Yu-Gi-Oh tournament! Get a Star Pack with entrance! Prizing will be more Star Packs, because you're a star! 	Yu-Gi-Oh	2	5	Magic & Monsters
+4	Friday Night Magic	2020-02-07 06:30:00	The Classic Friday Night Magic! Whoo! We'll have standard AND draft! Mostly draft, though! Also we'll have our Smash set up running if you need to SETTLE IT! Prizing will depend on how many people enter, but will be PACKS instead of our usual store credit! FNM promo cards will be handed out randomly depending on our stock! 	Draft	1	15	The Uncommons
+5	Yu-Gi-Oh Fight!	2020-02-10 07:30:00	Yu-Gi-Oh tournament! Get a Star Pack with entrance! Prizing will be handed out as store credit. Please shower beforehand! 	Yu-Gi-Oh	2	5	The Uncommons
+6	Pioneer Weekly!	2020-02-12 07:30:00	The newest, most premier format... PIONEER! Our weekly is super dope!  Proxies add +$2 to your entrance fee. Prize distribution depends on how many people join, we'll talk about it in store. Prize will be store credit, though! 	Pioneer	1	10	The Uncommons
+7	Friday Night Magic	2020-02-07 07:00:00	Awesome Friday Night Magic! Whoo! We'll have a great time doing CHAOS DRAFT!  Prizing will depend on how many people enter, but will be store credit! FNM promo cards will be handed out randomly depending on our stock! 	Draft	1	15	Guardian Games
+8	Pioneer Weekly!	2020-02-15 07:00:00	 Our Pioneer weekly is here!  Proxies add +$1 to your entrance fee. Prize distribution depends on how many people join, we'll talk about it in store. Prize will be store credit, though! 	Pioneer	1	10	Guardian Games
 \.
 
 
@@ -336,6 +348,9 @@ COPY public.game ("gameId", "gameName") FROM stdin;
 --
 
 COPY public."hangoutAttendees" ("userId", "hangoutId") FROM stdin;
+12	1
+12	2
+13	2
 \.
 
 
@@ -344,6 +359,26 @@ COPY public."hangoutAttendees" ("userId", "hangoutId") FROM stdin;
 --
 
 COPY public.hangouts ("hangoutId", "hangoutName", "hostId", "startTime", description, "gameFormat", "gameId", zipcode, "contactInfo") FROM stdin;
+1	Shadow Realm DUEL 	2	2020-01-30 03:00:00	Fight me	Yu-Gi-Oh	2	10280	949-420-6969
+2	Magic and Chill	1	2020-01-29 04:20:00	We play some Magic, then we chill. Haha, jk... unless? Hit me up though.	Pioneer	1	92618	618-897-5672
+3	Hardcore Modern practice	2	2020-02-15 14:30:00	I really want to practice my deck. This is some real hardcore practice, so no funny business. I want to WIN the next major. I am really good at this game, so casuals BEWARE. But all are welcome! Let me know if you can play...	Modern	1	94105	949-420-6969
+4	Yugimans	3	2020-02-11 06:30:00	Let us play some Yu-Gi-OH	Yu-Gi-Oh	2	92618	dragonmasterknight#3122
+5	Magic and Chill	1	2020-02-16 18:40:00	We play some Magic, then we chill. Haha, jk... unless? Hit me up though.	Pioneer	1	92618	618-897-5672
+6	Magic and Chill	1	2020-02-23 16:20:00	We play some Magic, then we chill. Haha, jk... unless? Hit me up though.	Pioneer	1	92618	618-897-5672
+7	Shadow Realm DUEL 	2	2020-02-17 13:00:00	Fight me. 	Yu-Gi-Oh	2	10280	949-420-6969
+8	Casual Magic	4	2020-02-18 16:00:00	I just want to play some casual Magic. Anyone is welcome! 	Casual	1	94105	 (312)-785-9934
+9	Commander Circle	5	2020-02-17 12:00:00	Casual Commander! Please no cEDH decks... 	Commander	1	10280	714-231-6434
+10	Casual Magic	4	2020-02-18 16:00:00	I just want to play some casual Magic. Anyone is welcome! Let me know !	Casual	1	92618	dragonmasterknight#3122
+11	Casual Magic	4	2020-02-25 16:00:00	I just want to play some casual Magic. Anyone is welcome! Let me know!	Casual	1	94105	714-231-6434
+12	Commander Circle	5	2020-02-17 12:00:00	Casual Commander! Please no cEDH decks... text me at 714-231-6434	Commander	1	10280	\N
+13	Yugimans	3	2020-02-18 06:30:00	Let us play some Yu-Gi-OH	Yu-Gi-Oh	2	94105	shadowki#2134
+14	Hardcore Modern practice	2	2020-02-19 11:30:00	I really want to practice my deck. This is some real hardcore practice, so no funny business. I want to WIN the next major. I am really good at this game, so casuals BEWARE. But all are welcome! Let me know if you can play... 949-420-6969	Modern	1	94105	shadowki#2134
+18	Super Magic Party	5	2020-02-15 00:30:00	We should all play some Magic!	Casual	1	94105	toaster#1451
+20	Super Magic Party	0	2020-02-15 12:30:00	We should all play some Magic!	Casual	1	94105	toaster#1451
+21	Tim's Magic Fest	0	2020-05-03 00:00:00	SUPER COOL MAGIC TIME LESSGO	Modern	1	92618	shadoki#4135
+22	David's Magic Dungeon	0	2020-02-28 18:00:00	Come to my den for some good magic fun!	Yu-Gi-Oh	2	92677	koreanman#1512
+23	Magic Dunkey	0	2020-02-15 12:30:00	We should all play some Magic!	Casual	1	94105	toaster#1451
+24	afmafsfa	0	2020-01-31 01:00:00	asdsda	Yu-Gi-Oh	2	92618	7148334882
 \.
 
 
@@ -365,6 +400,16 @@ COPY public.stores ("storeId", "storeName", long, lat, "openingTime", "closingTi
 --
 
 COPY public.users ("userId", "userName", "deckArchetype", "mainGameId", email, "isStoreEmployee", password, "storeName") FROM stdin;
+13	Kanye	Yeezy	2	808sandmagic@gmail.com	t	$2b$12$prK4SLB5E1L4nGpoqoEruOa9UB0J8PyWOY7iv4SNbO/F7LeTcOBMi	\N
+14	Kanye	Yeezy	2	808sandmagic@gmail.com	t	$2b$12$pqp8dl0XNlg4TJexKAuGLOvLKM3z3R2ehqetIgrT81EkhwwYCQCh2	Pablos Cards
+15	Spike Spiegal	Bebop	1	spacecowboy@gmail.com	f	$2b$12$n/4J2z0lRVdnyUpbj6/A2e5mqdanBJwPlqVSsO6MtBYTa.eQ1/B6u	null
+16	Rocky	Boxer	2	italianstallion@gmail.com	f	$2b$12$iGB3eI4lLWMuEtiXOy/FZ.pgQaK8HT4agTHZ7Eh8NTh7MQwUQsOJW	null
+17	Yugi Mutou	Dueler	2	yugiohnumber1@gmail.com	f	$2b$12$puSVQVuQbrVE0/4NHAFMH.WdundVU2NbyQteaC/0mWDMe757XKqDy	null
+20	Dog	Lakers	1	blackmamba24@gmail.com	t	$2b$12$2X1VSFjAnqnfbqwlRbD8peAwup82UtGaXn1JodFtZTuMvxNu/6Shu	Staples Cards
+12	CodingCodyMiller	turtle	1	gander@gmail.com	t	$2b$12$ZGrHIbB1gtqAOIUNNfuLCuuC86dJ5YjD4PnwXj2kxoxFXio3YVa9K	CCM Cards
+19	Kobe		\N		t	$2b$12$eLhMyqgUiuHxNBw0LTgy1usN/fUc.ra4Qnw2v3okHn28e422kSQ1G	Staples Cards
+18	Kid Cudi	dog	1	dogbert..	t	$2b$12$KO8ORI0G4Z15MxZcYxuR6eM1f3P1kGSZy1ctb1qgf0B50FWrN2mhS	Man On The Moon Cards
+21	Pink Gang	Standard	1	pinkgang@gmail.com	t	$2b$12$KUeRnqtGgKG.IEFmLAHt.e9mU8OHQb/OjIq.cDgi0lXpLFrvYwz/K	The GameChest
 \.
 
 
@@ -372,7 +417,7 @@ COPY public.users ("userId", "userName", "deckArchetype", "mainGameId", email, "
 -- Name: events_eventId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."events_eventId_seq"', 9, true);
+SELECT pg_catalog.setval('public."events_eventId_seq"', 8, true);
 
 
 --
@@ -386,7 +431,7 @@ SELECT pg_catalog.setval('public."game_gameId_seq"', 2, true);
 -- Name: hangouts_hangoutId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."hangouts_hangoutId_seq"', 25, true);
+SELECT pg_catalog.setval('public."hangouts_hangoutId_seq"', 24, true);
 
 
 --
@@ -400,7 +445,7 @@ SELECT pg_catalog.setval('public."stores_storeId_seq"', 1, false);
 -- Name: users_userId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."users_userId_seq"', 28, true);
+SELECT pg_catalog.setval('public."users_userId_seq"', 21, true);
 
 
 --
