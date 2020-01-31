@@ -55,6 +55,12 @@ export default class LogInPage extends React.Component {
       .catch(err => console.error(err));
   }
 
+  renderLoginError() {
+    if (this.state.hasUserUnsuccessfullyLoggedIn) {
+      return (<div className="error-blurb">Incorrect Username or Password</div>);
+    }
+  }
+
   render() {
     return (
       <div className="log-in-container">
@@ -85,6 +91,7 @@ export default class LogInPage extends React.Component {
               <button type="submit" className="short-input input confirm">Log In</button>
               <button className="short-input input green" onClick={() => this.props.history.push('/sign-up')}>Sign Up</button>
             </div>
+            {this.renderLoginError()}
           </div>
         </form>
       </div>

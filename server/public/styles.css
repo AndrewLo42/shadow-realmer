@@ -12,6 +12,7 @@ body {
   padding: 0;
 }
 
+.description,
 input,
 select {
   color: #9984F1;

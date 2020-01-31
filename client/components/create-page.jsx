@@ -461,7 +461,8 @@ class CreateEvent extends React.Component {
           <button className="short-input input cancel" onClick={() => this.props.history.push('/events')}>Cancel</button>
           <button className="short-input input confirm" onClick={() => this.handleValidForm(this.state)}>Confirm</button>
         </div>
-        <div className={`${invalidForm} error-blurb error-text`} >Missing Information</div>
+        <div className={`${invalidForm} error-blurb error-text`} >Missing Information,</div>
+        <div className={`${invalidForm} error-blurb error-text`} >All Fields Required</div>
       </div>
     );
   }
