@@ -1,6 +1,7 @@
 import React from 'react';
 import Map from './map';
 import EventItem from './event-item-page';
+import LoadingScreen from './loading-screen';
 
 export default class StoreDetailsPage extends React.Component {
   constructor(props) {
@@ -47,7 +48,7 @@ export default class StoreDetailsPage extends React.Component {
   render() {
     return !this.state.isLoading
       ? <StoreDetails details={this.state.details} events={this.state.events} history={this.props.history} />
-      : <div className="title">Loading...</div>;
+      : <LoadingScreen />;
   }
 }
 
