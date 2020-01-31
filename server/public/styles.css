@@ -649,7 +649,7 @@ li a :visited {
   border: 2px red solid;
 }
 .log-in-form-children-container button {
-  width: 150px;
+  width: 170px;
   height: 50px;
 }
 .log-in-form-children-container button:last-child {
@@ -657,8 +657,10 @@ li a :visited {
 }
 .log-in-form-button-container {
   display: flex;
-  justify-content: space-around;
+  flex-flow: column wrap;
   width: 325px;
+  justify-content: center;
+  align-items: center;
 }
 
 .sign-out-page {
