@@ -478,6 +478,8 @@ li a :visited {
   background-color: rgb(24, 24, 24);
   border: 2px solid #9984F1;
   border-radius: 10px;
+  overflow-x: scroll;
+  overflow-y: hidden;
 }
 .home-events-carousel {
   width: 90%;
