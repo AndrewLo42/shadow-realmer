@@ -370,7 +370,6 @@ class CreateEvent extends React.Component {
       <div className="create-page">
         <header className="title">Create Event</header>
         <input type="text" className="long-input input" placeholder="Event Title" onChange={this.handleTitleChange} value={this.state.name} />
-        {/* <div className="long-input input">{this.state.storeName}</div> */}
         <div className="short-container">
           <div className="date-container short-input input">
             <select name="month" className="date-selector selector-left" onChange={this.handleMonthChange} value={this.state.month}>
