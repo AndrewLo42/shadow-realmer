@@ -9,8 +9,13 @@ export default class AccountSettings extends React.Component {
       deckArchetype: '',
       email: '',
       password: '',
-      confirmedPassword: ''
+      confirmedPassword: '',
+      validEmail: true,
+      validPassword: true,
+      submitted: false,
+      passwordMatch: true
     };
+
     this.handleGameIdChange = this.handleGameIdChange.bind(this);
     this.handleDeckArchetypeChange = this.handleDeckArchetypeChange.bind(this);
     this.handleEmailChange = this.handleEmailChange.bind(this);
@@ -20,6 +25,7 @@ export default class AccountSettings extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.changePassword = this.changePassword.bind(this);
     this.changeUserInfo = this.changeUserInfo.bind(this);
+
   }
 
   handleGameIdChange(event) {
@@ -67,8 +73,29 @@ export default class AccountSettings extends React.Component {
   }
 
   handleSubmit() {
-    if (this.state.password && (this.state.gameId || this.state.deckArchetype || this.state.email)) {
-      if (this.state.password === this.state.confirmedPassword) {
+    const emailRegex = RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+    const passwordRegex = RegExp(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,}$/);
+    this.setState({ submitted: true });
+    if (this.state.email) {
+      if (!emailRegex.test(this.state.email)) {
+        this.setState({ validEmail: false });
+        return;
+      }
+    }
+    if (this.state.password) {
+      if (!passwordRegex.test(this.state.password)) {
+        this.setState({ validPassword: false });
+      }
+    }
+    if (this.state.password) {
+      if (this.state.password !== this.state.confirmedPassword) {
+        this.setState({ passwordMatch: false });
+        return;
+      }
+    }
+
+    if ((this.state.password) && (this.state.gameId || this.state.deckArchetype || this.state.email)) {
+      if (this.state.passwordMatch) {
         Promise.all([
           this.changePassword(this.context.user.userId),
           this.changeUserInfo(this.context.user.userId)
@@ -80,7 +107,7 @@ export default class AccountSettings extends React.Component {
           .catch(err => console.error(err));
       }
     } else if (this.state.password) {
-      if (this.state.password === this.state.confirmedPassword) {
+      if (this.state.passwordMatch) {
         this.changePassword(this.context.user.userId)
           .then(() => {
             this.context.getUser();
@@ -102,7 +129,38 @@ export default class AccountSettings extends React.Component {
     this.props.history.push('/signed-out');
   }
 
+  renderEmailError() {
+    if (!this.state.validEmail && this.state.submitted) {
+      return (<div className=" error-blurb">Not a valid email</div>);
+    }
+  }
+
+  renderPasswordError() {
+    if (!this.state.validPassword && this.state.submitted) {
+      return (
+        <div className=" error-blurb">
+          <div>Password requires</div>
+          <div> 7 Characters with at least 1 number</div>
+        </div>);
+    }
+  }
+
+  renderConfirmPasswordError() {
+    if (!this.state.samePassword && this.state.submitted) {
+      return (<div className=" error-blurb">Passwords did not Match</div>);
+    }
+  }
+
   render() {
+    let invalidEmail = null;
+    let invalidPassword = null;
+    let invalidConfirm = null;
+    if (this.state.submitted) {
+      invalidEmail = this.state.validEmail === false ? 'is-invalid' : null;
+      invalidPassword = this.state.validPassword === false ? 'is-invalid' : null;
+      invalidConfirm = this.state.passwordMatch === false ? 'is-invalid' : null;
+
+    }
     return (
       <>
         <div className="account-page-header">
@@ -132,25 +190,29 @@ export default class AccountSettings extends React.Component {
           />
           <input
             type="text"
-            className="input long-input"
+            className={`long-input input ${invalidEmail}`}
+            name="email"
             placeholder="Change Email"
             onChange={this.handleEmailChange}
             value={this.state.email}
           />
+          {this.renderEmailError()}
           <input
             type="password"
-            className="input long-input"
+            className={`long-input input ${invalidPassword}`}
             placeholder="Change Password"
             onChange={this.handlePasswordChange}
             value={this.state.password}
           />
+          {this.renderPasswordError()}
           <input
             type="password"
-            className="input long-input"
+            className={`long-input input ${invalidConfirm}`}
             placeholder="Confirm New Password"
             onChange={this.handleConfirmedPasswordChange}
             value={this.state.confirmedPassword}
           />
+          {this.renderConfirmPasswordError()}
           <button className="input long-input confirm" type="submit"onClick={this.handleSubmit}>Confirm</button>
           <div className="account-page-footer">
 

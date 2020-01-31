@@ -194,6 +194,12 @@ export default class SignUpPage extends React.Component {
     }
   }
 
+  renderEmailError() {
+    if (!this.state.validEmail && this.state.submitted) {
+      return (<div className=" error-blurb">Not a valid email</div>);
+    }
+  }
+
   renderConfirmPasswordError() {
     if (!this.state.samePassword && this.state.submitted) {
       return (<div className=" error-blurb">Passwords did not Match</div>);
@@ -226,6 +232,7 @@ export default class SignUpPage extends React.Component {
         <input type="text" className={`long-input input ${invalidUser}`} placeholder="User Name" onChange={this.handleNameChange} value={this.state.userName} />
         {this.renderUserNameError()}
         <input type="text" name="email" className={`long-input input ${invalidEmail}`} placeholder="E-Mail" onChange={this.handleEmailChange} value={this.state.email} />
+        {this.renderEmailError()}
         <select name="game" className="input short-input" onChange={this.handleGameIdChange} value={this.state.mainGameId}>
           <option value="0" hidden className="default-select-option">Game</option>
           <option value="1">Magic</option>

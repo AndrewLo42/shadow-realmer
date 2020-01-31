@@ -17,8 +17,9 @@ export default class HangoutDetailsPage extends React.Component {
   getDetails() {
     fetch(`/api/hangouts/?id=${this.props.match.params.id}`)
       .then(data => data.json())
-      .then(result => this.setState({ details: result }))
-      .then(() => this.getLocation())
+      .then(result => this.setState({ details: result }, () => {
+        this.getLocation();
+      }))
       .catch(err => console.error(err));
   }
 

@@ -24,6 +24,10 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       user: null,
+      currentView: {
+        stores: [],
+        center: { lat: 33.634844, lng: -117.740513 }
+      },
       showSidebar: false,
       isAuthorizing: true
     };
@@ -31,6 +35,7 @@ export default class App extends React.Component {
     this.logInUser = this.logInUser.bind(this);
     this.getUser = this.getUser.bind(this);
     this.logOutUser = this.logOutUser.bind(this);
+    this.findStores = this.findStores.bind(this);
   }
 
   toggleSidebar() {
@@ -42,15 +47,8 @@ export default class App extends React.Component {
   }
 
   getUser() {
-    fetch('/api/users', {
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
-      }
-    })
-      .then(response => {
-        return response.json();
-      })
+    fetch('/api/users')
+      .then(response => response.json())
       .then(userData => {
         if (userData.error) {
           this.setState({
@@ -77,6 +75,22 @@ export default class App extends React.Component {
       .catch(err => console.error(err));
   }
 
+  findStores(zipcode) {
+    const getCenter = fetch(`/api/zipcode/?zipcode=${zipcode}`).then(res => res.json());
+    const getResults = fetch(`/api/search/?zipcode=${zipcode}`).then(res => res.json());
+    Promise
+      .all([getCenter, getResults])
+      .then(result => {
+        this.setState({
+          currentView: {
+            center: result[0].results[0].geometry.location,
+            stores: result[1].results
+          }
+        });
+      })
+      .catch(err => console.error(err));
+  }
+
   componentDidMount() {
     this.getUser();
   }
@@ -88,6 +102,8 @@ export default class App extends React.Component {
     const logInUser = this.logInUser;
     const getUser = this.getUser;
     const logOutUser = this.logOutUser;
+    const findStores = this.findStores;
+    const currentView = this.state.currentView;
     if (this.state.isAuthorizing) return null;
     return (
       <SRContext.Provider value={{
@@ -96,7 +112,9 @@ export default class App extends React.Component {
         toggleSidebar,
         logInUser,
         getUser,
-        logOutUser
+        logOutUser,
+        findStores,
+        currentView
       }}>
         <Router>
           <Sidebar />
