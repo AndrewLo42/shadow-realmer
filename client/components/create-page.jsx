@@ -4,10 +4,30 @@ import SRContext from './context';
 export default class CreatePage extends React.Component {
   constructor(props) {
     super(props);
+    this.parseTime = this.parseTime.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  parseTime(month, day, hour, minute, ampm) {
+    if (hour === '12') {
+      hour = '00';
+    }
+    if (ampm === 'PM') {
+      hour = parseInt(hour, 10) + 12;
+    }
+    const date = new Date(
+      new Date().getFullYear(),
+      parseInt(month) - 1,
+      parseInt(day),
+      parseInt(hour),
+      parseInt(minute)
+    );
+    return date;
+  }
+
   handleSubmit(info) {
+    const time = this.parseTime(info.month, info.day, info.hour, info.minute, info.ampm);
+    info.startTime = time;
     const location = window.location.pathname.includes('hangout') ? '/hangouts' : '/events';
     fetch(`/api${location}`, {
       method: 'POST',

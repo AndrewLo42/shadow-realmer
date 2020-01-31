@@ -285,7 +285,6 @@ app.post('/api/events', (req, res, next) => {
   ) {
     return next(new ClientError('Missing parameters to create event!!'), 400);
   }
-  const startTime = parseTime(req.body.month, req.body.day, req.body.hour, req.body.minute, req.body.ampm);
   const createEvent = `
       insert into events ("eventName", "storeName", "startTime", "description", "gameFormat", "gameId", "entranceFee")
       values($1, $2, $3, $4, $5, $6, $7)
@@ -295,7 +294,7 @@ app.post('/api/events', (req, res, next) => {
   const params = [
     req.body.name,
     req.body.storeName,
-    startTime,
+    req.body.startTime,
     req.body.description,
     req.body.gameFormat,
     req.body.gameId,
@@ -308,39 +307,11 @@ app.post('/api/events', (req, res, next) => {
     .catch(err => next(err));
 });
 
-function parseTime(month, day, hour, minute, ampm) {
-  if (hour === '12') {
-    hour = '00';
-  }
-  if (ampm === 'PM') {
-    hour = parseInt(hour, 10) + 12;
-  }
-  const date = new Date(
-    new Date().getFullYear(),
-    parseInt(month) - 1,
-    parseInt(day),
-    parseInt(hour),
-    parseInt(minute)
-  );
-    // eslint-disable-next-line no-console
-  console.log('date: ', date);
-  // console.log("date-UTC: ", date.toUTCString())
-  const time = Date.parse(date);
-  // eslint-disable-next-line no-console
-  console.log('time: ', time);
-  // const offset = date.getTimezoneOffset() * 60000
-  // console.log("offset, ", offset)
-  // const result = new Date(time + offset)
-  // console.log("result: ", result)
-  // console.log(result.toISOString())
-  return null;
-}
-
 app.post('/api/hangouts', (req, res, next) => {
   if (!req.body.name || !req.body.description || !req.body.gameFormat || !req.body.gameId || !req.body.zipCode || !req.body.contactInfo) {
     return next(new ClientError('Missing parameters to create Hangout!!', 400));
   }
-  const startTime = parseTime(req.body.month, req.body.day, req.body.hour, req.body.minute, req.body.ampm);
+
   const createHangout = `
       insert into hangouts ("hangoutName", "hostId", "startTime", "description", "gameFormat", "gameId", "zipcode", "contactInfo")
       values($1, $2, $3, $4, $5, $6, $7, $8)
@@ -350,7 +321,7 @@ app.post('/api/hangouts', (req, res, next) => {
   if (!req.body.hostId) {
     hostId = 0;
   }
-  const params = [req.body.name, hostId, startTime, req.body.description, req.body.gameFormat, req.body.gameId, req.body.zipCode, req.body.contactInfo];
+  const params = [req.body.name, hostId, req.body.startTime, req.body.description, req.body.gameFormat, req.body.gameId, req.body.zipCode, req.body.contactInfo];
   db.query(createHangout, params)
     .then(result => {
       res.status(201).json(result.rows[0]);
