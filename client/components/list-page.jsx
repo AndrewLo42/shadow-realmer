@@ -54,9 +54,14 @@ export default class ListPage extends React.Component {
   }
 
   render() {
-    const list = this.state.events.length && window.location.pathname.includes('hangout')
-      ? this.state.events.map(hangout => <HangoutItem hangout={hangout} key={hangout.hangoutId} history={this.props.history} />)
-      : this.state.events.map(event => <EventItem event={event} key={event.eventId} history={this.props.history} />);
+    let list = null;
+    if (this.state.events.length) {
+      window.location.pathname.includes('hangout')
+        ? list = this.state.events.map(hangout => <HangoutItem hangout={hangout} key={hangout.hangoutId} history={this.props.history} />)
+        : list = this.state.events.map(event => <EventItem event={event} key={event.eventId} history={this.props.history} />);
+    } else {
+      list = <div className="title">No {window.location.pathname.substr(1)} found</div>;
+    }
     return (
       <>
         <NavBar history={this.props.history} runSearch={window.location.pathname.includes('hangout') ? this.searchByZip : this.searchForEvents} />

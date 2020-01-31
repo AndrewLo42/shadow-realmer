@@ -24,7 +24,7 @@ export default class AccountPage extends React.Component {
     return (
       <div className="account-page">
         <div className="account-page-header">
-          <i className="fas fa-angle-double-left" onClick={() => this.props.history.goBack()}></i>
+          <i className="fas fa-angle-double-left" onClick={() => this.props.history.push('/')}></i>
           <NavLink to={`/account/${this.context.user.userName}/settings`}>
             <i className="fas fa-cog"></i>
           </NavLink>

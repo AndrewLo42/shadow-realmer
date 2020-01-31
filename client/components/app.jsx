@@ -29,6 +29,7 @@ export default class App extends React.Component {
     };
     this.toggleSidebar = this.toggleSidebar.bind(this);
     this.logInUser = this.logInUser.bind(this);
+    this.getUser = this.getUser.bind(this);
     this.logOutUser = this.logOutUser.bind(this);
   }
 
@@ -40,17 +41,7 @@ export default class App extends React.Component {
     this.setState({ user });
   }
 
-  logOutUser() {
-    fetch('/api/usersLogout', {
-      method: 'POST'
-    })
-      .then(() => {
-        this.setState({ user: null });
-      })
-      .catch(err => console.error(err));
-  }
-
-  componentDidMount() {
+  getUser() {
     fetch('/api/users', {
       headers: {
         'Content-Type': 'application/json',
@@ -76,11 +67,26 @@ export default class App extends React.Component {
       .catch(err => console.error(err));
   }
 
+  logOutUser() {
+    fetch('/api/usersLogout', {
+      method: 'POST'
+    })
+      .then(() => {
+        this.setState({ user: null });
+      })
+      .catch(err => console.error(err));
+  }
+
+  componentDidMount() {
+    this.getUser();
+  }
+
   render() {
     const user = this.state.user;
     const showSidebar = this.state.showSidebar;
     const toggleSidebar = this.toggleSidebar;
     const logInUser = this.logInUser;
+    const getUser = this.getUser;
     const logOutUser = this.logOutUser;
     if (this.state.isAuthorizing) return null;
     return (
@@ -89,6 +95,7 @@ export default class App extends React.Component {
         showSidebar,
         toggleSidebar,
         logInUser,
+        getUser,
         logOutUser
       }}>
         <Router>
