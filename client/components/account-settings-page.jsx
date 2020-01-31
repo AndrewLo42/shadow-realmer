@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React from 'react';
 import SRContext from './context';
 
@@ -50,12 +49,10 @@ export default class AccountSettings extends React.Component {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ password: this.state.password })
-    })
-      .then(response => response.json());
+    });
   }
 
   changeUserInfo(userId) {
-    console.log(userId);
     return fetch(`/api/users/${userId}`, {
       method: 'PUT',
       headers: {
@@ -66,31 +63,36 @@ export default class AccountSettings extends React.Component {
         deckArchetype: this.state.deckArchetype,
         email: this.state.email
       })
-    })
-      .then(response => console.log(response.json()));
+    });
   }
 
   handleSubmit() {
-    console.log(this.context);
     if (this.state.password && (this.state.gameId || this.state.deckArchetype || this.state.email)) {
-      console.log('first');
       if (this.state.password === this.state.confirmedPassword) {
-        console.log('second');
         Promise.all([
           this.changePassword(this.context.user.userId),
           this.changeUserInfo(this.context.user.userId)
         ])
+          .then(() => {
+            this.context.getUser();
+            this.props.history.goBack();
+          })
           .catch(err => console.error(err));
       }
     } else if (this.state.password) {
-      console.log('third');
       if (this.state.password === this.state.confirmedPassword) {
-        this.changePassword(this.context.user.userId);
-        console.log('fourth');
+        this.changePassword(this.context.user.userId)
+          .then(() => {
+            this.context.getUser();
+            this.props.history.goBack();
+          });
       }
     } else {
-      console.log('fifth');
       this.changeUserInfo(this.context.user.userId)
+        .then(() => {
+          this.context.getUser();
+          this.props.history.goBack();
+        })
         .catch(err => console.error(err));
     }
   }
