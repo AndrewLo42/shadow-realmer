@@ -82,12 +82,6 @@ export default class SignUpPage extends React.Component {
           submitted: true
         });
       }
-      if (!this.state.validPassword) {
-        this.setState({ password: '' });
-      }
-      if (!this.state.samePassword) {
-        this.setState({ confirmPassword: '' });
-      }
     } else {
       fetch(`/api/userNameCheck/${info.userName}`, {
       })
@@ -118,12 +112,6 @@ export default class SignUpPage extends React.Component {
         this.setState({
           submitted: true
         });
-      }
-      if (!this.state.validPassword) {
-        this.setState({ password: '' });
-      }
-      if (!this.state.samePassword) {
-        this.setState({ confirmPassword: '' });
       }
     } else {
       this.createUser(info);
@@ -179,7 +167,7 @@ export default class SignUpPage extends React.Component {
   }
 
   handleStoreSubmit(storeCode) {
-    if (storeCode === '1234') {
+    if (storeCode === 'LearningFuze') {
       this.setState({ isStoreEmployee: true });
     }
   }
@@ -192,9 +180,6 @@ export default class SignUpPage extends React.Component {
 
   renderPasswordError() {
     if (!this.state.validPassword && this.state.submitted) {
-      if (!this.state.validPassword && this.state.submitted && this.state.password !== '') {
-        return null;
-      }
       return (
         <div className=" error-blurb">
           <div>Password requires</div>
@@ -211,9 +196,6 @@ export default class SignUpPage extends React.Component {
 
   renderConfirmPasswordError() {
     if (!this.state.samePassword && this.state.submitted) {
-      if (!this.state.validPassword && this.state.submitted && this.state.confirmPassword !== '') {
-        return null;
-      }
       return (<div className=" error-blurb">Passwords did not Match</div>);
     }
   }

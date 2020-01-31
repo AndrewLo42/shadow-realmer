@@ -1,4 +1,3 @@
-
 require('dotenv/config');
 const express = require('express');
 
@@ -280,26 +279,23 @@ app.get('/api/events', (req, res, next) => {
 app.post('/api/events', (req, res, next) => {
   if (
     !req.body.name ||
-    !req.body.startTime ||
     !req.body.description ||
     !req.body.gameFormat ||
     !req.body.gameId
   ) {
     return next(new ClientError('Missing parameters to create event!!'), 400);
   }
+  const startTime = parseTime(req.body.month, req.body.day, req.body.hour, req.body.minute, req.body.ampm);
   const createEvent = `
-      insert into events ("eventName", "storeId", "startTime", "description", "gameFormat", "gameId", "entranceFee")
+      insert into events ("eventName", "storeName", "startTime", "description", "gameFormat", "gameId", "entranceFee")
       values($1, $2, $3, $4, $5, $6, $7)
       returning *
     `;
-  let storeId = req.body.storeId;
-  if (!req.body.storeId) {
-    storeId = 0;
-  }
+
   const params = [
     req.body.name,
-    storeId,
-    req.body.startTime,
+    req.body.storeName,
+    startTime,
     req.body.description,
     req.body.gameFormat,
     req.body.gameId,
@@ -658,21 +654,21 @@ app.get('/api/search', (req, res, next) => {
   fetch(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=magic+the+gathering+in+${req.query.zipcode}&radius=50000&key=${process.env.GOOGLE_MAPS_API_KEY}`)
     .then(data => data.json())
     .then(results => res.json(results))
-    .catch(err => console.error(err));
+    .catch(err => next(err));
 });
 
 app.get('/api/zipcode', (req, res, next) => {
   fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${req.query.zipcode}&key=${process.env.GOOGLE_MAPS_API_KEY}`)
     .then(data => data.json())
     .then(results => res.json(results))
-    .catch(err => console.error(err));
+    .catch(err => next(err));
 });
 
 app.get('/api/address', (req, res, next) => {
   fetch(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=${req.query.storeName}&key=${process.env.GOOGLE_MAPS_API_KEY}`)
     .then(data => data.json())
     .then(results => res.json(results))
-    .catch(err => console.error(err));
+    .catch(err => next(err));
 });
 
 app.get('/api/users/', (req, res, next) => {

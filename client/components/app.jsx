@@ -10,7 +10,7 @@ import AccountPage from './account-page';
 import AccountSettings from './account-settings-page';
 import LogInPage from './log-in-page';
 import SignUpPage from './sign-up-page';
-import SecretPage from './secret-page';
+import SignOutPage from './sign-out-page';
 import Sidebar from './sidebar';
 import {
   BrowserRouter as Router,
@@ -24,10 +24,12 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       user: null,
-      showSidebar: false
+      showSidebar: false,
+      isAuthorizing: true
     };
     this.toggleSidebar = this.toggleSidebar.bind(this);
     this.logInUser = this.logInUser.bind(this);
+    this.getUser = this.getUser.bind(this);
     this.logOutUser = this.logOutUser.bind(this);
   }
 
@@ -37,6 +39,32 @@ export default class App extends React.Component {
 
   logInUser(user) {
     this.setState({ user });
+  }
+
+  getUser() {
+    fetch('/api/users', {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      }
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(userData => {
+        if (userData.error) {
+          this.setState({
+            user: null,
+            isAuthorizing: false
+          });
+        } else {
+          this.setState({
+            user: userData,
+            isAuthorizing: false
+          });
+        }
+      })
+      .catch(err => console.error(err));
   }
 
   logOutUser() {
@@ -50,18 +78,7 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    fetch('api/users')
-      .then(response => {
-        return response.json();
-      })
-      .then(userData => {
-        if (userData.error) {
-          this.setState({ user: null });
-        } else {
-          this.setState({ user: userData });
-        }
-      })
-      .catch(err => console.error(err));
+    this.getUser();
   }
 
   render() {
@@ -69,13 +86,16 @@ export default class App extends React.Component {
     const showSidebar = this.state.showSidebar;
     const toggleSidebar = this.toggleSidebar;
     const logInUser = this.logInUser;
+    const getUser = this.getUser;
     const logOutUser = this.logOutUser;
+    if (this.state.isAuthorizing) return null;
     return (
       <SRContext.Provider value={{
         user,
         showSidebar,
         toggleSidebar,
         logInUser,
+        getUser,
         logOutUser
       }}>
         <Router>
@@ -94,7 +114,7 @@ export default class App extends React.Component {
             <Route path="/store/:name" component={StoreDetailsPage} />
             <Route path="/log-in" component={LogInPage} />
             <Route path="/sign-up" component={SignUpPage} />
-            <Route path="/secret" component={SecretPage} />
+            <Route path="/signed-out" component={SignOutPage} />
           </Switch>
         </Router>
       </SRContext.Provider>

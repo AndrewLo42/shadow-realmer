@@ -1,42 +1,57 @@
 import React from 'react';
 import Map from './map';
 import EventItem from './event-item-page';
+import LoadingScreen from './loading-screen';
 
 export default class StoreDetailsPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       details: {},
-      events: []
+      events: [],
+      isLoading: true
     };
+    this.getInfo = this.getInfo.bind(this);
     this.getAddress = this.getAddress.bind(this);
     this.getStoreEvents = this.getStoreEvents.bind(this);
   }
 
-  getAddress() {
-    fetch(`/api/address/?storeName=${this.props.match.params.name}`)
-      .then(data => data.json())
-      .then(result => result.results.filter(store => store.name === this.props.match.params.name))
-      .then(data => this.setState({ details: data[0] }))
+  getAddress(storeName) {
+    return fetch(`/api/address/?storeName=${storeName}`)
+      .then(response => response.json())
+      .then(addresses => addresses.results.find(store => store.name === storeName))
       .catch(err => console.error(err));
   }
 
-  getStoreEvents() {
-    fetch(`/api/storeEvents/${this.props.match.params.name}`)
-      .then(data => data.json())
-      .then(result => this.setState({ events: result }))
+  getStoreEvents(storeName) {
+    return fetch(`/api/storeEvents/${storeName}`)
+      .then(response => response.json())
+      .catch(err => console.error(err));
+  }
+
+  getInfo() {
+    Promise
+      .all([
+        this.getAddress(this.props.match.params.name),
+        this.getStoreEvents(this.props.match.params.name)])
+      .then(response => {
+        this.setState({
+          details: response[0],
+          events: response[1],
+          isLoading: false
+        });
+      })
       .catch(err => console.error(err));
   }
 
   componentDidMount() {
-    this.getAddress();
-    this.getStoreEvents();
+    this.getInfo();
   }
 
   render() {
-    return this.state.details
+    return !this.state.isLoading
       ? <StoreDetails details={this.state.details} events={this.state.events} history={this.props.history} />
-      : <div className="title">Loading...</div>;
+      : <LoadingScreen />;
   }
 }
 
