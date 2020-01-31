@@ -73,27 +73,25 @@ export default class LogInPage extends React.Component {
         <div className="welcome-banner">
           Welcome to Shadow Realmer
         </div>
-        <form onSubmit={this.handleSubmit}>
-          <div className="log-in-form-children-container">
-            <input
-              type="text"
-              className={`long-input input ${this.state.hasUserUnsuccessfullyLoggedIn && 'log-in-error-border'}`}
-              placeholder="Username"
-              onChange={this.handleUserNameChange}
-              value={this.state.userName} />
-            <input
-              type="password"
-              className={`long-input input ${this.state.hasUserUnsuccessfullyLoggedIn && 'log-in-error-border'}`}
-              placeholder="Password"
-              onChange={this.handlePasswordChange}
-              value={this.state.password} />
-            <div className="log-in-form-button-container">
-              <button type="submit" className="short-input input confirm">Log In</button>
-              <button className="short-input input green" onClick={() => this.props.history.push('/sign-up')}>Sign Up</button>
-            </div>
-            {this.renderLoginError()}
+        <div className="log-in-form-children-container">
+          <input
+            type="text"
+            className={`long-input input ${this.state.hasUserUnsuccessfullyLoggedIn && 'log-in-error-border'}`}
+            placeholder="Username"
+            onChange={this.handleUserNameChange}
+            value={this.state.userName} />
+          <input
+            type="password"
+            className={`long-input input ${this.state.hasUserUnsuccessfullyLoggedIn && 'log-in-error-border'}`}
+            placeholder="Password"
+            onChange={this.handlePasswordChange}
+            value={this.state.password} />
+          <div className="log-in-form-button-container">
+            <button className="short-input input confirm" onClick={this.handleSubmit}>Log In</button>
+            <button className="short-input input green" onClick={() => this.props.history.push('/sign-up')}>Sign Up</button>
           </div>
-        </form>
+          {this.renderLoginError()}
+        </div>
       </div>
     );
   }

@@ -372,7 +372,7 @@ COPY public.users ("userId", "userName", "deckArchetype", "mainGameId", email, "
 -- Name: events_eventId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."events_eventId_seq"', 8, true);
+SELECT pg_catalog.setval('public."events_eventId_seq"', 1, true);
 
 
 --
@@ -386,7 +386,7 @@ SELECT pg_catalog.setval('public."game_gameId_seq"', 2, true);
 -- Name: hangouts_hangoutId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."hangouts_hangoutId_seq"', 25, true);
+SELECT pg_catalog.setval('public."hangouts_hangoutId_seq"', 1, true);
 
 
 --
@@ -400,7 +400,7 @@ SELECT pg_catalog.setval('public."stores_storeId_seq"', 1, false);
 -- Name: users_userId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."users_userId_seq"', 22, true);
+SELECT pg_catalog.setval('public."users_userId_seq"', 1, true);
 
 
 --
@@ -477,4 +477,3 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 --
 -- PostgreSQL database dump complete
 --
-
