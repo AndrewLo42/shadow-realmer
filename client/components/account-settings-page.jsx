@@ -41,7 +41,7 @@ export default class AccountSettings extends React.Component {
 
   handleLogOut() {
     this.context.logOutUser();
-    this.props.history.push('/secret');
+    this.props.history.push('/signed-out');
   }
 
   render() {
@@ -62,7 +62,7 @@ export default class AccountSettings extends React.Component {
           <input type="password" className="input long-input" placeholder="Confirm Password" onChange={this.handleConfirmedPasswordChange} value={this.state.confirmedPassword} />
           <button className="input long-input confirm">Confirm</button>
           <div className="account-page-footer">
-            <button className="input long-input cancel" type="submit" onClick={this.handleLogOut}>Log Out</button>
+            <button className="input long-input cancel" type="submit" onClick={this.handleLogOut}>Sign Out</button>
           </div>
         </div>
       </>
