@@ -54,9 +54,14 @@ export default class ListPage extends React.Component {
   }
 
   render() {
-    const list = this.state.events.length && window.location.pathname.includes('hangout')
-      ? this.state.events.map(hangout => <HangoutItem hangout={hangout} key={hangout.hangoutId} history={this.props.history} />)
-      : this.state.events.map(event => <EventItem event={event} key={event.eventId} history={this.props.history} />);
+    let list = null;
+    if (this.state.events.length) {
+      window.location.pathname.includes('hangout')
+        ? list = this.state.events.map(hangout => <HangoutItem hangout={hangout} key={hangout.hangoutId} history={this.props.history} />)
+        : list = this.state.events.map(event => <EventItem event={event} key={event.eventId} history={this.props.history} />);
+    } else {
+      list = <div className="title">No {window.location.pathname.substr(1)} found</div>;
+    }
     return (
       <>
         <NavBar history={this.props.history} runSearch={window.location.pathname.includes('hangout') ? this.searchByZip : this.searchForEvents} />
@@ -74,7 +79,9 @@ function Title(props) {
     <>
       <div className="title-container">
         <span className={`back-button ${props.showAll && 'hidden'}`} onClick={() => props.getAll(window.location.pathname)}><i className="fa fa-angle-left"></i></span>
-        {window.location.pathname.includes('hangout') ? <div className="title">Hangouts</div> : <div className="title">Events</div>}
+        {window.location.pathname.includes('hangout')
+          ? <div className="title">Hangouts</div>
+          : <div className="title">Events</div>}
         <span className={`add-button ${!props.user && 'hidden'}`} onClick={() => props.history.push(`/create${window.location.pathname}`)}><i className="fa fa-plus"></i></span>
       </div>
       <div className="amount-of-events">Showing {props.amountOfEvents} Events</div>
