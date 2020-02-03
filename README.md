@@ -51,7 +51,7 @@ Link: https://shadowrealmer.com/
 - Users who are store employees can create an event for their store 
 - Users can see the general vincinity of hangouts
 
-#### Shadow Realmer Team
+### Shadow Realmer Team
 - https://github.com/AndrewLo42
 - https://github.com/ElliotTheHuman
 - https://github.com/spenceruns
