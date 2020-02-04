@@ -51,6 +51,20 @@ Link: https://shadowrealmer.com/
 - Users who are store employees can create an event for their store 
 - Users can see the general vincinity of hangouts
 
+# Future Features
+- Users can upload Profile pictures
+- Users can seach for cards
+- Users can have a binder with a list of their collection
+- Users can trade
+- Users can see other event attendees
+- Users can RSVP to hangouts
+- Users can comment on hangouts
+- Users can filter hangouts and events by game
+- Users can message each other about hangouts
+- Users can get notified about events
+- Users can set their location
+- App will have a life counter app built in
+
 ### Shadow Realmer Team
 - https://github.com/AndrewLo42
 - https://github.com/ElliotTheHuman
