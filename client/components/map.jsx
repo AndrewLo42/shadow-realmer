@@ -1,51 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { GoogleMap, withScriptjs, withGoogleMap, Marker, InfoWindow, Circle } from 'react-google-maps';
 import { NavLink } from 'react-router-dom';
 
-class MapView extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { selectedStore: null };
-    this.checkForHangouts = this.checkForHangouts.bind(this);
+function MapView(props) {
+  const [selectedStore, setSelectedStore] = useState(null);
+
+  let circle = null;
+  if (window.location.pathname.includes('hangout')) {
+    circle = <Circle
+      center={props.center}
+      radius={1250}
+      defaultOptions={{
+        fillColor: '#9984F1'
+      }} />;
   }
 
-  checkForHangouts() {
-    if (window.location.pathname.includes('hangout')) {
-      return <Circle
-        center={this.props.center}
-        radius={1250}
-        defaultOptions={{
-          fillColor: '#9984F1'
-        }} />;
-    }
-  }
-
-  render() {
-    return (
-      <GoogleMap
-        defaultZoom={this.props.zoom}
-        center={this.props.center}
-        defaultOptions={{
-          mapTypeControl: false,
-          fullscreenControl: false,
-          streetViewControl: false
-        }}>
-        {this.props.stores && this.props.stores.map(store => <Marker key={store.id} position={store.geometry.location} onClick={() => this.setState({ selectedStore: store })} />)}
-        {this.state.selectedStore &&
-        <InfoWindow position={this.state.selectedStore.geometry.location} onCloseClick={() => this.setState({ selectedStore: null })}>
+  return (
+    <GoogleMap
+      defaultZoom={props.zoom}
+      center={props.center}
+      defaultOptions={{
+        mapTypeControl: false,
+        fullscreenControl: false,
+        streetViewControl: false
+      }}>
+      {props.stores && props.stores.map(store => <Marker key={store.id} position={store.geometry.location} onClick={() => setSelectedStore(store)} />)}
+      {selectedStore &&
+        <InfoWindow position={selectedStore.geometry.location} onCloseClick={() => setSelectedStore(null)}>
           <div className="map-store-info">
-            <h2>{this.state.selectedStore.name}</h2>
-            <p>{this.state.selectedStore.formatted_address}</p>
-            <NavLink to={`/store/${this.state.selectedStore.name}`}>
+            <h2>{selectedStore.name}</h2>
+            <p>{selectedStore.formatted_address}</p>
+            <NavLink to={`/store/${selectedStore.name}`}>
               <div className="small-text">See Store Events</div>
             </NavLink>
           </div>
         </InfoWindow>
-        }
-        {this.checkForHangouts()}
-      </GoogleMap>
-    );
-  }
+      }
+      {circle}
+    </GoogleMap>
+  );
 }
 
 const WrappedMap = withScriptjs(withGoogleMap(MapView));
